@@ -3,6 +3,7 @@ import useVuelidate from '@vuelidate/core';
 import type { SigninDataInterface } from '../interfaces/auth.interface';
 import { required } from '@vuelidate/validators';
 import { reactive } from 'vue'
+import { AuthService } from '../services/AuthService';
 
 
 
@@ -33,7 +34,7 @@ export default {
     components: {},
     computed: {},
     methods: {
-        signin() {
+        async signin() {
             this.v$.$touch()
             if (this.v$.$invalid) return;
             
@@ -41,7 +42,9 @@ export default {
                 pseudo: this.state.signinData.pseudo,
                 password: this.state.signinData.password
             }
-            console.log(this.signinData);
+
+            const res = await AuthService.signin(this.signinData);
+            console.log('res => ', res);
 
 
 
