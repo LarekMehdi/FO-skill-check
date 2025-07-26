@@ -2,27 +2,20 @@
 import useVuelidate from '@vuelidate/core';
 import type { SigninDataInterface } from '../interfaces/auth.interface';
 import { required } from '@vuelidate/validators';
-import { reactive } from 'vue'
 import { AuthService } from '../services/AuthService';
 
 
-
 export default {
-    setup(props, context) {
-        const state = reactive({
-            signinData: {
-                pseudo: '',
-                password: ''
-            }
-        });
-        const rules = {
-            signinData: {
-                pseudo: { required },
-                password: { required }
-            }
-        }
-        const v$ = useVuelidate(rules, state);
-        return { v$, state }
+      setup() {
+        return { v$: useVuelidate() };
+    },
+    validations() {
+    return {
+        signinData: {
+            pseudo: { required },
+            password: { required },
+        },
+        };
     },
     mounted() { },
     data(): {signinData: SigninDataInterface}
@@ -35,20 +28,19 @@ export default {
     computed: {},
     methods: {
         async signin() {
-            this.v$.$touch()
-            if (this.v$.$invalid) return;
-            
-            this.signinData = {
-                pseudo: this.state.signinData.pseudo,
-                password: this.state.signinData.password
-            }
+      this.v$.$touch();
+      if (this.v$.$invalid) return;
 
-            const res = await AuthService.signin(this.signinData);
-            console.log('res => ', res);
-
-
-
+      try {
+        const res = await AuthService.signin(this.signinData);
+        console.log('res => ', res);
+       
+      } catch (e: any) {
+        if (e.response && e.response.status === 401) {
+          
         }
+      }
+    },
     }
 }
 
@@ -61,7 +53,7 @@ export default {
             <form @submit.prevent="signin">
                 <section class="mb-3">
                     <input 
-                        v-model="state.signinData.pseudo"
+                        v-model="signinData.pseudo"
                         type="text"
                         placeholder="Pseudo"
                         class="form-control"
@@ -73,7 +65,7 @@ export default {
                 
                 <section class="mb-3">
                     <input 
-                        v-model="state.signinData.password"
+                        v-model="signinData.password"
                         type="password"
                         placeholder="Mot de passe"
                         class="form-control"
