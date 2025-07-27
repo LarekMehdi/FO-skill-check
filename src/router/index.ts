@@ -11,9 +11,9 @@ app.listen(port, () => {
 });*/
 
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../components/Home.vue";
-import Signin from "../components/Signin.vue";
-import Signup from "../components/Signup.vue";
+import Home from "../components/pages/Home.vue";
+import Signin from "../components/pages/Signin.vue";
+import Signup from "../components/pages/Signup.vue";
 
 const routes = [
   {

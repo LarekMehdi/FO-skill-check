@@ -1,10 +1,10 @@
 <script lang="ts">
 import useVuelidate from '@vuelidate/core';
-import type { SigninDataInterface } from '../interfaces/auth.interface';
+import type { SigninDataInterface } from '../../interfaces/auth.interface';
 import { required } from '@vuelidate/validators';
-import { AuthService } from '../services/AuthService';
-import { useAuthStore } from '../stores/auth.store';
-import type { UserInterface } from '../interfaces/user.interface';
+import { AuthService } from '../../services/AuthService';
+import { useAuthStore } from '../../stores/auth.store';
+import type { UserInterface } from '../../interfaces/user.interface';
 
 
 export default {
