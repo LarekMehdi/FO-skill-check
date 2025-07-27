@@ -3,11 +3,17 @@ import useVuelidate from '@vuelidate/core';
 import type { SigninDataInterface } from '../interfaces/auth.interface';
 import { required } from '@vuelidate/validators';
 import { AuthService } from '../services/AuthService';
+import { useAuthStore } from '../stores/auth.store';
+import type { UserInterface } from '../interfaces/user.interface';
 
 
 export default {
-      setup() {
-        return { v$: useVuelidate() };
+    setup() {
+        const authStore = useAuthStore();
+        return { 
+            v$: useVuelidate(),
+            authStore,
+        };
     },
     validations() {
     return {
@@ -34,10 +40,22 @@ export default {
       try {
         const res = await AuthService.signin(this.signinData);
         console.log('res => ', res);
-       
+
+        const user: UserInterface = {
+            id: res.id,
+            pseudo: res.pseudo,
+            role: res.role,
+        };
+
+        this.authStore.setAuthState({
+            accessToken: res.accessToken,
+            refreshToken: '',
+            user: user,
+        });
+        
       } catch (e: any) {
         if (e.response && e.response.status === 401) {
-          
+            // toastify? flashbag?
         }
       }
     },
