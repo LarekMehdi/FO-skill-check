@@ -12,6 +12,8 @@ app.listen(port, () => {
 
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../components/Home.vue";
+import Signin from "../components/Signin.vue";
+import Signup from "../components/Signup.vue";
 
 const routes = [
   {
@@ -19,11 +21,16 @@ const routes = [
     name: "home",
     component: Home,
   },
-//   {
-//     path: "/login",
-//     name: "login",
-//     component: LoginView,
-//   },
+  {
+    path: "/signin",
+    name: "signin",
+    component: Signin,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: Signup,
+  },
   
   //{
   //path: "/about",
