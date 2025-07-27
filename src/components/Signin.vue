@@ -34,31 +34,31 @@ export default {
     computed: {},
     methods: {
         async signin() {
-      this.v$.$touch();
-      if (this.v$.$invalid) return;
+            this.v$.$touch();
+            if (this.v$.$invalid) return;
 
-      try {
-        const res = await AuthService.signin(this.signinData);
-        console.log('res => ', res);
+            try {
+                const res = await AuthService.signin(this.signinData);
+                console.log('res => ', res);
 
-        const user: UserInterface = {
-            id: res.id,
-            pseudo: res.pseudo,
-            role: res.role,
-        };
+                const user: UserInterface = {
+                    id: res.id,
+                    pseudo: res.pseudo,
+                    role: res.role,
+                };
 
-        this.authStore.setAuthState({
-            accessToken: res.accessToken,
-            refreshToken: '',
-            user: user,
-        });
-        
-      } catch (e: any) {
-        if (e.response && e.response.status === 401) {
-            // toastify? flashbag?
-        }
-      }
-    },
+                this.authStore.setAuthState({
+                    accessToken: res.accessToken,
+                    refreshToken: '',
+                    user: user,
+                });
+                
+            } catch (e: any) {
+                if (e.response && e.response.status === 401) {
+                    // toastify? flashbag?
+                }
+            }
+        },
     }
 }
 

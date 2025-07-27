@@ -21,5 +21,6 @@ export const useAuthStore = defineStore('auth', {
       this.refreshToken = '';
       this.user = null;
     }
-  }
+  },
+  persist: true,
 })
