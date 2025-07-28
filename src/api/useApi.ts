@@ -31,7 +31,7 @@ export function useApi() {
     api.interceptors.response.use(
         (response) => response,
         async (error) => {
-            const originalRequest = error.config;
+            //const originalRequest = error.config;
 
             // if (error.response && error.response.status === 401) {
             //     if (originalRequest.url !== 'auth/refresh') {
