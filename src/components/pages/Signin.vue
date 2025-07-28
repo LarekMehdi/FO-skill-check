@@ -39,7 +39,6 @@ export default {
 
             try {
                 const res = await AuthService.signin(this.signinData);
-                console.log('res => ', res);
 
                 const user: UserInterface = {
                     id: res.id,
@@ -52,6 +51,8 @@ export default {
                     refreshToken: '',
                     user: user,
                 });
+
+                this.$router.push('/');
                 
             } catch (e: any) {
                 if (e.response && e.response.status === 401) {

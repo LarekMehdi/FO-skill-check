@@ -2,7 +2,7 @@
 
 export default {
     mounted() {
-        console.log('mounted');
+        
         this.initHome();
     },
     data() {
@@ -16,7 +16,7 @@ export default {
     },
     methods: {
         initHome() {
-            console.log('init');
+            
         }
     }
 }
