@@ -62,7 +62,6 @@ export default {
     },
     methods: {
         async signup() {
-            console.log(this.signupData);
             this.v$.$touch();
             if (this.v$.$invalid) return;
 
