@@ -3,13 +3,13 @@ import useVuelidate from '@vuelidate/core';
 import type { SigninDataInterface } from '../../interfaces/auth.interface';
 import { required } from '@vuelidate/validators';
 import { AuthService } from '../../services/AuthService';
-import { useAuthStore } from '../../stores/auth.store';
 import type { UserInterface } from '../../interfaces/user.interface';
+import { useAuth } from '../../composables/useAuth';
 
 
 export default {
     setup() {
-        const authStore = useAuthStore();
+        const { authStore } = useAuth();
         return { 
             v$: useVuelidate(),
             authStore,

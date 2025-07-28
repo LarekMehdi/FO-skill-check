@@ -1,12 +1,12 @@
 <script lang="ts">
-import { useAuthStore } from '../../stores/auth.store';
+import { useAuth } from '../../composables/useAuth';
 import LogoutButton from './LogoutButton.vue';
 
 
 export default {
     setup() {
-        const authStore = useAuthStore();
-        return { authStore };
+        const { isLoggedIn, isAdmin } = useAuth();
+        return { isLoggedIn, isAdmin };
     },
     mounted() {
         this.initNavbar();
@@ -17,12 +17,7 @@ export default {
     components: {
         LogoutButton
     },
-    computed: {
-        isLoggedIn() {
-            if (this.authStore.user?.id) return true;
-            return false;
-        },
-    },
+    computed: {},
     methods: {
         initNavbar() {
 
