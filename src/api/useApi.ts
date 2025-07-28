@@ -63,7 +63,7 @@ export function useApi() {
             if (error.response && error.response.status === 404) {
                 console.log("ressource indispo");
             }
-            if (error.response && error.response.status === 403) {
+            if (error.response && error.response.status === 403 && originalRequest.url !== 'auth/signup') {
                 location.href = "/error/403"
             }
             return Promise.reject(error);
