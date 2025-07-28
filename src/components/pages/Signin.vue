@@ -8,6 +8,7 @@ import { useAuth } from '../../composables/useAuth';
 import InputText from '../ui/InputText.vue';
 import { withMessage } from '../../utils/withMessage';
 import InputPassword from '../ui/InputPassword.vue';
+import ButtonSubmit from '../ui/ButtonSubmit.vue';
 
 
 export default {
@@ -35,7 +36,8 @@ export default {
     },
     components: {
         InputText,
-        InputPassword
+        InputPassword,
+        ButtonSubmit
     },
     computed: {},
     methods: {
@@ -95,13 +97,9 @@ export default {
                         :validation="v$.signinData.password"
                     />
                 </section>
+
+                <ButtonSubmit content="Connexion"/>
                 
-                <button
-                    type="submit" 
-                    class="btn btn-primary btn-block"
-                >
-                    Connexion
-                </button>
             </form>
         </div>
     </main>
