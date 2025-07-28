@@ -1,9 +1,9 @@
 <script lang="ts">
-import { useAuthStore } from '../../stores/auth.store';
+import { useAuth } from '../../composables/useAuth';
 
     export default {
         setup() {
-            const authStore = useAuthStore();
+            const { authStore } = useAuth();
             return {
                 authStore
             }

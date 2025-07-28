@@ -17,7 +17,9 @@ export default {
     components: {
         LogoutButton
     },
-    computed: {},
+    computed: {
+
+    },
     methods: {
         initNavbar() {
 

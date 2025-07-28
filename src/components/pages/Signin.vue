@@ -5,6 +5,9 @@ import { required } from '@vuelidate/validators';
 import { AuthService } from '../../services/AuthService';
 import type { UserInterface } from '../../interfaces/user.interface';
 import { useAuth } from '../../composables/useAuth';
+import InputText from '../ui/InputText.vue';
+import { withMessage } from '../../utils/withMessage';
+import InputPassword from '../ui/InputPassword.vue';
 
 
 export default {
@@ -16,11 +19,11 @@ export default {
         };
     },
     validations() {
-    return {
-        signinData: {
-            pseudo: { required },
-            password: { required },
-        },
+        return {
+            signinData: {
+                pseudo: { required: withMessage('Le pseudo est requis', required) },
+                password: { required: withMessage('Le mot de passe est requis.', required) },
+            },
         };
     },
     mounted() { },
@@ -30,7 +33,10 @@ export default {
             signinData: { pseudo: '', password: ''}
         }
     },
-    components: {},
+    components: {
+        InputText,
+        InputPassword
+    },
     computed: {},
     methods: {
         async signin() {
@@ -71,27 +77,23 @@ export default {
         <div>
             <form @submit.prevent="signin">
                 <section class="mb-3">
-                    <input 
+                    <InputText
                         v-model="signinData.pseudo"
-                        type="text"
+                        name="pseudo"
                         placeholder="Pseudo"
-                        class="form-control"
+                        :validation="v$.signinData.pseudo"
                     />
-                    <small v-if="v$.signinData.pseudo.$error" class="text-danger">
-                        Le pseudo est requis.
-                    </small>
                 </section>
                 
                 <section class="mb-3">
-                    <input 
+                    <InputPassword
                         v-model="signinData.password"
-                        type="password"
+                        name="password"
                         placeholder="Mot de passe"
-                        class="form-control"
+                        label="Mot de passe"
+                        :displayLabel="false"
+                        :validation="v$.signinData.password"
                     />
-                    <small v-if="v$.signinData.password.$error" class="text-danger">
-                        Le mot de passe est requis.
-                    </small>
                 </section>
                 
                 <button
