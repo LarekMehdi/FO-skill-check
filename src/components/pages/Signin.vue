@@ -83,6 +83,7 @@ export default {
                         v-model="signinData.pseudo"
                         name="pseudo"
                         placeholder="Pseudo"
+                        :displayLabel="false"
                         :validation="v$.signinData.pseudo"
                     />
                 </section>

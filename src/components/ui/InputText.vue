@@ -54,7 +54,7 @@
 </script>
 
 <template>
-    <label v-if="displayLabel" :for=name :class="labelClass">{{ label }}</label>
+    <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }}</label>
     <input
         type="text"
         :name="name"

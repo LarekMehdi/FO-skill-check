@@ -5,6 +5,12 @@ export interface SigninDataInterface {
     password: string;
 }
 
+export interface SignupDataInterface {
+    pseudo: string;
+    password: string;
+    email: string;
+}
+
 export interface AuthDataInterface {
     accessToken: string;
     refreshToken?: string;
