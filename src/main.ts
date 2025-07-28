@@ -6,14 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import Toast, { type PluginOptions } from "vue-toastification";
+import Toast, { POSITION, type PluginOptions } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 const options: PluginOptions = {
-    // You can set your default options here
+    position: POSITION.TOP_CENTER
 };
 
 app.use(Toast, options);

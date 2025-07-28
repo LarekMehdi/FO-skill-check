@@ -9,14 +9,17 @@ import InputText from '../ui/InputText.vue';
 import { withMessage } from '../../utils/withMessage';
 import InputPassword from '../ui/InputPassword.vue';
 import ButtonSubmit from '../ui/ButtonSubmit.vue';
+import { useToast } from 'vue-toastification';
 
 
 export default {
     setup() {
         const { authStore } = useAuth();
+        const toast = useToast();
         return { 
             v$: useVuelidate(),
             authStore,
+            toast,
         };
     },
     validations() {
@@ -64,7 +67,9 @@ export default {
                 
             } catch (e: any) {
                 if (e.response && e.response.status === 401) {
-                    // toastify? flashbag?
+                    this.toast.error("Identifiants incorrectes");
+                } else {
+                    this.toast.error("Une erreur est survenue");
                 }
             }
         },
