@@ -34,7 +34,7 @@ export default {
             console.log('list');
         },
         goToAddQuestions() {
-            console.log('question');
+            this.$router.push('/question/create');
         },
         goToAddTest() {
             console.log('test');
