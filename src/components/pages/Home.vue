@@ -78,12 +78,11 @@ export default {
         </div>
 
         <div v-if="isAdmin" class="d-flex flex-column align-items-center gap-2 mt-4">
-            <ButtonCustom content="Liste des tests" :handleClick="goToTestList"/>
             <ButtonCustom content="Ajouter des questions" :handleClick="goToAddQuestions"/>
             <ButtonCustom content="Créer des tests" :handleClick="goToAddTest"/>
         </div>
 
-        <div v-else class="d-flex flex-column align-items-center gap-2 mt-4">
+        <div v-if="isLoggedIn" class="d-flex flex-column align-items-center gap-2 mt-4">
             <ButtonCustom content="Liste des tests" :handleClick="goToTestList"/>
         </div>
     </main>
