@@ -7,6 +7,7 @@ import { required } from '@vuelidate/validators';
 import InputText from '../../ui/InputText.vue';
 import { withMessage } from '../../../utils/withMessage';
 import ButtonSubmit from '../../ui/ButtonSubmit.vue';
+import InputTextArea from '../../ui/InputTextArea.vue';
 
     export default {
         setup() {
@@ -39,6 +40,7 @@ import ButtonSubmit from '../../ui/ButtonSubmit.vue';
         components: {
             InputText,
             ButtonSubmit,
+            InputTextArea
         },
         computed: {
 
@@ -84,12 +86,14 @@ import ButtonSubmit from '../../ui/ButtonSubmit.vue';
         <form @submit.prevent="createQuestion">
 
             <section class="mb-3">
-                <InputText
+                <InputTextArea
                     v-model="data.content"
                     name="question-content"
                     placeholder="Question"
                     :displayLabel="false"
                     :validation="v$.data.content"
+                    :cols="70"
+                    :rows="2"
                 />
             </section>
 

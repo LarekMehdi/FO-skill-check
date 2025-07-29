@@ -17,11 +17,6 @@
                 type: String,
                 required: true,
             },
-            error: {
-                type: String,
-                default: '',
-                required: false,
-            },
             placeholder: {
                 type: String,
                 default: '',

@@ -42,6 +42,16 @@
                 type: Boolean,
                 required: false,
                 default: true,
+            },
+            rows: {
+                type: Number,
+                required: false,
+                default: 5
+            },
+            cols: {
+                type: Number,
+                required: false,
+                default: 20
             }
         },
         emits: ['update:modelValue'],
@@ -50,14 +60,16 @@
 
 <template>
     <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }}</label>
-    <input
-        type="text"
+    <textarea
         :name="name"
         :placeholder="placeholder"
         :class="inputClass"
         :value="modelValue"
+        :rows="rows"
+        :cols="cols"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
+    >
+    </textarea>
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">
         {{ validation?.$errors[0]?.$message }}
     </small>
