@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
-import { Difficulty } from '../../../constants/difficulty.constante';
+import { Difficulty, getDifficultyOptions } from '../../../constants/difficulty.constante';
 import type { CreateAnswerInterface, CreateQuestionInterface } from '../../../interfaces/question.interface';
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
@@ -8,19 +8,23 @@ import InputText from '../../ui/InputText.vue';
 import { withMessage } from '../../../utils/withMessage';
 import ButtonSubmit from '../../ui/ButtonSubmit.vue';
 import InputTextArea from '../../ui/InputTextArea.vue';
+import InputSelect from '../../ui/InputSelect.vue';
 
     export default {
         setup() {
             const toast = useToast();
+            const difficultyOptions = getDifficultyOptions();
             return { 
                 v$: useVuelidate(),
                 toast,
+                difficultyOptions,
             };
         },
         validations() {
             return {
                 data: {
                     content: { required: withMessage('La question est requise', required) },
+                    difficulty: { required: withMessage('La difficulté est requise', required) },
                 }
             }
         },
@@ -40,7 +44,8 @@ import InputTextArea from '../../ui/InputTextArea.vue';
         components: {
             InputText,
             ButtonSubmit,
-            InputTextArea
+            InputTextArea,
+            InputSelect,
         },
         computed: {
 
@@ -90,10 +95,18 @@ import InputTextArea from '../../ui/InputTextArea.vue';
                     v-model="data.content"
                     name="question-content"
                     placeholder="Question"
-                    :displayLabel="false"
                     :validation="v$.data.content"
                     :cols="70"
                     :rows="2"
+                />
+            </section>
+
+            <section class="mb-3">
+                <InputSelect
+                    v-model="data.difficulty"
+                    name="difficulty"
+                    :validation="v$.data.difficulty"
+                    :options="difficultyOptions"
                 />
             </section>
 
