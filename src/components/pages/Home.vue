@@ -1,6 +1,7 @@
 <script lang="ts">
 import { useAuth } from '../../composables/useAuth';
 import logo from '../../assets/logo-skill-check.png'
+import ButtonCustom from '../ui/ButtonCustom.vue';
 
 
 export default {
@@ -15,21 +16,29 @@ export default {
     },
     mounted() {
         
-        this.initHome();
+        
     },
     data() {
         return {
             //id: this.$route.params.id,
         }
     },
-    components: {},
+    components: {
+        ButtonCustom
+    },
     computed: {
 
     },
     methods: {
-        initHome() {
-            
-        }
+        goToTestList() {
+            console.log('list');
+        },
+        goToAddQuestions() {
+            console.log('question');
+        },
+        goToAddTest() {
+            console.log('test');
+        },
     }
 }
 
@@ -68,12 +77,14 @@ export default {
             </h6>
         </div>
 
-        <div v-if="isAdmin">
-
+        <div v-if="isAdmin" class="d-flex flex-column align-items-center gap-2 mt-4">
+            <ButtonCustom content="Liste des tests" :handleClick="goToTestList"/>
+            <ButtonCustom content="Ajouter des questions" :handleClick="goToAddQuestions"/>
+            <ButtonCustom content="Créer des tests" :handleClick="goToAddTest"/>
         </div>
 
-        <div v-else>
-
+        <div v-else class="d-flex flex-column align-items-center gap-2 mt-4">
+            <ButtonCustom content="Liste des tests" :handleClick="goToTestList"/>
         </div>
     </main>
 </template>
