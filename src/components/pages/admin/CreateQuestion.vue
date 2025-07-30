@@ -9,6 +9,7 @@ import { withMessage } from '../../../utils/withMessage';
 import ButtonSubmit from '../../ui/ButtonSubmit.vue';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputSelect from '../../ui/InputSelect.vue';
+import InputSwitch from '../../ui/InputSwitch.vue';
 
     export default {
         setup() {
@@ -46,6 +47,7 @@ import InputSelect from '../../ui/InputSelect.vue';
             ButtonSubmit,
             InputTextArea,
             InputSelect,
+            InputSwitch,
         },
         computed: {
 
@@ -90,24 +92,39 @@ import InputSelect from '../../ui/InputSelect.vue';
         <h1>Créer une question</h1>
         <form @submit.prevent="createQuestion">
 
-            <section class="mb-3">
-                <InputTextArea
-                    v-model="data.content"
-                    name="question-content"
-                    placeholder="Question"
-                    :validation="v$.data.content"
-                    :cols="70"
-                    :rows="2"
-                />
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <InputTextArea
+                        v-model="data.content"
+                        name="question-content"
+                        placeholder="Question"
+                        :validation="v$.data.content"
+                        :cols="70"
+                        :rows="2"
+                    />
+                </div> 
             </section>
 
-            <section class="mb-3">
-                <InputSelect
-                    v-model="data.difficulty"
-                    name="difficulty"
-                    :validation="v$.data.difficulty"
-                    :options="difficultyOptions"
-                />
+            <section class="row mb-3">
+                <div class="col-md-6">
+                    <InputSwitch
+                        v-model="data.isMultipleAnswer"
+                        name="isMultipleAnswer"
+                        label="Plusieurs bonnes réponses?"
+                        :inline="true"
+                        :validation="v$.data.isMultipleAnswer"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <InputSelect
+                        v-model="data.difficulty"
+                        name="difficulty"
+                        :validation="v$.data.difficulty"
+                        :options="difficultyOptions"
+                    />
+                </div>
+                
+                
             </section>
 
             <ButtonSubmit content="Créer la question"/>
