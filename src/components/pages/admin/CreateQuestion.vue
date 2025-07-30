@@ -3,13 +3,14 @@ import { useToast } from 'vue-toastification';
 import { Difficulty, getDifficultyOptions } from '../../../constants/difficulty.constante';
 import type { CreateAnswerInterface, CreateQuestionInterface } from '../../../interfaces/question.interface';
 import useVuelidate from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { minValue, required } from '@vuelidate/validators';
 import InputText from '../../ui/InputText.vue';
 import { withMessage } from '../../../utils/withMessage';
 import ButtonSubmit from '../../ui/ButtonSubmit.vue';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputSelect from '../../ui/InputSelect.vue';
 import InputSwitch from '../../ui/InputSwitch.vue';
+import InputNumber from '../../ui/InputNumber.vue';
 
     export default {
         setup() {
@@ -26,6 +27,11 @@ import InputSwitch from '../../ui/InputSwitch.vue';
                 data: {
                     content: { required: withMessage('La question est requise', required) },
                     difficulty: { required: withMessage('La difficulté est requise', required) },
+                    isMultipleAnswer: { required: withMessage('Ce champ est requis', required) },
+                    timeLimit: { 
+                        required: withMessage('La limite de temps est requise', required),
+                        minValue: withMessage('La limite de temps doit être supérieur à 30s', minValue(30)),
+                    },
                 }
             }
         },
@@ -48,6 +54,7 @@ import InputSwitch from '../../ui/InputSwitch.vue';
             InputTextArea,
             InputSelect,
             InputSwitch,
+            InputNumber,
         },
         computed: {
 
@@ -123,8 +130,18 @@ import InputSwitch from '../../ui/InputSwitch.vue';
                         :options="difficultyOptions"
                     />
                 </div>
-                
-                
+            </section>
+
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <InputNumber
+                        v-model="data.timeLimit"
+                        name="timeLimit"
+                        label="Limite de temps (s)"
+                        :inline="true"
+                        :validation="v$.data.timeLimit"
+                    />
+                </div>
             </section>
 
             <ButtonSubmit content="Créer la question"/>

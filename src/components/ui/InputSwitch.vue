@@ -53,7 +53,7 @@
             <input
                 type="checkbox"
                 :name="name"
-                :class="inputClass"
+                :class="`${inputClass}`"
                 :checked="modelValue"
                 @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
             >
