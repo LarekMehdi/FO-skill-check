@@ -12,6 +12,7 @@ import InputSelect from '../../ui/InputSelect.vue';
 import InputSwitch from '../../ui/InputSwitch.vue';
 import InputNumber from '../../ui/InputNumber.vue';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
+import { QuestionService } from '../../../services/QuestionService';
 
     export default {
         mounted() {},
@@ -76,8 +77,6 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             // TODO: recup la liste des tags
 
             async createQuestion() {
-                // this.v$.$touch();
-                // if (this.v$.$invalid) return; 
                 const valid = await this.v$.$validate();
 
                 if (!valid) {
@@ -104,10 +103,8 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                 
                 try {
                     this.data.answers = this.answerItems;
-                    console.log(this.data);
 
-                    
-
+                    await QuestionService.create(this.data);
 
                     this.toast.success("Question créée avec succés!");
                     this.resetForm();
@@ -116,7 +113,6 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                     console.error(e);
                     this.toast.error("Une erreur est survenue");
                 }
-                
             },
             resetForm() {
                 this.data = {
