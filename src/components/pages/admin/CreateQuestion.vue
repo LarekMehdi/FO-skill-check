@@ -38,7 +38,6 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                 answerItems: {
                     $each: helpers.forEach( {
                         content: { required: withMessage('La réponse est requise', required) },
-                        isCorrect: { required: withMessage('Est ce la bonne réponse?', required) },
                     })
                 }
             }
@@ -80,15 +79,34 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                 // this.v$.$touch();
                 // if (this.v$.$invalid) return; 
                 const valid = await this.v$.$validate();
-                
+
                 if (!valid) {
                     this.toast.error("Il y a des erreurs dans le formulaire");
                     return;
                 }
+
+                if (this.answerItems.length < 2) {
+                    this.toast.error("Il faut au moins 2 réponses");
+                    return;
+                }
+
+                let atLeastOneCorect: boolean = false;
+                for (const item of this.answerItems) {
+                    if (item.isCorrect) {
+                        atLeastOneCorect = true;
+                        break;
+                    } 
+                }
+                if (!atLeastOneCorect) {
+                    this.toast.error("Au moins une réponse doit être correct");
+                    return;
+                } 
                 
                 try {
                     this.data.answers = this.answerItems;
                     console.log(this.data);
+
+                    
 
 
                     this.toast.success("Question créée avec succés!");
@@ -180,6 +198,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 
             <!-- ***************** ANSWERS ***************** -->
 
+            <!-- TODO: message d'erreur pour la validation de answerItems -->
             <aside v-for="(item, index) in answerItems" :key="index">
                 <section class="row mb-3">
                     <div class="col-md-12">
