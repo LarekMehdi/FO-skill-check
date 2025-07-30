@@ -13,12 +13,9 @@
                 type: String,
                 required: true,
             },
-            handleClick: {
-                type: Function,
-                required: true,
-            }
         },
         methods: {},
+        emits: ['click']
     }
 </script>
 
@@ -26,7 +23,7 @@
     <button
         type="button" 
         :class="['btn btn-block', buttonClass]"
-        @click="handleClick()"
+        @click="$emit('click')"
     >
         {{ content }}
     </button>

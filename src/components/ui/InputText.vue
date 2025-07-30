@@ -42,6 +42,11 @@
                 type: Boolean,
                 required: false,
                 default: true,
+            },
+            inline: {
+                type: Boolean,
+                required: false,
+                default: false
             }
         },
         emits: ['update:modelValue'],
@@ -49,15 +54,25 @@
 </script>
 
 <template>
-    <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }}</label>
-    <input
-        type="text"
-        :name="name"
-        :placeholder="placeholder"
-        :class="inputClass"
-        :value="modelValue"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
+    <div :class="inline ? 'd-flex align-items-center gap-2' : ''">
+        <label 
+            v-if="displayLabel" 
+            :for="name" 
+            :class="labelClass"
+            style="white-space: nowrap;"
+        >
+            {{ label }}
+        </label>
+        <input
+            type="text"
+            :name="name"
+            :placeholder="placeholder"
+            :class="inputClass"
+            :value="modelValue"
+            @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        />
+    </div>
+    
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">
         {{ validation?.$errors[0]?.$message }}
     </small>

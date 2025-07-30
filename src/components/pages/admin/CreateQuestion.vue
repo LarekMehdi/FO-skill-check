@@ -3,7 +3,7 @@ import { useToast } from 'vue-toastification';
 import { Difficulty, getDifficultyOptions } from '../../../constants/difficulty.constante';
 import type { CreateAnswerInterface, CreateQuestionInterface } from '../../../interfaces/question.interface';
 import useVuelidate from '@vuelidate/core';
-import { minValue, required } from '@vuelidate/validators';
+import { helpers, minValue, required } from '@vuelidate/validators';
 import InputText from '../../ui/InputText.vue';
 import { withMessage } from '../../../utils/withMessage';
 import ButtonSubmit from '../../ui/ButtonSubmit.vue';
@@ -11,8 +11,10 @@ import InputTextArea from '../../ui/InputTextArea.vue';
 import InputSelect from '../../ui/InputSelect.vue';
 import InputSwitch from '../../ui/InputSwitch.vue';
 import InputNumber from '../../ui/InputNumber.vue';
+import ButtonCustom from '../../ui/ButtonCustom.vue';
 
     export default {
+        mounted() {},
         setup() {
             const toast = useToast();
             const difficultyOptions = getDifficultyOptions();
@@ -32,6 +34,12 @@ import InputNumber from '../../ui/InputNumber.vue';
                         required: withMessage('La limite de temps est requise', required),
                         minValue: withMessage('La limite de temps doit être supérieur à 30s', minValue(30)),
                     },
+                },
+                answerItems: {
+                    $each: helpers.forEach( {
+                        content: { required: withMessage('La réponse est requise', required) },
+                        isCorrect: { required: withMessage('Est ce la bonne réponse?', required) },
+                    })
                 }
             }
         },
@@ -45,7 +53,12 @@ import InputNumber from '../../ui/InputNumber.vue';
                     difficulty: Difficulty.EASY,
                     answers: [],
                 },
-                answerItems: [],
+                answerItems: [
+                    {
+                        content: '',
+                        isCorrect: false,
+                    }
+                ],
             }
         },
         components: {
@@ -55,6 +68,7 @@ import InputNumber from '../../ui/InputNumber.vue';
             InputSelect,
             InputSwitch,
             InputNumber,
+            ButtonCustom,
         },
         computed: {
 
@@ -62,10 +76,15 @@ import InputNumber from '../../ui/InputNumber.vue';
         methods: {
             // TODO: recup la liste des tags
 
-            createQuestion() {
-                this.v$.$touch();
-                if (this.v$.$invalid) return; 
-
+            async createQuestion() {
+                // this.v$.$touch();
+                // if (this.v$.$invalid) return; 
+                const valid = await this.v$.$validate();
+                
+                if (!valid) {
+                    this.toast.error("Il y a des erreurs dans le formulaire");
+                    return;
+                }
                 
                 try {
                     this.data.answers = this.answerItems;
@@ -89,7 +108,20 @@ import InputNumber from '../../ui/InputNumber.vue';
                     difficulty: Difficulty.EASY,
                     answers: []
                 };
-            }
+                this.v$.$reset();
+                this.answerItems = [];
+                this.addAnswerItem();
+            },
+            addAnswerItem() {
+                let item: CreateAnswerInterface = {
+                    content: '',
+                    isCorrect: false,
+                }
+                this.answerItems.push(item);
+            },
+            removeAnswerItem(index: number) {
+                this.answerItems.splice(index, 1);
+            },
         }
     }
 </script>
@@ -144,7 +176,62 @@ import InputNumber from '../../ui/InputNumber.vue';
                 </div>
             </section>
 
-            <ButtonSubmit content="Créer la question"/>
+            <hr/>
+
+            <!-- ***************** ANSWERS ***************** -->
+
+            <aside v-for="(item, index) in answerItems" :key="index">
+                <section class="row mb-3">
+                    <div class="col-md-12">
+                        <InputTextArea
+                            v-model="item.content"
+                            :name="`answer-${index}-content`"
+                            :label="`Réponse ${index + 1}`"
+                            :displayLabel="false"
+                            :placeholder="`Réponse ${index + 1}`"
+                            :validation="v$.answerItems.$each[index]?.content"
+                            :cols="70"
+                            :rows="2"
+                        />
+                    </div>
+                </section>
+
+                <section class="row mb-3">
+                    <div class="col-md-10">
+                        <InputSwitch
+                            v-model="item.isCorrect"
+                            name="isCorrect"
+                            label="Réponse correct?"
+                            :inline="true"
+                            :validation="v$.answerItems.$each[index]?.isCorrect"
+                        />
+                    </div>
+                     <div class="col-md-2">
+                        <i 
+                            class="pi pi-trash" 
+                            style="color: red" 
+                            @click="removeAnswerItem(index)"
+                            title="Supprimer cette réponse"
+                        >
+                        </i>
+                     </div>
+                </section>
+
+                
+            </aside>
+
+            <aside class="row mb-3">
+                <section class="col text-start">
+                    <ButtonCustom
+                        content="Ajouter une réponse"
+                        @click="addAnswerItem"
+                    />
+                </section>
+                <section class="col text-end">
+                    <ButtonSubmit content="Sauvegarder"/>
+                </section>
+            </aside>
+
         </form>
     </main>
 </template>

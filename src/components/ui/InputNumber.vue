@@ -61,6 +61,7 @@
         >
             {{ label }}
         </label>
+        <!-- TODO: ajouter du texte dans l'input -->
         <input
             type="number"
             :name="name"

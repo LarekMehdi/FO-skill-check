@@ -8,6 +8,7 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import Toast, { POSITION, type PluginOptions } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import 'primeicons/primeicons.css'
 
 const app = createApp(App);
 const pinia = createPinia();
