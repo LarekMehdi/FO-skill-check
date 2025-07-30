@@ -7,10 +7,14 @@
             buttonClass: {
                 type: String,
                 required: false,
-                default: 'btn btn-primary btn-block'
+                default: 'btn-primary'
             },
             content: {
                 type: String,
+                required: true,
+            },
+            handleClick: {
+                type: Function,
                 required: true,
             }
         },
@@ -20,8 +24,9 @@
 
 <template>
     <button
-        type="submit" 
-        :class="buttonClass"
+        type="button" 
+        :class="['btn btn-block', buttonClass]"
+        @click="handleClick()"
     >
         {{ content }}
     </button>

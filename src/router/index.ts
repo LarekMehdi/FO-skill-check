@@ -14,6 +14,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../components/pages/Home.vue";
 import Signin from "../components/pages/Signin.vue";
 import Signup from "../components/pages/Signup.vue";
+import { useAuth } from "../composables/useAuth";
+import CreateQuestion from "../components/pages/admin/CreateQuestion.vue";
+
 
 const routes = [
   {
@@ -31,6 +34,12 @@ const routes = [
     name: "signup",
     component: Signup,
   },
+  {
+    path: "/question/create",
+    name: "questionCreate",
+    component: CreateQuestion,
+    meta: { requiresAdmin: true }
+  },
   
   //{
   //path: "/about",
@@ -47,6 +56,18 @@ const router = createRouter({
   //history: createWebHistory(import.meta.env.VITE_API_URL),
   history: createWebHistory('/'),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const { isAdmin } = useAuth();
+  if (to.meta.requiresAdmin) {
+    if (!isAdmin.value) {
+      // TODO: page 403
+      return next({name: 'home'});
+    }
+  }
+ 
+  return next();
 });
 
 export default router;

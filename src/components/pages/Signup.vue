@@ -7,6 +7,7 @@ import InputText from '../ui/InputText.vue';
 import InputPassword from '../ui/InputPassword.vue';
 import ButtonSubmit from '../ui/ButtonSubmit.vue';
 import { AuthService } from '../../services/AuthService';
+import { useToast } from 'vue-toastification';
 
 const sameAsPassword = withMessage(
     'Les mots de passe ne correspondent pas',
@@ -17,8 +18,10 @@ const sameAsPassword = withMessage(
 
 export default {
     setup() {
+        const toast = useToast();
         return { 
             v$: useVuelidate(),
+            toast,
         };
     },
     validations() {
@@ -69,8 +72,13 @@ export default {
                 await AuthService.signup(this.signupData);
                 this.$router.push('/signin');
             } catch (e: any) {
-                console.log(e);
-                // toastify? flashbag?
+                if (e.response && e.response.status === 409) {
+                    this.toast.error("Email déjà utilisé");
+                } else if (e.response && e.response.status === 412) {
+                    this.toast.error("Ce pseudo n'est pas disponible");
+                } else {
+                    this.toast.error("Une erreur est survenue");
+                }
                
             }
         }

@@ -1,9 +1,10 @@
 <script lang="ts">
+import type { PropType } from 'vue';
+import type { OptionSelectInterface } from '../../interfaces/input.interface';
+
     export default {
         data() {
-            return {
-
-            }
+            return {}
         },
         props: {
             modelValue: {
@@ -19,11 +20,6 @@
                 type: String,
                 required: true,
             },
-            placeholder: {
-                type: String,
-                default: '',
-                required: false,
-            },
             validation: {
                 type: Object,
                 required: false,
@@ -32,6 +28,11 @@
                 type: String,
                 required: false,
                 default: 'form-control'
+            },
+            optionClass: {
+                type: String,
+                required: false,
+                default: ''
             },
             labelClass: {
                 type: String,
@@ -42,6 +43,10 @@
                 type: Boolean,
                 required: false,
                 default: true,
+            },
+            options: {
+                type: Array as PropType<OptionSelectInterface[]>,
+                required: true,
             }
         },
         emits: ['update:modelValue'],
@@ -50,14 +55,21 @@
 
 <template>
     <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }}</label>
-    <input
-        type="text"
+    <select 
         :name="name"
-        :placeholder="placeholder"
         :class="inputClass"
         :value="modelValue"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
+        @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
+    >
+        <option
+            v-for="(option, index) in options"
+            :key="index"
+            :value="option.value"
+            :class="optionClass"
+        >
+            {{ option.label }}
+        </option>
+    </select>
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">
         {{ validation?.$errors[0]?.$message }}
     </small>
