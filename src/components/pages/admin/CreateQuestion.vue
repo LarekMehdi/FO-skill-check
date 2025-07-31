@@ -13,9 +13,15 @@ import InputSwitch from '../../ui/InputSwitch.vue';
 import InputNumber from '../../ui/InputNumber.vue';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import { QuestionService } from '../../../services/QuestionService';
+import type { TagInterface } from '../../../interfaces/tag.interface';
+import { TagService } from '../../../services/TagService';
+import { UtilEntity } from '../../../utils/UtilEntity';
+import type { OptionSelectInterface } from '../../../interfaces/input.interface';
 
     export default {
-        mounted() {},
+        mounted() {
+            this.initTagList();
+        },
         setup() {
             const toast = useToast();
             const difficultyOptions = getDifficultyOptions();
@@ -43,7 +49,12 @@ import { QuestionService } from '../../../services/QuestionService';
                 }
             }
         },
-        data(): {data: CreateQuestionInterface, answerItems: CreateAnswerInterface[]}
+        data(): {
+                data: CreateQuestionInterface,
+                answerItems: CreateAnswerInterface[],
+                tagId: number|null,
+                tagList: OptionSelectInterface[],
+            }
          {
             return {
                 data: {
@@ -52,6 +63,7 @@ import { QuestionService } from '../../../services/QuestionService';
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
                     answers: [],
+                    tags: [],
                 },
                 answerItems: [
                     {
@@ -59,6 +71,8 @@ import { QuestionService } from '../../../services/QuestionService';
                         isCorrect: false,
                     }
                 ],
+                tagId: null,
+                tagList: [],
             }
         },
         components: {
@@ -74,8 +88,15 @@ import { QuestionService } from '../../../services/QuestionService';
 
         },
         methods: {
-            // TODO: recup la liste des tags
+            async initTagList() {
+                try {
+                    const tagList = await TagService.findAll();
+                    this.tagList = UtilEntity.formatListForInputSelect<TagInterface>(tagList, 'label', 'id');
 
+                } catch(e: unknown) {
+                    this.toast.error("Impossible de récupérer la liste des tags");
+                }
+            },
             async createQuestion() {
                 const valid = await this.v$.$validate();
 
@@ -120,7 +141,8 @@ import { QuestionService } from '../../../services/QuestionService';
                     isMultipleAnswer: false,
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
-                    answers: []
+                    answers: [],
+                    tags: [],
                 };
                 this.v$.$reset();
                 this.answerItems = [];
@@ -151,9 +173,11 @@ import { QuestionService } from '../../../services/QuestionService';
                         v-model="data.content"
                         name="question-content"
                         placeholder="Question"
+                        :displayLabel="false"
                         :validation="v$.data.content"
                         :cols="70"
                         :rows="2"
+                        :isRequired="true"
                     />
                 </div> 
             </section>
@@ -186,8 +210,22 @@ import { QuestionService } from '../../../services/QuestionService';
                         label="Limite de temps (s)"
                         :inline="true"
                         :validation="v$.data.timeLimit"
+                        :isRequired="true"
                     />
                 </div>
+            </section>
+
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <InputSelect 
+                        v-model="tagId"
+                        name="difficulty"
+                        label="Ajouter un tag?"
+                        :options="tagList"
+                        :inline="true"
+                    />
+                </div>
+                
             </section>
 
             <hr/>

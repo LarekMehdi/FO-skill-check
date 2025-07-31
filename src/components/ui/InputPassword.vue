@@ -40,14 +40,19 @@
                 type: Boolean,
                 required: false,
                 default: true,
-            }
+            },
+            isRequired: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
         emits: ['update:modelValue'],
     }
 </script>
 
 <template>
-    <label v-if="displayLabel" :for=name :class="labelClass">{{ label }}</label>
+    <label v-if="displayLabel" :for=name :class="labelClass">{{ label }} {{ isRequired && displayLabel ? ' *' : '' }}</label>
     <input
         type="password"
         :name="name"

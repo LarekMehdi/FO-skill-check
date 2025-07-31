@@ -52,14 +52,19 @@
                 type: Number,
                 required: false,
                 default: 20
-            }
+            },
+            isRequired: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
         emits: ['update:modelValue'],
     }
 </script>
 
 <template>
-    <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }}</label>
+    <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }} {{ isRequired && displayLabel ? ' *' : '' }}</label>
     <textarea
         :name="name"
         :placeholder="placeholder"

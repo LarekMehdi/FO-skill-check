@@ -45,7 +45,12 @@
                 type: Boolean,
                 required: false,
                 default: false
-            }
+            },
+            isRequired: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
         emits: ['update:modelValue'],
     }
@@ -59,7 +64,7 @@
             :class="labelClass"
             style="white-space: nowrap;"
         >
-            {{ label }}
+            {{ label }} {{ isRequired && displayLabel ? ' *' : '' }}
         </label>
         <!-- TODO: ajouter du texte dans l'input -->
         <input
