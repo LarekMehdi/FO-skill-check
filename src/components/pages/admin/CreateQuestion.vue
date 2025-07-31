@@ -63,7 +63,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
                     answers: [],
-                    tags: [],
+                    tagIds: [],
                 },
                 answerItems: [
                     {
@@ -123,7 +123,9 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                 } 
                 
                 try {
+                    //TODO: ajouter plusiers tags en meme temps (multiselect)
                     this.data.answers = this.answerItems;
+                    this.tagId ? this.data.tagIds = [this.tagId] : null;
 
                     await QuestionService.create(this.data);
 
@@ -142,7 +144,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
                     answers: [],
-                    tags: [],
+                    tagIds: [],
                 };
                 this.v$.$reset();
                 this.answerItems = [];

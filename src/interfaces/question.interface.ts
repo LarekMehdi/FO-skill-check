@@ -1,5 +1,4 @@
 import type { Difficulty } from "../constants/difficulty.constante";
-import type { TagInterface } from "./tag.interface";
 
 export interface CreateQuestionInterface {
     content: string;
@@ -7,7 +6,7 @@ export interface CreateQuestionInterface {
     timeLimit: number;
     difficulty: Difficulty;
     answers: CreateAnswerInterface[];
-    tags: TagInterface[];
+    tagIds: number[];
 }
 
 export interface CreateAnswerInterface {
