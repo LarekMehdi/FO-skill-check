@@ -6,7 +6,7 @@ export abstract class QuestionApi {
     /** CREATE **/
 
     static async create(question: CreateQuestionInterface) {
-         try {
+        try {
             const { data } = await useApi().post(`questions`, question);
             return data;
         }

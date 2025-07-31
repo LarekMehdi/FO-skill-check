@@ -6,11 +6,16 @@ import InputText from '../../ui/InputText.vue';
 import { maxLength, minLength, required } from '@vuelidate/validators';
 import { withMessage } from '../../../utils/withMessage';
 import type { CreateTagInterface } from '../../../interfaces/tag.interface';
+import { useToast } from 'vue-toastification';
+import { TagService } from '../../../services/TagService';
 
     export default {
         setup() {
+            const toast = useToast();
             return {
                 v$: useVuelidate(),
+                toast,
+                
             }
         },
         validations() {
@@ -44,12 +49,17 @@ import type { CreateTagInterface } from '../../../interfaces/tag.interface';
             closeAddTagModal() {
                 this.displayModal = false;
             },
-            addTag() {
-                console.log(this.newTag);
+            async addTag() {
                 this.v$.$touch();
                 if (this.v$.$invalid) return;
 
-                
+                try {
+                    await TagService.create(this.newTag);
+                    this.toast.success("Tag ajouté avec succés");
+                    this.closeAddTagModal();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
             },
         },
         components: {
