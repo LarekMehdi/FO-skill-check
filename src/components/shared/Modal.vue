@@ -1,5 +1,6 @@
 <script lang="ts">
 import ButtonCustom from '../ui/ButtonCustom.vue';
+import ButtonSubmit from '../ui/ButtonSubmit.vue';
 
     export default {
         props: {
@@ -29,6 +30,7 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
         emits: ['close', 'submit'],
         components: {
             ButtonCustom,
+            ButtonSubmit,
         }
     }
 </script>
@@ -39,24 +41,27 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
 
             <h3>{{ title }}</h3>
 
-            <slot name="content"></slot>
+            <form @submit.prevent="submit">
+                <slot name="content"></slot>
 
-            <aside class="row my-3">
-                <section class="col text-start">
-                    <ButtonCustom 
-                        content="Annuler"
-                        buttonClass="btn-danger"
-                        @click="close"
-                    />
-                </section>
-                <section class="col text-end">
-                    <ButtonCustom 
-                        :content="submitLabel"
-                        @click="submit"
-                    />
-                </section>
-            </aside>
+                <aside class="row my-3">
+                    <section class="col text-start">
+                        <ButtonCustom 
+                            content="Annuler"
+                            buttonClass="btn-danger"
+                            @click="close"
+                        />
+                    </section>
+                    <section class="col text-end">
+                        <ButtonSubmit 
+                            :content="submitLabel"
+                        />
+                    </section>
+                </aside>
+            </form>
+
             
+
         </article>
     </section>
 </template>

@@ -46,6 +46,10 @@ import type { CreateTagInterface } from '../../../interfaces/tag.interface';
             },
             addTag() {
                 console.log(this.newTag);
+                this.v$.$touch();
+                if (this.v$.$invalid) return;
+
+                
             },
         },
         components: {
