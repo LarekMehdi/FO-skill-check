@@ -5,7 +5,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 import InputText from '../../ui/InputText.vue';
 import { maxLength, minLength, required } from '@vuelidate/validators';
 import { withMessage } from '../../../utils/withMessage';
-import type { CreateTagInterface } from '../../../interfaces/tag.interface';
+import type { CreateTagInterface, TagInterface } from '../../../interfaces/tag.interface';
 import { useToast } from 'vue-toastification';
 import { TagService } from '../../../services/TagService';
 
@@ -30,8 +30,9 @@ import { TagService } from '../../../services/TagService';
             }
         },
         
-        data(): {displayModal: boolean, newTag: CreateTagInterface} {
+        data(): {tags: TagInterface[], displayModal: boolean, newTag: CreateTagInterface} {
             return {
+                tags: [],
                 displayModal: false,
                 newTag: { label: ''},
             }
@@ -40,8 +41,13 @@ import { TagService } from '../../../services/TagService';
             this.initTagList();
         },
         methods: {
-            initTagList() {
-
+            async initTagList() {
+                try {
+                    this.tags = await TagService.findAll();
+                    console.log('tags => ', this.tags);
+                } catch (e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
             },
             openAddTagModal() {
                 this.displayModal = true;
