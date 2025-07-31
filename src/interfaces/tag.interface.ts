@@ -3,6 +3,6 @@ export interface CreateTagInterface {
 }
 
 export interface TagInterface {
-    id: number;
+    id?: number;
     label: string;
 }

@@ -1,5 +1,5 @@
 import { TagApi } from "../api/TagApi";
-import type { CreateTagInterface } from "../interfaces/tag.interface";
+import type { CreateTagInterface, TagInterface } from "../interfaces/tag.interface";
 
 export abstract class TagService {
 
@@ -13,6 +13,12 @@ export abstract class TagService {
 
     static async findAll() {
         return await TagApi.findAll();
+    }
+
+    /** UPDATE **/
+
+    static async update(tag: TagInterface) {
+        return await TagApi.update(tag);
     }
 
     /** CREATE **/

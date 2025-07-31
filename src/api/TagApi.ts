@@ -1,4 +1,4 @@
-import type { CreateTagInterface } from "../interfaces/tag.interface";
+import type { CreateTagInterface, TagInterface } from "../interfaces/tag.interface";
 import { useApi } from "./useApi";
 
 export abstract class TagApi {
@@ -20,6 +20,18 @@ export abstract class TagApi {
     static async findAll() {
         try {
             const { data } = await useApi().get(`tags`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    /** UPDATE **/
+
+    static async update(tag: TagInterface) {
+        try {
+            const { data } = await useApi().put(`tags/${tag.id}`, tag);
             return data;
         } catch(e: unknown) {
             console.error(e);

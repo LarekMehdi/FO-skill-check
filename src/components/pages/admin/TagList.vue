@@ -8,6 +8,8 @@ import { withMessage } from '../../../utils/withMessage';
 import type { CreateTagInterface, TagInterface } from '../../../interfaces/tag.interface';
 import { useToast } from 'vue-toastification';
 import { TagService } from '../../../services/TagService';
+import { Column, DataTable } from 'primevue';
+
 
     export default {
         setup() {
@@ -15,7 +17,6 @@ import { TagService } from '../../../services/TagService';
             return {
                 v$: useVuelidate(),
                 toast,
-                
             }
         },
         validations() {
@@ -26,15 +27,30 @@ import { TagService } from '../../../services/TagService';
                         minLength: withMessage("Le label doit faire au moins 2 charactères", minLength(2)),
                         maxLength: withMessage("Le label doit faire moins de 50 charactères", maxLength(50)),
                     }
-                }
+                },
+                updateTag: {
+                    label: { 
+                        required: withMessage("Le label est requis", required),
+                        minLength: withMessage("Le label doit faire au moins 2 charactères", minLength(2)),
+                        maxLength: withMessage("Le label doit faire moins de 50 charactères", maxLength(50)),
+                    }
+                },
             }
         },
         
-        data(): {tags: TagInterface[], displayModal: boolean, newTag: CreateTagInterface} {
+        data(): {
+            tags: TagInterface[],
+            displayAddModal: boolean,
+            displayUpdateModal: boolean,
+            newTag: CreateTagInterface,
+            updateTag: TagInterface,
+        } {
             return {
                 tags: [],
-                displayModal: false,
+                displayAddModal: false,
+                displayUpdateModal: false,
                 newTag: { label: ''},
+                updateTag: { id: undefined, label: ''}
             }
         },
         mounted() {
@@ -44,25 +60,51 @@ import { TagService } from '../../../services/TagService';
             async initTagList() {
                 try {
                     this.tags = await TagService.findAll();
-                    console.log('tags => ', this.tags);
                 } catch (e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
             },
+            resetNewTag() {
+                this.newTag = { label: ''};
+            },
             openAddTagModal() {
-                this.displayModal = true;
+                this.displayAddModal = true;
             },
             closeAddTagModal() {
-                this.displayModal = false;
+                this.displayAddModal = false;
+                this.resetNewTag();
+            },
+            openUpdateTagModal(id: number) {
+                const tag: TagInterface | undefined = this.tags.find((t) => t.id === id);
+                if (!tag) return;
+                this.updateTag = {...tag};
+                this.displayUpdateModal = true;
+            },
+            closeUpdateTagModal() {
+                this.displayUpdateModal = false;
             },
             async addTag() {
                 this.v$.$touch();
-                if (this.v$.$invalid) return;
+                if (this.v$.newTag.$invalid) return;
 
                 try {
                     await TagService.create(this.newTag);
                     this.toast.success("Tag ajouté avec succés");
                     this.closeAddTagModal();
+                    this.initTagList();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            },
+            async update() {
+                this.v$.$touch();
+                if (this.v$.updateTag.$invalid) return;
+
+                try {
+                    await TagService.update(this.updateTag);
+                    this.closeUpdateTagModal();
+                    this.toast.success("Tag modifié avec succés");
+                    this.initTagList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
@@ -72,6 +114,8 @@ import { TagService } from '../../../services/TagService';
             Modal,
             ButtonCustom,
             InputText,
+            DataTable,
+            Column
         }
     }
 </script>
@@ -86,11 +130,31 @@ import { TagService } from '../../../services/TagService';
                 @click="openAddTagModal"
             />
         </aside>
-        
     </section>
 
+    <section>
+        <DataTable :value="tags" tableStyle="min-width: 50rem">
+            <Column header="Id">
+                <template #body="slotProps">
+                    {{  slotProps.data.id }}
+                </template>
+            </Column>
+            <Column header="Label">
+                <template #body="slotProps">
+                    {{  slotProps.data.label }}
+                </template>
+            </Column>
+            <Column header="Action">
+                <template #body="slotProps">
+                    <ButtonCustom content="Modifier" @click="openUpdateTagModal(slotProps.data.id)"/>
+                </template>
+            </Column>
+        </DataTable>
+    </section>
+
+    <!-- ************** CREATE ************$ -->
     <Modal 
-        :visible="displayModal" 
+        :visible="displayAddModal" 
         @close="closeAddTagModal"
         @submit="addTag"
         title="Ajouter un tag"
@@ -104,8 +168,25 @@ import { TagService } from '../../../services/TagService';
                 :displayLabel="false"
                 :validation="v$.newTag.label"
             />
-           
-            
+        </template>
+    </Modal>
+
+    <!-- ************** UPDATE ************$ -->
+    <Modal 
+        :visible="displayUpdateModal" 
+        @close="closeUpdateTagModal"
+        @submit="update"
+        title="Modifier un tag"
+        submitLabel="Modifier"
+    >
+        <template #content>
+            <InputText
+                v-model="updateTag.label"
+                name="label"
+                placeholder="Label"
+                :displayLabel="false"
+                :validation="v$.updateTag.label"
+            />
         </template>
     </Modal>
 
