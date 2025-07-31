@@ -16,6 +16,7 @@ import Signin from "../components/pages/Signin.vue";
 import Signup from "../components/pages/Signup.vue";
 import { useAuth } from "../composables/useAuth";
 import CreateQuestion from "../components/pages/admin/CreateQuestion.vue";
+import TagList from "../components/pages/admin/TagList.vue";
 
 
 const routes = [
@@ -38,6 +39,12 @@ const routes = [
     path: "/question/create",
     name: "questionCreate",
     component: CreateQuestion,
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: "/tag",
+    name: "tagList",
+    component: TagList,
     meta: { requiresAdmin: true }
   },
   
