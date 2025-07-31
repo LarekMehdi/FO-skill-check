@@ -109,6 +109,15 @@ import { Column, DataTable } from 'primevue';
                     this.toast.error("Une erreur est survenue");
                 }
             },
+            async deleteTag(id: number) {
+                try {
+                    await TagService.deleteById(id);
+                    this.toast.success("Tag supprimé avec succés");
+                    this.initTagList();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            }
         },
         components: {
             Modal,
@@ -134,19 +143,30 @@ import { Column, DataTable } from 'primevue';
 
     <section>
         <DataTable :value="tags" tableStyle="min-width: 50rem">
-            <Column header="Id">
+            <Column header="Id" field="id" sortable style="width: 10%;">
                 <template #body="slotProps">
                     {{  slotProps.data.id }}
                 </template>
             </Column>
-            <Column header="Label">
+            <Column header="Label" field="label" sortable style="width: 60%;">
                 <template #body="slotProps">
                     {{  slotProps.data.label }}
                 </template>
             </Column>
-            <Column header="Action">
+            <Column header="Action" style="width: 20%;">
                 <template #body="slotProps">
                     <ButtonCustom content="Modifier" @click="openUpdateTagModal(slotProps.data.id)"/>
+                </template>
+            </Column>
+            <Column header="" style="width: 10%;">
+                <template #body="slotProps">
+                     <i 
+                        class="pi pi-trash" 
+                        style="color: red" 
+                        @click="deleteTag(slotProps.data.id)"
+                        title="Supprimer cette réponse"
+                    >
+                    </i>
                 </template>
             </Column>
         </DataTable>
