@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         goToTestList() {
-            console.log('list');
+            this.$router.push('/test');
         },
         goToAddQuestions() {
             this.$router.push('/question/create');
@@ -82,7 +82,6 @@ export default {
 
         <div v-if="isAdmin" class="d-flex flex-column align-items-center gap-2 mt-4">
             <ButtonCustom content="Ajouter des questions" @click="goToAddQuestions"/>
-            <ButtonCustom content="Créer des tests" @click="goToAddTest"/>
             <ButtonCustom content="Liste des tags" @click="goToTagList"/>
         </div>
 
