@@ -20,5 +20,5 @@ export interface QuestionInterface {
     content: string;
     timeLimit: number;
     difficulty: Difficulty;
-    tags: TagInterface[];
+    tagList: TagInterface[];
 }

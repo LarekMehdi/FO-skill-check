@@ -11,6 +11,9 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 import type { QuestionInterface } from '../../../interfaces/question.interface';
 import type { GenericFilter } from '../../../interfaces/filter.interface';
 import { QuestionService } from '../../../services/QuestionService';
+import { Column, DataTable } from 'primevue';
+import { Difficulty, getDifficultyLabel } from '../../../constants/difficulty.constant';
+import type { TagInterface } from '../../../interfaces/tag.interface';
 
     export default {
         setup() {
@@ -68,6 +71,7 @@ import { QuestionService } from '../../../services/QuestionService';
             },
             openAddQuestionModal() {
                 this.displayAddQuestionModal = true;
+                this.getAllQuestions();
             },
             closeAddQuestionModal() {
                 this.displayAddQuestionModal = false;
@@ -75,6 +79,9 @@ import { QuestionService } from '../../../services/QuestionService';
             addQuestions() {
 
             },
+            displayLabelDifficulty(value: Difficulty) {
+                return getDifficultyLabel(value);
+            }
         },
         computed: {
             getQuestionCount(): number {
@@ -94,6 +101,8 @@ import { QuestionService } from '../../../services/QuestionService';
             InputNumber,
             Modal,
             ButtonCustom,
+            DataTable,
+            Column,
         },
     }
 </script>
@@ -164,19 +173,37 @@ import { QuestionService } from '../../../services/QuestionService';
         
     </section>
 
-    <section v-if="getQuestionCount > 0">
-        <h5>Liste des questions</h5>
-    </section>
-
-
+    <!-- TODO: a mettre dans un composant -->
     <Modal 
         :visible="displayAddQuestionModal" 
+        :isLarge="true"
         @close="closeAddQuestionModal"
         @submit="addQuestions"
         title="Ajouter des questions"
         submitLabel="Ajouter"
     >
+        <template #content>
 
+            <DataTable :value="questionList">
+                <Column header="Question" field="content" sortable style="width: 70%;">
+                    <template #body="slotProps">
+                        {{  slotProps.data.content }}
+                    </template>
+                </Column>
+                <Column header="Tag" field="tags" sortable style="width: 20%;">
+                    <template #body="slotProps">
+                        {{ (slotProps.data.tagList as TagInterface[]).map(tag => tag.label).join(', ') }}
+                    </template>
+                </Column>
+                <Column header="Difficulté" field="difficulty" sortable style="width: 10%;">
+                    <template #body="slotProps">
+                        {{  displayLabelDifficulty(slotProps.data.difficulty) }}
+                    </template>
+                </Column>
+            </DataTable>
+
+        </template>
+        
     </Modal>
     
 </template>

@@ -17,6 +17,11 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
                 type: String,
                 required: false,
                 default: 'Sauvegarder'
+            },
+            isLarge: {
+                type: Boolean,
+                required: false,
+                default: false,
             }
         },
         methods: {
@@ -37,7 +42,7 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
 
 <template>
     <section v-if="visible" class="modal-backdrop" @click.self="close">
-        <article class="modal-content">
+        <article :class="['modal-content', { 'modal-content-large': isLarge }]">
 
             <h3>{{ title }}</h3>
 
@@ -77,12 +82,14 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
         align-items: center;
         z-index: 1000;
     }
-
     .modal-content {
         background: white;
         border-radius: 8px;
         padding: 1.5rem;
         max-width: 600px;
         width: 100%;
+    }
+    .modal-content-large {
+        max-width: 1000px;
     }
 </style>
