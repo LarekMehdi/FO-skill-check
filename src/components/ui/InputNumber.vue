@@ -56,6 +56,11 @@
                 required: false,
                 default: false,
             },
+            symbol: {
+                type: String,
+                required: false,
+                default: '',
+            },
         },
         emits: ['update:modelValue'],
     }
@@ -71,16 +76,20 @@
         >
             {{ label }} {{ isRequired && displayLabel ? ' *' : '' }}
         </label>
-        <!-- TODO: ajouter du texte dans l'input -->
-        <input
-            type="number"
-            :name="name"
-            :placeholder="placeholder"
-            :class="`${inputClass}`"
-            :value="modelValue"
-            :disabled="disabled"
-            @input="$emit('update:modelValue', Number(($event.target as HTMLInputElement).value))"
-        />
+
+        <aside class="input-group">
+            <input
+                type="number"
+                :name="name"
+                :placeholder="placeholder"
+                class="form-control"
+                :value="modelValue"
+                :disabled="disabled"
+                @input="$emit('update:modelValue', Number(($event.target as HTMLInputElement).value))"
+            />
+            <span v-if="symbol" class="input-group-text">{{ symbol }}</span>
+        </aside>
+        
     </div>
     
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">

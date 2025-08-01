@@ -57,7 +57,12 @@
                 type: Boolean,
                 required: false,
                 default: false,
-            }
+            },
+            symbol: {
+                type: String,
+                required: false,
+                default: '',
+            },
         },
         emits: ['update:modelValue'],
     }
@@ -73,15 +78,19 @@
         >
             {{ label }} {{ isRequired && displayLabel ? ' *' : '' }}
         </label>
-        <input
-            type="text"
-            :name="name"
-            :placeholder="placeholder"
-            :class="inputClass"
-            :value="modelValue"
-            :disabled="disabled"
-            @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-        />
+        <aside class="input-group">
+            <input
+                type="text"
+                :name="name"
+                :placeholder="placeholder"
+                :class="inputClass"
+                :value="modelValue"
+                :disabled="disabled"
+                @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+            />
+            <span v-if="symbol" class="input-group-text">{{ symbol }}</span>
+        </aside>
+        
     </div>
     
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">

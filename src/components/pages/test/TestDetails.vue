@@ -42,15 +42,24 @@ import InputNumber from '../../ui/InputNumber.vue';
                     this.toast.error("Une erreur est survenue");
                 }
             },
+            async getAllQuestions() {
+                try {
+
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            }
         },
         computed: {
-            displayTimeLimit(): string {
-                const tl: number = this.item.timeLimit;
-                if (tl >= 60) return `${tl / 60} minute${tl/60 >= 2 ? 's' : ''}`;
-                return `${tl} secondes`;
-            },
-            getQuestionCount() {
+            getQuestionCount(): number {
                 return this.item?.questions?.length ?? 0;
+            },
+            getTimeLimitSymbol(): string {
+                const tl: number = this.item.timeLimit;
+                if (tl > 60 ) {
+                    return tl/60 > 2 ? 'minutes' : 'minute';
+                }
+                return tl > 0 ? 'secondes' : 'seconde';
             }
         },
         components: {
@@ -88,6 +97,7 @@ import InputNumber from '../../ui/InputNumber.vue';
                     label="Taux de réussite"
                     :displayLabel="true"
                     :disabled="true"
+                    :symbol="'%'"
                 />
             </div>
             <div class="col-md-6">
@@ -98,6 +108,7 @@ import InputNumber from '../../ui/InputNumber.vue';
                     label="Durée max."
                     :displayLabel="true"
                     :disabled="true"
+                    :symbol="getTimeLimitSymbol"
                 />
             </div>
         </section>
