@@ -127,6 +127,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 
     <section>
         <DataTable :value="testList" tableStyle="min-width: 50rem">
+            <template #empty>Il n'y aucun test pour le moment</template>
             <Column header="Titre" field="title" sortable style="width: 20%;">
                 <template #body="slotProps">
                     {{  slotProps.data.title }}

@@ -215,6 +215,7 @@ import InputCheck from '../../ui/InputCheck.vue';
         <template #content>
 
             <DataTable :value="questionList">
+                <template #empty>Aucunes questions à ajouter</template>
                 <Column style="width: 10%;">
                     <template #body="slotProps">
                         <InputCheck
