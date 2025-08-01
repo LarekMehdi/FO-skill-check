@@ -14,6 +14,7 @@ import { QuestionService } from '../../../services/QuestionService';
 import { Column, DataTable } from 'primevue';
 import { Difficulty, getDifficultyLabel } from '../../../constants/difficulty.constant';
 import type { TagInterface } from '../../../interfaces/tag.interface';
+import InputCheck from '../../ui/InputCheck.vue';
 
     export default {
         setup() {
@@ -64,7 +65,6 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
             async getAllQuestions() {
                 try {
                     this.questionList = await QuestionService.findAll(this.questionFilter);
-                    console.log(this.questionList);
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
@@ -75,13 +75,23 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
             },
             closeAddQuestionModal() {
                 this.displayAddQuestionModal = false;
+                this.questionIds = [];
             },
             addQuestions() {
 
             },
             displayLabelDifficulty(value: Difficulty) {
                 return getDifficultyLabel(value);
-            }
+            },
+            updateQuestionIds(questionId: number, checked: boolean) {
+                if (checked) {
+                    if (!this.questionIds.includes(questionId)) {
+                        this.questionIds.push(questionId);
+                    }
+                } else {
+                    this.questionIds = this.questionIds.filter((id) => id !== questionId);
+                }
+            },
         },
         computed: {
             getQuestionCount(): number {
@@ -103,6 +113,7 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
             ButtonCustom,
             DataTable,
             Column,
+            InputCheck,
         },
     }
 </script>
@@ -185,7 +196,19 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
         <template #content>
 
             <DataTable :value="questionList">
-                <Column header="Question" field="content" sortable style="width: 70%;">
+                <Column style="width: 10%;">
+                    <template #body="slotProps">
+                        <InputCheck
+                            :modelValue="questionIds.includes(slotProps.data.id)"
+                            :name="`question-${slotProps.data.id}`"
+                            label="Sélectionner"
+                            :displayLabel="false"
+                            :inline="true"
+                            @update:modelValue="(checked: boolean) => updateQuestionIds(slotProps.data.id, checked)"
+                        />
+                    </template>
+                </Column>
+                <Column header="Question" field="content" sortable style="width: 60%;">
                     <template #body="slotProps">
                         {{  slotProps.data.content }}
                     </template>
