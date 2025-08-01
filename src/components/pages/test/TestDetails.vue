@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
 import { TestService } from '../../../services/TestService';
-import type { TestDetailsInterface } from '../../../interfaces/test.interface';
+import type { TestDetailsInterface, TestWithQuestionIds } from '../../../interfaces/test.interface';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputText from '../../ui/InputText.vue';
 import InputNumber from '../../ui/InputNumber.vue';
@@ -58,6 +58,8 @@ import InputCheck from '../../ui/InputCheck.vue';
             async initDetails() {
                 try {
                     this.item = await TestService.findById(this.testId);
+                    this.initQuestionIds();
+                    
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
@@ -69,16 +71,33 @@ import InputCheck from '../../ui/InputCheck.vue';
                     this.toast.error("Une erreur est survenue");
                 }
             },
+            initQuestionIds() {
+                this.questionIds = this.item.questions ? this.item.questions.map((q) => q.id) : [];
+            },
             openAddQuestionModal() {
                 this.displayAddQuestionModal = true;
                 this.getAllQuestions();
             },
             closeAddQuestionModal() {
                 this.displayAddQuestionModal = false;
-                this.questionIds = [];
+                this.initQuestionIds();
             },
-            addQuestions() {
+            async addQuestions() {
+                try {
 
+                    const testData: TestWithQuestionIds = {
+                        testId: this.testId,
+                        questionIds: this.questionIds,
+                    }
+
+                    await TestService.updateQuestions(testData);
+                    this.toast.success("Questions mises à jour avec succés");
+                    this.initDetails();
+                    this.closeAddQuestionModal();
+
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
             },
             displayLabelDifficulty(value: Difficulty) {
                 return getDifficultyLabel(value);

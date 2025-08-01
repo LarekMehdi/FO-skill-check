@@ -21,3 +21,8 @@ export interface TestDetailsInterface {
     timeLimit: number;
     questions: QuestionInterface[]
 }
+
+export interface TestWithQuestionIds {
+    testId: number;
+    questionIds: number[];
+}
