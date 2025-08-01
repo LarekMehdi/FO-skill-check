@@ -129,7 +129,7 @@ import { useAuth } from '../../composables/useAuth';
                     {{  slotProps.data.title }}
                 </template>
             </Column>
-            <Column header="Description" field="description" sortable style="width: 60%;">
+            <Column header="Description" field="description" sortable style="width: 70%;">
                 <template #body="slotProps">
                     {{  slotProps.data.description }}
                 </template>
