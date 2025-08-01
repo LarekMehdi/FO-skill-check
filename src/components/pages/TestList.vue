@@ -13,14 +13,18 @@ import InputText from '../ui/InputText.vue';
 import InputTextArea from '../ui/InputTextArea.vue';
 import ButtonCustom from '../ui/ButtonCustom.vue';
 import type { GenericFilter } from '../../interfaces/filter.interface';
+import { Column, DataTable } from 'primevue';
+import { useAuth } from '../../composables/useAuth';
 
 
     export default {
         setup() {
+            const { isAdmin } = useAuth();
             const toast = useToast();
             return {
                 v$: useVuelidate(),
                 toast,
+                isAdmin,
             }
         },
         mounted() {
@@ -58,7 +62,6 @@ import type { GenericFilter } from '../../interfaces/filter.interface';
             async initTestList() {
                 try {
                     const result = await TestService.findAll(this.filter);
-                    console.log('result => ', result);
                     this.testList = result.content;
 
                 } catch(e: unknown) {
@@ -81,24 +84,28 @@ import type { GenericFilter } from '../../interfaces/filter.interface';
                     this.toast.success("Test ajouté avec succés");
                     this.closeAddTestModal();
                     this.resetNewTest();
+                    this.initTestList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
-
-
             },
             resetNewTest() {
                 this.newTest = {
                     title: '',
                     description: '',
                 }
-            }
+            },
+            goToDetailsTest(id: number) {
+                console.log(id);
+            },
         },
         components: {
             Modal,
             InputText,
             InputTextArea,
             ButtonCustom,
+            DataTable,
+            Column,
         }
     }
 </script>
@@ -106,7 +113,7 @@ import type { GenericFilter } from '../../interfaces/filter.interface';
 <template>
    
     <h1>Liste des tests</h1>
-    <section class="row mb-3">
+    <section v-if="isAdmin" class="row mb-3">
         <aside class="col text-end">
             <ButtonCustom 
                 content="Ajouter un test"
@@ -115,7 +122,25 @@ import type { GenericFilter } from '../../interfaces/filter.interface';
         </aside>
     </section>
 
-    
+    <section>
+        <DataTable :value="testList" tableStyle="min-width: 50rem">
+            <Column header="Titre" field="title" sortable style="width: 20%;">
+                <template #body="slotProps">
+                    {{  slotProps.data.title }}
+                </template>
+            </Column>
+            <Column header="Description" field="description" sortable style="width: 60%;">
+                <template #body="slotProps">
+                    {{  slotProps.data.description }}
+                </template>
+            </Column>
+            <Column v-if="isAdmin" header="Action" style="width: 10%;">
+                <template #body="slotProps">
+                    <ButtonCustom content="Détails" @click="goToDetailsTest(slotProps.data.id)"/>
+                </template>
+            </Column>
+        </DataTable>
+    </section>
     
     <!-- *************** CREATE *************** -->
      <Modal 
