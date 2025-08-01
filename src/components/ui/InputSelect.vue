@@ -8,7 +8,7 @@ import type { OptionSelectInterface } from '../../interfaces/input.interface';
         },
         props: {
             modelValue: {
-                type: String,
+                type: [String, Number, null],
                 required: true,
             },
             label: {
@@ -47,29 +47,49 @@ import type { OptionSelectInterface } from '../../interfaces/input.interface';
             options: {
                 type: Array as PropType<OptionSelectInterface[]>,
                 required: true,
-            }
+            },
+            inline: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            isRequired: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
         emits: ['update:modelValue'],
     }
 </script>
 
 <template>
-    <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }}</label>
-    <select 
-        :name="name"
-        :class="inputClass"
-        :value="modelValue"
-        @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
-    >
-        <option
-            v-for="(option, index) in options"
-            :key="index"
-            :value="option.value"
-            :class="optionClass"
+    <div :class="inline ? 'd-flex align-items-center gap-2' : ''">
+        <label 
+            v-if="displayLabel" 
+            :for="name" 
+            :class="labelClass"
+            style="white-space: nowrap;"
         >
-            {{ option.label }}
-        </option>
-    </select>
+            {{ label }} {{ isRequired && displayLabel ? ' *' : '' }}
+        </label>
+        <select 
+            :name="name"
+            :class="inputClass"
+            :value="modelValue"
+            @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
+        >
+            <option
+                v-for="(option, index) in options"
+                :key="index"
+                :value="option.value"
+                :class="optionClass"
+            >
+                {{ option.label }}
+            </option>
+        </select>
+    </div>
+    
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">
         {{ validation?.$errors[0]?.$message }}
     </small>

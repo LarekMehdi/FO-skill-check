@@ -31,13 +31,16 @@ export default {
     },
     methods: {
         goToTestList() {
-            console.log('list');
+            this.$router.push('/test');
         },
         goToAddQuestions() {
             this.$router.push('/question/create');
         },
         goToAddTest() {
             console.log('test');
+        },
+        goToTagList() {
+            this.$router.push('/tag');
         },
     }
 }
@@ -78,12 +81,12 @@ export default {
         </div>
 
         <div v-if="isAdmin" class="d-flex flex-column align-items-center gap-2 mt-4">
-            <ButtonCustom content="Ajouter des questions" :handleClick="goToAddQuestions"/>
-            <ButtonCustom content="Créer des tests" :handleClick="goToAddTest"/>
+            <ButtonCustom content="Ajouter des questions" @click="goToAddQuestions"/>
+            <ButtonCustom content="Liste des tags" @click="goToTagList"/>
         </div>
 
         <div v-if="isLoggedIn" class="d-flex flex-column align-items-center gap-2 mt-4">
-            <ButtonCustom content="Liste des tests" :handleClick="goToTestList"/>
+            <ButtonCustom content="Liste des tests" @click="goToTestList"/>
         </div>
     </main>
 </template>

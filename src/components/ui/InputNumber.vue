@@ -1,13 +1,11 @@
 <script lang="ts">
     export default {
         data() {
-            return {
-
-            }
+            return {}
         },
         props: {
             modelValue: {
-                type: String,
+                type: Number,
                 required: true,
             },
             label: {
@@ -68,13 +66,14 @@
         >
             {{ label }} {{ isRequired && displayLabel ? ' *' : '' }}
         </label>
+        <!-- TODO: ajouter du texte dans l'input -->
         <input
-            type="text"
+            type="number"
             :name="name"
             :placeholder="placeholder"
-            :class="inputClass"
+            :class="`${inputClass}`"
             :value="modelValue"
-            @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+            @input="$emit('update:modelValue', Number(($event.target as HTMLInputElement).value))"
         />
     </div>
     

@@ -1,4 +1,4 @@
-import type { Role } from "../constants/role.constante";
+import type { Role } from "../constants/role.constant";
 
 export interface UserInterface {
     id: number;
