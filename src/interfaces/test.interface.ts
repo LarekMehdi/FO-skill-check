@@ -19,7 +19,7 @@ export interface TestDetailsInterface {
     description: string;
     successRate: number;
     timeLimit: number;
-    questions: QuestionInterface[]
+    questionIds: number[]
 }
 
 export interface TestWithQuestionIds {

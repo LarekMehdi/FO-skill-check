@@ -46,7 +46,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                     timeLimit: 0,
                     title: '',
                     description: '',
-                    questions: []
+                    questionIds: []
                 },
                 displayAddQuestionModal: false,
                 questionIds: [],
@@ -72,7 +72,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                 }
             },
             initQuestionIds() {
-                this.questionIds = this.item.questions ? this.item.questions.map((q) => q.id) : [];
+                this.questionIds = this.item.questionIds ? this.item.questionIds : [];
             },
             openAddQuestionModal() {
                 this.displayAddQuestionModal = true;
@@ -114,7 +114,7 @@ import InputCheck from '../../ui/InputCheck.vue';
         },
         computed: {
             getQuestionCount(): number {
-                return this.item?.questions?.length ?? 0;
+                return this.item?.questionIds.length ?? 0;
             },
             getTimeLimitSymbol(): string {
                 const tl: number = this.item.timeLimit;
