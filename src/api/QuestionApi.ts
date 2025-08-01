@@ -1,7 +1,20 @@
+import type { GenericFilter } from "../interfaces/filter.interface";
 import type { CreateQuestionInterface } from "../interfaces/question.interface";
 import { useApi } from "./useApi";
 
 export abstract class QuestionApi {
+
+    /** FIND ALL **/
+
+    static async findAll(filter: GenericFilter) {
+        try {
+            const { data } = await useApi().get(`questions`, {params: filter});
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
 
     /** CREATE **/
 
@@ -9,8 +22,7 @@ export abstract class QuestionApi {
         try {
             const { data } = await useApi().post(`questions`, question);
             return data;
-        }
-        catch(error) {
+        } catch(error: unknown) {
             console.error(error);
             throw error;
         }

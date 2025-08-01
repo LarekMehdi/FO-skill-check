@@ -5,12 +5,20 @@ import type { TestDetailsInterface } from '../../../interfaces/test.interface';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputText from '../../ui/InputText.vue';
 import InputNumber from '../../ui/InputNumber.vue';
+import { useAuth } from '../../../composables/useAuth';
+import Modal from '../../shared/Modal.vue';
+import ButtonCustom from '../../ui/ButtonCustom.vue';
+import type { QuestionInterface } from '../../../interfaces/question.interface';
+import type { GenericFilter } from '../../../interfaces/filter.interface';
+import { QuestionService } from '../../../services/QuestionService';
 
     export default {
         setup() {
             const toast = useToast();
+            const { isAdmin } = useAuth();
             return {
                 toast,
+                isAdmin,
             }
         },
         mounted() {
@@ -20,6 +28,10 @@ import InputNumber from '../../ui/InputNumber.vue';
         data(): {
             testId: number,
             item: TestDetailsInterface,
+            displayAddQuestionModal: boolean,
+            questionIds: number[],
+            questionList: QuestionInterface[],
+            questionFilter: GenericFilter,
         }
         {
             return {
@@ -31,7 +43,11 @@ import InputNumber from '../../ui/InputNumber.vue';
                     title: '',
                     description: '',
                     questions: []
-                }
+                },
+                displayAddQuestionModal: false,
+                questionIds: [],
+                questionList: [],
+                questionFilter: {limit: 10, offset: 0}
             }
         },
         methods: {
@@ -44,11 +60,21 @@ import InputNumber from '../../ui/InputNumber.vue';
             },
             async getAllQuestions() {
                 try {
-
+                    this.questionList = await QuestionService.findAll(this.questionFilter);
+                    console.log(this.questionList);
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
-            }
+            },
+            openAddQuestionModal() {
+                this.displayAddQuestionModal = true;
+            },
+            closeAddQuestionModal() {
+                this.displayAddQuestionModal = false;
+            },
+            addQuestions() {
+
+            },
         },
         computed: {
             getQuestionCount(): number {
@@ -66,12 +92,22 @@ import InputNumber from '../../ui/InputNumber.vue';
             InputTextArea,
             InputText,
             InputNumber,
+            Modal,
+            ButtonCustom,
         },
     }
 </script>
 
 <template>
     <h1>{{ item.title }}</h1>
+    <section v-if="isAdmin" class="row mb-3">
+        <aside class="col text-end">
+            <ButtonCustom 
+                content="Ajouter des questions"
+                @click="openAddQuestionModal"
+            />
+        </aside>
+    </section>
 
     <section>
         <section class="row mb-3">
@@ -131,5 +167,16 @@ import InputNumber from '../../ui/InputNumber.vue';
     <section v-if="getQuestionCount > 0">
         <h5>Liste des questions</h5>
     </section>
+
+
+    <Modal 
+        :visible="displayAddQuestionModal" 
+        @close="closeAddQuestionModal"
+        @submit="addQuestions"
+        title="Ajouter des questions"
+        submitLabel="Ajouter"
+    >
+
+    </Modal>
     
 </template>

@@ -8,7 +8,7 @@ export abstract class TestApi {
 
     static async findAll(filter: GenericFilter) {
         try {
-            const { data } = await useApi().get(`/tests`);
+            const { data } = await useApi().get(`/tests`, {params: filter});
             return data;
         } catch(e: unknown) {
             console.error(e);
