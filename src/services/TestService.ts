@@ -10,6 +10,12 @@ export abstract class TestService {
         return await TestApi.findAll(filter);
     }
 
+    /** FIND **/
+
+    static async findById(id: number) {
+        return await TestApi.findById(id);
+    }
+
     /** CREATE **/
 
     static async create(test: CreateTestInterface) {

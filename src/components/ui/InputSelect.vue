@@ -58,6 +58,11 @@ import type { OptionSelectInterface } from '../../interfaces/input.interface';
                 required: false,
                 default: false,
             },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
         emits: ['update:modelValue'],
     }
@@ -77,6 +82,7 @@ import type { OptionSelectInterface } from '../../interfaces/input.interface';
             :name="name"
             :class="inputClass"
             :value="modelValue"
+            :disabled="disabled"
             @change="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
         >
             <option

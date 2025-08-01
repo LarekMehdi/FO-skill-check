@@ -53,6 +53,11 @@
                 required: false,
                 default: false,
             },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false,
+            }
         },
         emits: ['update:modelValue'],
     }
@@ -74,6 +79,7 @@
             :placeholder="placeholder"
             :class="inputClass"
             :value="modelValue"
+            :disabled="disabled"
             @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         />
     </div>

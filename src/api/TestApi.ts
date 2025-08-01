@@ -16,6 +16,18 @@ export abstract class TestApi {
         }
     }
 
+    /** FIND **/
+
+    static async findById(id: number) {
+        try {
+            const { data } = await useApi().get(`/tests/${id}`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
     /** CREATE **/
 
     static async create(test: CreateTestInterface) {

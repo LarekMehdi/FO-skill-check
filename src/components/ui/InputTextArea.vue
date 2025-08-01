@@ -58,6 +58,11 @@
                 required: false,
                 default: false,
             },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false,
+            }
         },
         emits: ['update:modelValue'],
     }
@@ -72,6 +77,7 @@
         :value="modelValue"
         :rows="rows"
         :cols="cols"
+        :disabled="disabled"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     >
     </textarea>
