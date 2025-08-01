@@ -1,4 +1,4 @@
-import type { Difficulty } from "../constants/difficulty.constante";
+import type { Difficulty } from "../constants/difficulty.constant";
 
 export interface CreateQuestionInterface {
     content: string;

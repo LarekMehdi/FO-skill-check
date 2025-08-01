@@ -1,6 +1,6 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
-import { Difficulty, getDifficultyOptions } from '../../../constants/difficulty.constante';
+import { Difficulty, getDifficultyOptions } from '../../../constants/difficulty.constant';
 import type { CreateAnswerInterface, CreateQuestionInterface } from '../../../interfaces/question.interface';
 import useVuelidate from '@vuelidate/core';
 import { helpers, minValue, required } from '@vuelidate/validators';

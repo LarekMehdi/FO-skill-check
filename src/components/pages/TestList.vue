@@ -12,6 +12,7 @@ import Modal from '../shared/Modal.vue';
 import InputText from '../ui/InputText.vue';
 import InputTextArea from '../ui/InputTextArea.vue';
 import ButtonCustom from '../ui/ButtonCustom.vue';
+import type { GenericFilter } from '../../interfaces/filter.interface';
 
 
     export default {
@@ -22,12 +23,17 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
                 toast,
             }
         },
+        mounted() {
+            this.initTestList();
+        },
         data(): {
+            filter: GenericFilter;
             testList: TestInterface[];
             displayAddTestModal: boolean;
             newTest: CreateTestInterface;
         } {
             return {
+                filter: { limit: 10, offset: 0},
                 testList: [],
                 displayAddTestModal: false,
                 newTest: { title: '', description: ''}
@@ -49,8 +55,15 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
             }
         },
         methods: {
-            initTestList() {
+            async initTestList() {
+                try {
+                    const result = await TestService.findAll(this.filter);
+                    console.log('result => ', result);
+                    this.testList = result.content;
 
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
             },
             openAddTestModal() {
                 this.displayAddTestModal = true;
@@ -101,6 +114,8 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
             />
         </aside>
     </section>
+
+    
     
     <!-- *************** CREATE *************** -->
      <Modal 
