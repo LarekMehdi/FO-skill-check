@@ -46,7 +46,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                     timeLimit: 0,
                     title: '',
                     description: '',
-                    questionIds: []
+                    questionList: []
                 },
                 displayAddQuestionModal: false,
                 questionIds: [],
@@ -59,6 +59,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                 try {
                     this.item = await TestService.findById(this.testId);
                     this.initQuestionIds();
+                    console.log(this.item);
                     
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
@@ -72,7 +73,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                 }
             },
             initQuestionIds() {
-                this.questionIds = this.item.questionIds ? this.item.questionIds : [];
+                this.questionIds = this.item.questionList ? this.item.questionList.map((q) => q.id) : [];
             },
             openAddQuestionModal() {
                 this.displayAddQuestionModal = true;
@@ -114,7 +115,7 @@ import InputCheck from '../../ui/InputCheck.vue';
         },
         computed: {
             getQuestionCount(): number {
-                return this.item?.questionIds.length ?? 0;
+                return this.item?.questionList.length ?? 0;
             },
             getTimeLimitSymbol(): string {
                 const tl: number = this.item.timeLimit;
@@ -122,7 +123,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                     return tl/60 > 2 ? 'minutes' : 'minute';
                 }
                 return tl > 0 ? 'secondes' : 'seconde';
-            }
+            },
         },
         components: {
             InputTextArea,
