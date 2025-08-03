@@ -59,7 +59,6 @@ import InputCheck from '../../ui/InputCheck.vue';
                 try {
                     this.item = await TestService.findById(this.testId);
                     this.initQuestionIds();
-                    console.log(this.item);
                     
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
@@ -149,7 +148,7 @@ import InputCheck from '../../ui/InputCheck.vue';
         </aside>
     </section>
 
-    <section>
+    <article>
         <section class="row mb-3">
             <div class="col-md-12">
                 <InputTextArea
@@ -202,7 +201,23 @@ import InputCheck from '../../ui/InputCheck.vue';
             </div>
         </section>
         
-    </section>
+    </article>
+
+    <article v-if="isAdmin">
+        <DataTable :value="item.questionList">
+                <template #empty>Aucunes questions à afficher</template>
+                <Column header="Question" field="content" sortable style="width: 60%;">
+                    <template #body="slotProps">
+                        {{  slotProps.data.content }}
+                    </template>
+                </Column>
+                <Column header="Difficulté" field="difficulty" sortable style="width: 10%;">
+                    <template #body="slotProps">
+                        {{  displayLabelDifficulty(slotProps.data.difficulty) }}
+                    </template>
+                </Column>
+            </DataTable>
+    </article>
 
     <!-- TODO: a mettre dans un composant -->
     <Modal 
