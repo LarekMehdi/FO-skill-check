@@ -59,7 +59,6 @@ import InputCheck from '../../ui/InputCheck.vue';
                 try {
                     this.item = await TestService.findById(this.testId);
                     this.initQuestionIds();
-                    
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
@@ -111,6 +110,9 @@ import InputCheck from '../../ui/InputCheck.vue';
                     this.questionIds = this.questionIds.filter((id) => id !== questionId);
                 }
             },
+            goToTakeTest() {
+
+            },
         },
         computed: {
             getQuestionCount(): number {
@@ -123,6 +125,11 @@ import InputCheck from '../../ui/InputCheck.vue';
                 }
                 return tl > 0 ? 'secondes' : 'seconde';
             },
+            computeTimeLimit(): number {
+                const tl: number = this.item?.timeLimit;
+                if (tl >= 60) return Math.floor(tl/60);
+                return tl;
+            }
         },
         components: {
             InputTextArea,
@@ -139,11 +146,17 @@ import InputCheck from '../../ui/InputCheck.vue';
 
 <template>
     <h1>{{ item.title }}</h1>
-    <section v-if="isAdmin" class="row mb-3">
+    <section class="row mb-3">
         <aside class="col text-end">
             <ButtonCustom 
+                v-if="isAdmin"
                 content="Ajouter des questions"
                 @click="openAddQuestionModal"
+            />
+            <ButtonCustom 
+                buttonClass="ms-3 btn-success"
+                content="Passer le test"
+                @click="goToTakeTest"
             />
         </aside>
     </section>
@@ -177,7 +190,7 @@ import InputCheck from '../../ui/InputCheck.vue';
             </div>
             <div class="col-md-6">
                 <InputNumber
-                    v-model="item.timeLimit"
+                    v-model="computeTimeLimit"
                     name="timeLimit"
                     placeholder="Durée max."
                     label="Durée max."

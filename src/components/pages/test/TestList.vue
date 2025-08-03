@@ -138,7 +138,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                     {{  slotProps.data.description }}
                 </template>
             </Column>
-            <Column v-if="isAdmin" header="Action" style="width: 10%;">
+            <Column header="Action" style="width: 10%;">
                 <template #body="slotProps">
                     <ButtonCustom content="Détails" @click="goToDetailsTest(slotProps.data.id)"/>
                 </template>
