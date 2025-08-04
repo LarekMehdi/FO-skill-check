@@ -45,6 +45,11 @@
                 type: Boolean,
                 required: false,
                 default: false,
+            },
+            isCircle: {
+                type: Boolean,
+                required: false,
+                default: false,
             }
         },
         emits: ['update:modelValue'],
@@ -54,18 +59,46 @@
 <template>
     <div :class="inline ? 'd-flex align-items-center gap-2' : ''">
         <label v-if="displayLabel" :for="name" :class="[labelClass, inline ? 'mb-0' : '']">{{ label }}</label>
-        <input
-            type="checkbox"
-            :name="name"
-            :class="`${inputClass}`"
-            :checked="modelValue"
-            :disabled="disabled"
-            @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
-        >
+        <div :class="[inputClass, 'd-flex align-items-center justify-content-center']">
+            <input
+                type="checkbox"
+                :name="name"
+                :class="[isCircle ? 'circle-checkbox' : '']"
+                :checked="modelValue"
+                :disabled="disabled"
+                @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
+            >
+        </div>
     </div>
     
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">
         {{ validation?.$errors[0]?.$message }}
     </small>
-
 </template>
+
+
+<style scoped>
+    .circle-checkbox {
+        appearance: none;
+        width: 30px;
+        height: 30px;
+        border: 2px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        display: inline-block;
+        box-sizing: border-box;
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+    .circle-checkbox:checked {
+        background-color: #007bff;
+        box-shadow: inset 0 0 0 4px white;
+        border-color: #007bff;
+    }
+    .circle-checkbox:hover:not(:disabled) {
+        border-color: #007bff;
+    }
+    
+   
+</style>
