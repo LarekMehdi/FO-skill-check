@@ -3,6 +3,7 @@ import { useToast } from 'vue-toastification';
 import { useAuth } from '../../../composables/useAuth';
 import type { TakeTestInterface } from '../../../interfaces/test.interface';
 import { TestService } from '../../../services/TestService';
+import QuestionQCM from '../../shared/QuestionQCM.vue';
 
     export default {
         data(): {
@@ -33,15 +34,22 @@ import { TestService } from '../../../services/TestService';
         methods: {
             async initTakeTest() {
                 this.item = await TestService.findTestToTake(this.testId);
+                console.log(this.item);
             }
         },
         components: {
-
+            QuestionQCM,
         }
     }
 </script>
 
 <template>
     <h1>{{ item.title }}</h1>
+
+    <section v-if="item.questionList.length > 0">
+        <QuestionQCM
+            :question="item.questionList[0]"
+        />
+    </section>
 
 </template>

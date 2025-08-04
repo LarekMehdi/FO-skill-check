@@ -1,9 +1,7 @@
 <script lang="ts">
     export default {
         data() {
-            return {
-
-            }
+            return {}
         },
         props: {
             modelValue: {
@@ -46,7 +44,7 @@
             rows: {
                 type: Number,
                 required: false,
-                default: 5
+                default: 0,
             },
             cols: {
                 type: Number,
@@ -65,20 +63,44 @@
             }
         },
         emits: ['update:modelValue'],
+        watch: {
+            modelValue() {
+                this.autoResize();
+            }
+        },
+        mounted() {
+            this.autoResize();
+        },
+        methods: {
+            autoResize() {
+                if (this.rows !== 0) return;
+                const el = this.$refs.textareaRef as HTMLTextAreaElement | undefined;
+                if (!el) return;
+
+                el.style.height = 'auto';
+                el.style.height = el.scrollHeight + 'px';
+            },
+            onInput(event: Event) {
+                const target = event.target as HTMLTextAreaElement;
+                this.$emit('update:modelValue', target.value);
+                this.autoResize();
+            }
+        }
     }
 </script>
 
 <template>
     <label v-if="displayLabel" :for="name" :class="labelClass">{{ label }} {{ isRequired && displayLabel ? ' *' : '' }}</label>
     <textarea
+        ref="textareaRef"
         :name="name"
         :placeholder="placeholder"
         :class="inputClass"
         :value="modelValue"
-        :rows="rows"
+        :rows="rows === 0 ? 1 : rows"
         :cols="cols"
         :disabled="disabled"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        @input="onInput"
     >
     </textarea>
     <small v-if="validation?.$dirty && validation?.$error" class="text-danger">
