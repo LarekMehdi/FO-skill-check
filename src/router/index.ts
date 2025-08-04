@@ -19,6 +19,7 @@ import CreateQuestion from "../components/pages/admin/CreateQuestion.vue";
 import TagList from "../components/pages/admin/TagList.vue";
 import TestList from "../components/pages/test/TestList.vue";
 import TestDetails from "../components/pages/test/TestDetails.vue";
+import TakeTest from "../components/pages/test/TakeTest.vue";
 
 
 
@@ -60,6 +61,11 @@ const routes = [
     path: "/test/:id",
     name: "testDetails",
     component: TestDetails,
+  },
+  {
+    path: "/test/:id/takeTest",
+    name: "testTakeTest",
+    component: TakeTest,
   },
   
   //{

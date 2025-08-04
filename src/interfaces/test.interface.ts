@@ -1,4 +1,4 @@
-import type { QuestionInterface } from "./question.interface";
+import type { QuestionInterface, TakeQuestionInterface } from "./question.interface";
 
 export interface CreateTestInterface {
     title: string;
@@ -25,4 +25,10 @@ export interface TestDetailsInterface {
 export interface TestWithQuestionIds {
     testId: number;
     questionIds: number[];
+}
+
+export interface TakeTestInterface {
+    id: number;
+    title: string;
+    questionList: TakeQuestionInterface[];
 }

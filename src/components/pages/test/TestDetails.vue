@@ -19,10 +19,11 @@ import InputCheck from '../../ui/InputCheck.vue';
     export default {
         setup() {
             const toast = useToast();
-            const { isAdmin } = useAuth();
+            const { isAdmin, isLoggedIn } = useAuth();
             return {
                 toast,
                 isAdmin,
+                isLoggedIn,
             }
         },
         mounted() {
@@ -111,7 +112,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                 }
             },
             goToTakeTest() {
-
+                this.$router.push(`/test/${this.testId}/takeTest`);
             },
         },
         computed: {
@@ -154,6 +155,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                 @click="openAddQuestionModal"
             />
             <ButtonCustom 
+                v-if="isLoggedIn"
                 buttonClass="ms-3 btn-success"
                 content="Passer le test"
                 @click="goToTakeTest"

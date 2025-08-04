@@ -16,6 +16,10 @@ export abstract class TestService {
         return await TestApi.findById(id);
     }
 
+    static async findTestToTake(id: number) {
+        return await TestApi.findTestToTake(id);
+    }
+
     /** UPDATE **/
 
     static async updateQuestions(testData: TestWithQuestionIds) {

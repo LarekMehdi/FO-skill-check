@@ -28,6 +28,16 @@ export abstract class TestApi {
         }
     }
 
+    static async findTestToTake(id: number) {
+        try {
+            const { data } = await useApi().get(`tests/${id}/takeTest`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
     /** UPDATE **/
 
     static async updateQuestions(testData: TestWithQuestionIds) {
