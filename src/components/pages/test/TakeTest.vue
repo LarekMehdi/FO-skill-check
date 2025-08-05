@@ -80,6 +80,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 
     <section v-if="item.questionList.length > 0">
         <QuestionQCM
+            :key="currentQuestionIndex"
             :question="item.questionList[currentQuestionIndex]"
             @update:model-value="onAnswerUpdate"
         />
