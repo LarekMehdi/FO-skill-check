@@ -13,6 +13,11 @@
                 type: String,
                 required: true,
             },
+            style: {
+                type: Object,
+                required: false,
+                default: {},
+            }
         },
         methods: {},
         emits: ['click']
@@ -23,6 +28,7 @@
     <button
         type="button" 
         :class="['btn btn-block', buttonClass]"
+        :style="style"
         @click="$emit('click')"
     >
         {{ content }}

@@ -5,6 +5,7 @@ import type { SubmitTestInterface, TakeTestInterface } from '../../../interfaces
 import { TestService } from '../../../services/TestService';
 import QuestionQCM from '../../shared/QuestionQCM.vue';
 import type { SubmitQuestionInterface } from '../../../interfaces/question.interface';
+import ButtonCustom from '../../ui/ButtonCustom.vue';
 
     export default {
         data(): {
@@ -48,9 +49,13 @@ import type { SubmitQuestionInterface } from '../../../interfaces/question.inter
                     updatedQuestion
                 ];
             },
+            goToNextQuestion() {
+
+            },
         },
         components: {
             QuestionQCM,
+            ButtonCustom,
         }
     }
 </script>
@@ -63,6 +68,15 @@ import type { SubmitQuestionInterface } from '../../../interfaces/question.inter
             :question="item.questionList[0]"
             @update:model-value="onAnswerUpdate"
         />
+        <div class="mt-4 d-flex justify-content-end">
+            <ButtonCustom 
+                content="Valider" 
+                buttonClass="btn-primary btn-lg"
+                :style="{width: '150px'}"
+                @click="goToNextQuestion"
+            />
+        </div>
+        
     </section>
 
 </template>
