@@ -143,6 +143,7 @@ import { Column, DataTable } from 'primevue';
 
     <section>
         <DataTable :value="tags" tableStyle="min-width: 50rem">
+            <template #empty>Aucun tag à afficher</template>
             <Column header="Id" field="id" sortable style="width: 10%;">
                 <template #body="slotProps">
                     {{  slotProps.data.id }}

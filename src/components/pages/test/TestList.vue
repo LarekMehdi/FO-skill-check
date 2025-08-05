@@ -1,20 +1,23 @@
 <script lang="ts">
 import useVuelidate from '@vuelidate/core';
-import type { CreateTestInterface, TestInterface } from '../../interfaces/test.interface';
+import type { CreateTestInterface, TestInterface } from '../../../interfaces/test.interface';
 
 import { useToast } from 'vue-toastification';
 
 
 import { maxLength, required } from '@vuelidate/validators';
-import { withMessage } from '../../utils/withMessage';
-import { TestService } from '../../services/TestService';
-import Modal from '../shared/Modal.vue';
-import InputText from '../ui/InputText.vue';
-import InputTextArea from '../ui/InputTextArea.vue';
-import ButtonCustom from '../ui/ButtonCustom.vue';
-import type { GenericFilter } from '../../interfaces/filter.interface';
+import { withMessage } from '../../../utils/withMessage';
+import { TestService } from '../../../services/TestService';
+
+
+
+import type { GenericFilter } from '../../../interfaces/filter.interface';
 import { Column, DataTable } from 'primevue';
-import { useAuth } from '../../composables/useAuth';
+import { useAuth } from '../../../composables/useAuth';
+import Modal from '../../shared/Modal.vue';
+import InputText from '../../ui/InputText.vue';
+import InputTextArea from '../../ui/InputTextArea.vue';
+import ButtonCustom from '../../ui/ButtonCustom.vue';
 
 
     export default {
@@ -96,7 +99,7 @@ import { useAuth } from '../../composables/useAuth';
                 }
             },
             goToDetailsTest(id: number) {
-                console.log(id);
+                this.$router.push(`/test/${id}`);
             },
         },
         components: {
@@ -124,6 +127,7 @@ import { useAuth } from '../../composables/useAuth';
 
     <section>
         <DataTable :value="testList" tableStyle="min-width: 50rem">
+            <template #empty>Il n'y aucun test pour le moment</template>
             <Column header="Titre" field="title" sortable style="width: 20%;">
                 <template #body="slotProps">
                     {{  slotProps.data.title }}
@@ -134,7 +138,7 @@ import { useAuth } from '../../composables/useAuth';
                     {{  slotProps.data.description }}
                 </template>
             </Column>
-            <Column v-if="isAdmin" header="Action" style="width: 10%;">
+            <Column header="Action" style="width: 10%;">
                 <template #body="slotProps">
                     <ButtonCustom content="Détails" @click="goToDetailsTest(slotProps.data.id)"/>
                 </template>
@@ -143,7 +147,7 @@ import { useAuth } from '../../composables/useAuth';
     </section>
     
     <!-- *************** CREATE *************** -->
-     <Modal 
+    <Modal 
         :visible="displayAddTestModal" 
         @close="closeAddTestModal"
         @submit="addTest"

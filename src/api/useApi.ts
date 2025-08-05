@@ -31,41 +31,46 @@ export function useApi() {
     api.interceptors.response.use(
         (response) => response,
         async (error) => {
-            //const originalRequest = error.config;
+            const originalRequest = error.config;
 
-            // if (error.response && error.response.status === 401) {
-            //     if (originalRequest.url !== 'auth/refresh') {
-            //         if (refreshToken) {
-            //             try {
-            //                 axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
-            //                 const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}auth/refresh`)
+            if (error.response && error.response.status === 401) {
+                if (originalRequest.url !== 'auth/refresh') {
+                    if (refreshToken) {
+                        try {
+                            axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
+                            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}auth/refresh`)
 
-            //                 if (res.status === 201) {
-            //                     authStore.setAuthState({...res.data, imagePath: res.data.media?.fileUrl});
-            //                     originalRequest.headers[
-            //                         "Authorization"
-            //                     ] = `Bearer ${res.data.accessToken}`
+                            if (res.status === 201) {
+                                authStore.setAuthState({...res.data, imagePath: res.data.media?.fileUrl});
+                                originalRequest.headers[
+                                    "Authorization"
+                                ] = `Bearer ${res.data.accessToken}`
 
-            //                     return axios(originalRequest);
-            //                 }
-            //             } catch (e: unknown) {
-            //                 console.log(e);
-            //                 return Promise.reject(error);
-            //             }
+                                return axios(originalRequest);
+                            }
+                        } catch (e: unknown) {
+                            console.log(e);
+                            return Promise.reject(error);
+                        }
 
-            //         } else {
-            //             location.href = "/signin"
-            //         }
-            //     } else {
-            //         location.href = "/signin"
-            //     }
-            // }
-            // if (error.response && error.response.status === 404) {
-            //     console.log("ressource indispo");
-            // }
-            // if (error.response && error.response.status === 403 && originalRequest.url !== 'auth/signup') {
-            //     location.href = "/error/403"
-            // }
+                    } else {
+                        if (originalRequest.url !== 'auth/signin') {
+                            location.href = "/signin";
+                        }
+                        
+                    }
+                } else {
+                    if (originalRequest.url !== 'auth/signin') {
+                        location.href = "/signin"
+                    }
+                }
+            }
+            if (error.response && error.response.status === 404) {
+                console.log("ressource indispo");
+            }
+            if (error.response && error.response.status === 403 && originalRequest.url !== 'auth/signup' && originalRequest.url !== 'auth/signin') {
+                location.href = "/error/403";
+            }
             return Promise.reject(error);
         }
     );

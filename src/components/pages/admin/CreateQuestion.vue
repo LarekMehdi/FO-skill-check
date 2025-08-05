@@ -209,10 +209,11 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                     <InputNumber
                         v-model="data.timeLimit"
                         name="timeLimit"
-                        label="Limite de temps (s)"
+                        label="Limite de temps"
                         :inline="true"
                         :validation="v$.data.timeLimit"
                         :isRequired="true"
+                        :symbol="'secondes'"
                     />
                 </div>
             </section>

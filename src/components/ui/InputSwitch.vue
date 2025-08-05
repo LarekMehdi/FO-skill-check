@@ -40,6 +40,11 @@
                 type: Boolean,
                 required: false,
                 default: false
+            },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false,
             }
         },
         emits: ['update:modelValue'],
@@ -55,6 +60,7 @@
                 :name="name"
                 :class="`${inputClass}`"
                 :checked="modelValue"
+                :disabled="disabled"
                 @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
             >
             <span class="slider round"></span>
