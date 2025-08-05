@@ -64,7 +64,7 @@ export abstract class TestApi {
 
     static async submitTestResult(submitData: SubmitTestInterface) {
         try {
-            const { data } = await useApi().post(`/tests/${submitData.id}/submit`);
+            const { data } = await useApi().post(`/tests/${submitData.id}/submit`, submitData);
             return data;
         } catch(e: unknown) {
             console.error(e);
