@@ -20,6 +20,7 @@ import TagList from "../components/pages/admin/TagList.vue";
 import TestList from "../components/pages/test/TestList.vue";
 import TestDetails from "../components/pages/test/TestDetails.vue";
 import TakeTest from "../components/pages/test/TakeTest.vue";
+import TestResult from "../components/pages/test/TestResult.vue";
 
 
 
@@ -66,6 +67,11 @@ const routes = [
     path: "/test/:id/takeTest",
     name: "testTakeTest",
     component: TakeTest,
+  },
+  {
+    path: "/test/:id/result/:sessionId",
+    name: "TestResult",
+    component: TestResult,
   },
   
   //{
