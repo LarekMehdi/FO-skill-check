@@ -1,5 +1,5 @@
 import type { GenericFilter } from "../interfaces/filter.interface";
-import type { CreateTestInterface, TestWithQuestionIds } from "../interfaces/test.interface";
+import type { CreateTestInterface, SubmitTestInterface, TestWithQuestionIds } from "../interfaces/test.interface";
 import { useApi } from "./useApi";
 
 export abstract class TestApi {
@@ -55,6 +55,16 @@ export abstract class TestApi {
     static async create(test: CreateTestInterface) {
         try {
             const { data } = await useApi().post(`/tests`, test);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    static async submitTestResult(submitData: SubmitTestInterface) {
+        try {
+            const { data } = await useApi().post(`/tests/${submitData.id}/submit`);
             return data;
         } catch(e: unknown) {
             console.error(e);
