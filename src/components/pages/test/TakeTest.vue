@@ -1,14 +1,16 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
 import { useAuth } from '../../../composables/useAuth';
-import type { TakeTestInterface } from '../../../interfaces/test.interface';
+import type { SubmitTestInterface, TakeTestInterface } from '../../../interfaces/test.interface';
 import { TestService } from '../../../services/TestService';
 import QuestionQCM from '../../shared/QuestionQCM.vue';
+import type { SubmitQuestionInterface } from '../../../interfaces/question.interface';
 
     export default {
         data(): {
             item: TakeTestInterface,
             testId: number,
+            submitData: SubmitTestInterface,
         } {
             return {
                 testId: -1,
@@ -17,6 +19,10 @@ import QuestionQCM from '../../shared/QuestionQCM.vue';
                     title: '',
                     questionList: []
                 },
+                submitData: {
+                    id: -1,
+                    answers: []
+                }
             }
         },
         setup() {
@@ -35,7 +41,13 @@ import QuestionQCM from '../../shared/QuestionQCM.vue';
             async initTakeTest() {
                 this.item = await TestService.findTestToTake(this.testId);
                 console.log(this.item);
-            }
+            },
+            onAnswerUpdate(updatedQuestion: SubmitQuestionInterface) {
+                this.submitData.answers = [
+                    ...this.submitData.answers.filter((a) => a.questionId !== updatedQuestion.questionId),
+                    updatedQuestion
+                ];
+            },
         },
         components: {
             QuestionQCM,
@@ -49,6 +61,7 @@ import QuestionQCM from '../../shared/QuestionQCM.vue';
     <section v-if="item.questionList.length > 0">
         <QuestionQCM
             :question="item.questionList[0]"
+            @update:model-value="onAnswerUpdate"
         />
     </section>
 
