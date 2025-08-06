@@ -37,3 +37,10 @@ export interface SubmitTestInterface {
     id: number;
     answers: SubmitQuestionInterface[];
 }
+
+export interface TestSessionInterface {
+    id: number;
+    testId: number;
+    userId: number;
+    createdAt: Date;
+}

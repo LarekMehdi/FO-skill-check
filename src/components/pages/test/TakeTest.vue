@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
 import { useAuth } from '../../../composables/useAuth';
-import type { SubmitTestInterface, TakeTestInterface } from '../../../interfaces/test.interface';
+import type { SubmitTestInterface, TakeTestInterface, TestSessionInterface } from '../../../interfaces/test.interface';
 import { TestService } from '../../../services/TestService';
 import QuestionQCM from '../../shared/QuestionQCM.vue';
 import type { SubmitQuestionInterface } from '../../../interfaces/question.interface';
@@ -52,8 +52,9 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             async submitTest() {
                 console.log('result => ', this.submitData);
                 try {
-                    await TestService.submitTestResult(this.submitData);
-                    this.$router.push(`test/${this.testId}/result/${this.userId}`);
+                    const testSession: TestSessionInterface = await TestService.submitTestResult(this.submitData);
+                    console.log(testSession);
+                    this.$router.push(`/test/${this.testId}/result/${testSession.id}`);
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
