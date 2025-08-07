@@ -38,7 +38,7 @@ import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
 </script>
 
 <template>
-    <article>
+    <article class="my-5">
         <section class="mb-3">
             <InputTextArea
                 v-model="question.content"
@@ -47,6 +47,7 @@ import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
                 :displayLabel="false"
                 :cols="100"
                 :disabled="true"
+                inputClass="bg-light rounded"
             />
         </section>
 

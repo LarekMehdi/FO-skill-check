@@ -58,6 +58,11 @@
                 required: false,
                 default: false,
             },
+            readonly: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
             symbol: {
                 type: String,
                 required: false,
@@ -86,6 +91,7 @@
                 :class="inputClass"
                 :value="modelValue"
                 :disabled="disabled"
+                :readonly="readonly"
                 @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
             />
             <span v-if="symbol" class="input-group-text">{{ symbol }}</span>

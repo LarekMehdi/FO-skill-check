@@ -50,6 +50,7 @@ import type { SubmitTestInterface } from '../../interfaces/test.interface';
                 :displayLabel="false"
                 :cols="100"
                 :disabled="true"
+                inputClass="bg-light rounded"
             />
         </section>
         <section>
