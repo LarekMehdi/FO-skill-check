@@ -38,7 +38,8 @@ export interface SubmitQuestionInterface {
 }
 
 export interface ResultQuestionInterface {
-    questionId: number;
+    id: number;
+    content: string;
     choices: AnswerInterface[];
     selectedAnswerIds: number[];
 }
