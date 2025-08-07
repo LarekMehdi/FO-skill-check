@@ -16,7 +16,8 @@ import QuestionResult from '../../shared/QuestionResult.vue';
                     testId: 0,
                     userId: 0,
                     testTitle: '',
-                    questionList: []
+                    questionList: [],
+                    createdAt: new Date(),
                 }
             }
         },

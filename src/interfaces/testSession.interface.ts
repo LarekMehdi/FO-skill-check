@@ -6,4 +6,5 @@ export interface ResultTestSessionInterface {
     userId: number;
     testTitle: string;
     questionList: ResultQuestionInterface[];
+    createdAt: Date;
 }

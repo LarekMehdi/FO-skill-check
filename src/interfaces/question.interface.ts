@@ -1,5 +1,5 @@
 import type { Difficulty } from "../constants/difficulty.constant";
-import type { AnswerInterface } from "./answer.interface";
+import type { AnswerInterface, ResultAnswerInterface } from "./answer.interface";
 import type { TagInterface } from "./tag.interface";
 
 export interface CreateQuestionInterface {
@@ -40,7 +40,6 @@ export interface SubmitQuestionInterface {
 export interface ResultQuestionInterface {
     id: number;
     content: string;
-    choices: AnswerInterface[];
-    selectedAnswerIds: number[];
+    choices: ResultAnswerInterface[];
 }
 

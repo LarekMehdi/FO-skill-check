@@ -4,7 +4,7 @@ import type { ResultQuestionInterface } from '../../interfaces/question.interfac
 import InputText from '../ui/InputText.vue';
 import InputTextArea from '../ui/InputTextArea.vue';
 import InputCheck from '../ui/InputCheck.vue';
-import type { AnswerInterface } from '../../interfaces/answer.interface';
+import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
 
     export default {
         data() {
@@ -17,15 +17,21 @@ import type { AnswerInterface } from '../../interfaces/answer.interface';
             }
         },
         methods: {
-            isChecked(id: number) {
-                return this.question.selectedAnswerIds.includes(id);
+            isAnswerCorrect(answer: ResultAnswerInterface) {
+                return answer.isSelectedByUser && answer.isCorrect;
             },
-            isAnswerCorrect(answer: AnswerInterface) {
-                return answer.isCorrect && this.isChecked(answer.id);
+            isAnswerIncorrect(answer: ResultAnswerInterface) {
+                return answer.isSelectedByUser && !answer.isCorrect;
             },
+            getBackgroundColor(answer: ResultAnswerInterface) {
+                if (this.isAnswerIncorrect(answer)) return 'wrong-answer';
+                if (answer.isCorrect) return 'correct-answer';
+                return '';
+            }
         },
         components: {
             InputTextArea,
+            InputText,
             InputCheck,
         },
     }
@@ -44,7 +50,7 @@ import type { AnswerInterface } from '../../interfaces/answer.interface';
             />
         </section>
 
-        <aside v-for="answer in question.choices" :key="answer.id" :class="`${isAnswerCorrect(answer) ? 'correct-answer' : 'wrong-answer'}`">
+        <aside v-for="answer in question.choices" :key="answer.id" :class="`${getBackgroundColor(answer)}`">
             <section class="row mb-3 align-items-center">
                 <div class="col-10">
                     <InputText
@@ -58,7 +64,7 @@ import type { AnswerInterface } from '../../interfaces/answer.interface';
                 </div>
                 <div class="col-2 d-flex justify-content-center align-items-center">
                     <InputCheck
-                        :modelValue="isChecked(answer.id)"
+                        :modelValue="answer.isSelectedByUser"
                         :name="`answer-${answer.id}`"
                         label="Sélectionner"
                         :displayLabel="false"
