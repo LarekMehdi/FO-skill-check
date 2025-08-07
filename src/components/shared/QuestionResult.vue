@@ -23,9 +23,9 @@ import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
             isAnswerIncorrect(answer: ResultAnswerInterface) {
                 return answer.isSelectedByUser && !answer.isCorrect;
             },
-            getBackgroundColor(answer: ResultAnswerInterface) {
-                if (this.isAnswerIncorrect(answer)) return 'wrong-answer';
-                if (answer.isCorrect) return 'correct-answer';
+            getBorderClass(answer: ResultAnswerInterface) {
+                if (this.isAnswerIncorrect(answer)) return 'border border-3 border-danger';
+                if (answer.isCorrect) return 'border border-3 border-success';
                 return '';
             }
         },
@@ -50,32 +50,35 @@ import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
             />
         </section>
 
-        <aside v-for="answer in question.choices" :key="answer.id" :class="`${getBackgroundColor(answer)}`">
-            <section class="row mb-3 align-items-center">
-                <div class="col-10">
-                    <InputText
-                        v-model="answer.content"
-                        :name="`answer-content-${answer.id}`"
-                        placeholder="Réponse"
-                        :displayLabel="false"
-                        :disabled="true"
-                        :inline="true"
-                    />
-                </div>
-                <div class="col-2 d-flex justify-content-center align-items-center">
-                    <InputCheck
-                        :modelValue="answer.isSelectedByUser"
-                        :name="`answer-${answer.id}`"
-                        label="Sélectionner"
-                        :displayLabel="false"
-                        :inline="true"
-                        :isCircle="true"
-                        :disabled="true"
-                    />
-                </div>
-            </section>
-        </aside>
-
+        <section v-for="answer in question.choices" :key="answer.id">
+            <article class="row mb-3 align-items-center">
+                <section class="col-12">
+                    <div :class="`d-flex align-items-center justify-content-between p-1 rounded ${getBorderClass(answer)}`">
+                        <div class="flex-grow-1 me-3">
+                            <InputText
+                                v-model="answer.content"
+                                :name="`answer-content-${answer.id}`"
+                                placeholder="Réponse"
+                                :displayLabel="false"
+                                :disabled="true"
+                                :inline="true"
+                            />
+                        </div>
+                        <div class="flex-shrink-0">
+                            <InputCheck
+                                :modelValue="answer.isSelectedByUser"
+                                :name="`answer-${answer.id}`"
+                                label="Sélectionner"
+                                :displayLabel="false"
+                                :inline="true"
+                                :isCircle="true"
+                                :disabled="true"
+                            />
+                        </div>
+                    </div>
+                </section>
+            </article>
+        </section>
     </article>
 </template>
 
