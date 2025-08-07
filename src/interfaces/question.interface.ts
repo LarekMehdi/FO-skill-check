@@ -37,3 +37,9 @@ export interface SubmitQuestionInterface {
     selectedAnswerIds: number[];
 }
 
+export interface ResultQuestionInterface {
+    questionId: number;
+    choices: AnswerInterface[];
+    selectedAnswerIds: number[];
+}
+
