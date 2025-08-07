@@ -130,7 +130,10 @@ import InputCheck from '../../ui/InputCheck.vue';
                 const tl: number = this.item?.timeLimit;
                 if (tl >= 60) return Math.floor(tl/60);
                 return tl;
-            }
+            },
+            displaySuccessRate() {
+                return Number((this.item.successRate * 100).toFixed(1));
+            },
         },
         components: {
             InputTextArea,
@@ -181,7 +184,7 @@ import InputCheck from '../../ui/InputCheck.vue';
         <section class="row mb-3">
             <div class="col-md-6">
                 <InputNumber
-                    v-model="item.successRate"
+                    v-model="displaySuccessRate"
                     name="successRate"
                     placeholder="Taux de réussite"
                     label="Taux de réussite"

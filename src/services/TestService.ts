@@ -1,6 +1,6 @@
 import { TestApi } from "../api/TestApi";
 import type { GenericFilter } from "../interfaces/filter.interface";
-import type { CreateTestInterface, TestWithQuestionIds } from "../interfaces/test.interface";
+import type { CreateTestInterface, SubmitTestInterface, TestSessionInterface, TestWithQuestionIds } from "../interfaces/test.interface";
 
 export abstract class TestService {
 
@@ -30,5 +30,9 @@ export abstract class TestService {
 
     static async create(test: CreateTestInterface) {
         return await TestApi.create(test);
+    }
+
+    static async submitTestResult(submitData: SubmitTestInterface): Promise<TestSessionInterface> {
+        return await TestApi.submitTestResult(submitData);
     }
 }

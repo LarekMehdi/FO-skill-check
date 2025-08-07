@@ -26,10 +26,7 @@ import type { SubmitTestInterface } from '../../interfaces/test.interface';
             onAnswerUpdate(ids: number[]) {
                 this.selectedAnswerIds = ids;
 
-                const otherAnswers = this.modelValue?.answers.filter((a) => a.questionId !== this.question.id);
-                otherAnswers?.push({ questionId: this.question.id, selectedAnswerIds: ids});
-
-                this.$emit('update:modelValue', { questionId: this.question.id, selectedAnswerIds: ids});
+                this.$emit('update:modelValue', { questionId: this.question.id, selectedAnswerIds: [...ids]});
             },
         },
         components: {
@@ -37,6 +34,9 @@ import type { SubmitTestInterface } from '../../interfaces/test.interface';
             AnswerQCM,
         },
         emits: ['update:modelValue'],
+        watch: {
+            'question.id'(newVal: number, oldVal: number) {}
+        }
     }
 </script>
 

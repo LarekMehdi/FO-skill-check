@@ -99,6 +99,9 @@
     .circle-checkbox:hover:not(:disabled) {
         border-color: #007bff;
     }
+    .circle-checkbox:disabled {
+        cursor: default;
+    }
     
    
 </style>
