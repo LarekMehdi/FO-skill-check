@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import type { TakeQuestionInterface } from '../../interfaces/question.interface';
+import { useAuth } from '../../composables/useAuth';
 
     export default {
         props: {
@@ -10,10 +11,17 @@ import type { TakeQuestionInterface } from '../../interfaces/question.interface'
             }
         },
         emits: ['timeOut'],
-        data(): {timerCount: number, intervalId: number|null} {
+        setup() {
+            const { isAdmin } = useAuth();
+            return {
+                isAdmin,
+            }
+        },
+        data(): {timerCount: number, intervalId: number|null, isPaused: boolean} {
             return {
                 timerCount: 0,
                 intervalId: null,
+                isPaused: false,
             }
         },
         beforeUnmount() {
@@ -28,7 +36,9 @@ import type { TakeQuestionInterface } from '../../interfaces/question.interface'
                 this.timerCount = timeLimit;
                 if (timeLimit > 0) {
                     this.intervalId = setInterval(() => {
-                        if (this.timerCount > 0) this.timerCount--;
+                        if (this.timerCount > 0) {
+                            this.isPaused ? '' : this.timerCount-- ;
+                        } 
                         else {
                             clearInterval(this.intervalId!);
                             this.intervalId = null;
@@ -36,7 +46,10 @@ import type { TakeQuestionInterface } from '../../interfaces/question.interface'
                         }
                     }, 1000);
                 }
-            }
+            },
+            changeIsPaused() {
+                this.isPaused = !this.isPaused;
+            },
         },
         watch: {
             'question.timeLimit': {
@@ -53,7 +66,7 @@ import type { TakeQuestionInterface } from '../../interfaces/question.interface'
 </script>
 
 <template>
-
+    
     <input
         type="number"
         name="timer"
@@ -61,6 +74,21 @@ import type { TakeQuestionInterface } from '../../interfaces/question.interface'
         :value="timerCount"
         :disabled="true"
     />
+    <section v-if="isAdmin">
+        <i 
+            v-if="isPaused" 
+            class="pi pi-play"
+            @click="changeIsPaused"
+        >
+        </i>
+        <i 
+            v-else 
+            class="pi pi-pause"
+            @click="changeIsPaused"
+        >
+        </i>
+    </section>
+    
 </template>
 
 <style scoped>
