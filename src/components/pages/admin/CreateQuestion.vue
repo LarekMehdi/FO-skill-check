@@ -231,7 +231,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                 
             </section>
 
-            <hr/>
+            <hr v-if="answerItems.length > 0"/>
 
             <!-- ***************** ANSWERS ***************** -->
 
