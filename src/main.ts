@@ -10,6 +10,8 @@ import Toast, { POSITION, type PluginOptions } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config';
+import 'highlight.js/styles/atom-one-dark.css';
+
 
 import Aura from '@primeuix/themes/aura';
 

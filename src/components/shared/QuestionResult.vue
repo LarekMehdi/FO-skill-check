@@ -5,6 +5,7 @@ import InputText from '../ui/InputText.vue';
 import InputTextArea from '../ui/InputTextArea.vue';
 import InputCheck from '../ui/InputCheck.vue';
 import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
+import CodeBlock from '../ui/CodeBlock.vue';
 
     export default {
         data() {
@@ -33,6 +34,7 @@ import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
             InputTextArea,
             InputText,
             InputCheck,
+            CodeBlock,
         },
     }
 </script>
@@ -40,7 +42,7 @@ import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
 <template>
     <article class="my-5">
         <section class="mb-3">
-            <InputTextArea
+            <!-- <InputTextArea
                 v-model="question.content"
                 name="content"
                 placeholder="Question"
@@ -48,7 +50,15 @@ import type { ResultAnswerInterface } from '../../interfaces/answer.interface';
                 :cols="100"
                 :disabled="true"
                 inputClass="bg-light rounded"
-            />
+            /> -->
+            <!-- <pre class="bg-dark text-light p-3 rounded overflow-auto">
+                <code>{{ question.content }}</code>
+            </pre> -->
+
+
+            <!-- TODO: séparer la question et le code -->
+            <!-- TODO: ajouter un type language sur les tags -->
+            <CodeBlock :content="question.content" language="java" />
         </section>
 
         <section v-for="answer in question.choices" :key="answer.id">
