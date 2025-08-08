@@ -6,6 +6,7 @@ import { TestService } from '../../../services/TestService';
 import QuestionQCM from '../../shared/QuestionQCM.vue';
 import type { SubmitQuestionInterface } from '../../../interfaces/question.interface';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
+import Timer from '../../ui/Timer.vue';
 
     export default {
         data(): {
@@ -44,6 +45,11 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             isLastPage() {
                 return this.item.questionList.length - 1 === this.currentQuestionIndex;
             },
+            currentQuestion() {
+                if (this.item.questionList.length > 0) {
+                    return this.item.questionList[this.currentQuestionIndex];
+                }
+            },
         },
         methods: {
             async initTakeTest() {
@@ -72,17 +78,27 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
         components: {
             QuestionQCM,
             ButtonCustom,
+            Timer,
         }
     }
 </script>
 
 <template>
-    <h1>{{ item.title }}</h1>
+    <aside class="d-flex align-items-center">
+        <div class="flex-grow-1">
+            <h1 class="text-center m-0"> {{ item.title }}</h1>
+        </div>
+        <Timer
+            v-if="currentQuestion"
+            :question="currentQuestion"
+        />
+    </aside>
+    
 
-    <section v-if="item.questionList.length > 0">
+    <section v-if="currentQuestion">
         <QuestionQCM
             :key="currentQuestionIndex"
-            :question="item.questionList[currentQuestionIndex]"
+            :question="currentQuestion"
             @update:model-value="onAnswerUpdate"
         />
         <div class="mt-4 d-flex justify-content-end">
