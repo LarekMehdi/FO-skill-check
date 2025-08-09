@@ -9,11 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/lang-javascript": "^6.2.4",
     "@primeuix/themes": "^1.2.3",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.7",
+    "codemirror": "^6.0.2",
     "highlight.js": "^11.11.1",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
@@ -26,7 +29,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.0",
     "@vue/tsconfig": "^0.7.0",
-    "typescript": "~5.8.3",
+    "typescript": "^5.9.2",
     "vite": "^7.0.4",
     "vue-tsc": "^2.2.12"
   }

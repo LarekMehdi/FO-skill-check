@@ -17,6 +17,7 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
 import { TagService } from '../../../services/TagService';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import type { OptionSelectInterface } from '../../../interfaces/input.interface';
+import CodeEditor from '../../ui/CodeEditor.vue';
 
     export default {
         mounted() {
@@ -82,6 +83,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
             InputSwitch,
             InputNumber,
             ButtonCustom,
+            CodeEditor,
         },
         computed: {
 
@@ -186,14 +188,9 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
 
             <section class="row mb-3">
                 <div class="col-md-12">
-                    <InputTextArea
+                    <CodeEditor 
                         v-model="data.code"
-                        name="code"
-                        placeholder="Code snippet"
-                        :displayLabel="false"
-                        :cols="70"
-                        :rows="2"
-                        :isRequired="false"
+                        language="java"
                     />
                 </div> 
             </section>
