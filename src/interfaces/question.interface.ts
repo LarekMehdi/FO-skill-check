@@ -4,6 +4,7 @@ import type { TagInterface } from "./tag.interface";
 
 export interface CreateQuestionInterface {
     content: string;
+    code: string;
     timeLimit: number;
     difficulty: Difficulty;
     answers: CreateAnswerInterface[];

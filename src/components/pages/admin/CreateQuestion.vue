@@ -58,6 +58,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
             return {
                 data: {
                     content: '',
+                    code: '',
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
                     answers: [],
@@ -139,6 +140,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
             resetForm() {
                 this.data = {
                     content: '',
+                    code: '',
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
                     answers: [],
@@ -178,6 +180,20 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                         :cols="70"
                         :rows="2"
                         :isRequired="true"
+                    />
+                </div> 
+            </section>
+
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <InputTextArea
+                        v-model="data.code"
+                        name="code"
+                        placeholder="Code snippet"
+                        :displayLabel="false"
+                        :cols="70"
+                        :rows="2"
+                        :isRequired="false"
                     />
                 </div> 
             </section>
