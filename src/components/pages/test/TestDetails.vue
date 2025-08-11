@@ -15,6 +15,7 @@ import { Column, DataTable } from 'primevue';
 import { Difficulty, getDifficultyLabel } from '../../../constants/difficulty.constant';
 import type { TagInterface } from '../../../interfaces/tag.interface';
 import InputCheck from '../../ui/InputCheck.vue';
+import CodeBlock from '../../ui/CodeBlock.vue';
 
     export default {
         setup() {
@@ -144,6 +145,7 @@ import InputCheck from '../../ui/InputCheck.vue';
             DataTable,
             Column,
             InputCheck,
+            CodeBlock,
         },
     }
 </script>
@@ -224,12 +226,20 @@ import InputCheck from '../../ui/InputCheck.vue';
     <article v-if="isAdmin">
         <DataTable :value="item.questionList">
                 <template #empty>Aucunes questions à afficher</template>
-                <Column header="Question" field="content" sortable style="width: 60%;">
+                <Column header="Question" field="content" sortable style="width: 40%;">
                     <template #body="slotProps">
                         {{  slotProps.data.content }}
                     </template>
                 </Column>
-                <Column header="Difficulté" field="difficulty" sortable style="width: 10%;">
+                <Column field="code" style="width: 50%;">
+                    <template #body="slotProps">
+                        <CodeBlock
+                            v-if="slotProps.data.code"
+                            :content="slotProps.data.code"
+                        />
+                    </template>
+                </Column>
+                <Column header="Difficulté" field="difficulty" style="width: 10%;">
                     <template #body="slotProps">
                         {{  displayLabelDifficulty(slotProps.data.difficulty) }}
                     </template>

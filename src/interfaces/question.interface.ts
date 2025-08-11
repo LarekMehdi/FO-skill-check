@@ -19,6 +19,7 @@ export interface CreateAnswerInterface {
 export interface QuestionInterface {
     id: number;
     content: string;
+    code?: string;
     timeLimit: number;
     difficulty: Difficulty;
     tagList: TagInterface[];
@@ -27,6 +28,7 @@ export interface QuestionInterface {
 export interface TakeQuestionInterface {
     id: number;
     content: string;
+    code?: string;
     timeLimit: number;
     isMultipleAnswer: boolean;
     choices: AnswerInterface[];
@@ -40,6 +42,7 @@ export interface SubmitQuestionInterface {
 export interface ResultQuestionInterface {
     id: number;
     content: string;
+    code?: string;
     choices: ResultAnswerInterface[];
 }
 
