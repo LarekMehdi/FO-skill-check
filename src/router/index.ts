@@ -23,6 +23,7 @@ import TestResult from "../components/pages/test/TestResult.vue";
 import Signin from "../components/pages/auth/Signin.vue";
 import Signup from "../components/pages/auth/Signup.vue";
 import Profil from "../components/pages/auth/user/Profil.vue";
+import Error403 from "../components/pages/error/Error403.vue";
 
 
 
@@ -85,6 +86,12 @@ const routes = [
     name: "UserProfil",
     component: Profil,
   },
+  ///////////// ERROR ///////////////
+  {
+    path: "/error/403",
+    name: "error403",
+    component: Error403,
+  },
   
   //{
   //path: "/about",
@@ -107,8 +114,7 @@ router.beforeEach((to, from, next) => {
   const { isAdmin } = useAuth();
   if (to.meta.requiresAdmin) {
     if (!isAdmin.value) {
-      // TODO: page 403
-      return next({name: 'home'});
+      return next({name: 'error403'});
     }
   }
  
