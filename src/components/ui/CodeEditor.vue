@@ -1,5 +1,15 @@
-<script lang="ts">
+<!-- <script lang="ts">
+//import '@codemirror/view/style.css';
+import { lineNumbers } from '@codemirror/view';
+import { highlightActiveLineGutter } from '@codemirror/view';
+import { highlightActiveLine } from '@codemirror/view';
+import { drawSelection } from '@codemirror/view';
+import { indentOnInput } from '@codemirror/language';
+import { foldGutter, foldKeymap } from '@codemirror/fold';
+import { defaultKeymap } from '@codemirror/commands';
 import { oneDark } from '@codemirror/theme-one-dark';
+
+
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
@@ -48,10 +58,22 @@ import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
                 return EditorState.create({
                     doc: this.modelValue,
                     extensions: [
+                        lineNumbers(),
+                        highlightActiveLineGutter(),
+                        highlightActiveLine(),
                         history(),
+                        foldGutter(),
+                        drawSelection(),
                         keymap.of(historyKeymap),
-                        syntaxHighlighting(defaultHighlightStyle),
+                        syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+                        indentOnInput(),
                         this.getLanguageExtension(),
+                        oneDark,
+                        keymap.of([
+                            ...defaultKeymap,
+                            ...historyKeymap,
+                            ...foldKeymap
+                        ]),
                         EditorView.updateListener.of(update => {
                             if (update.docChanged) {
                                 const value = update.state.doc.toString();
@@ -109,4 +131,4 @@ import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
         border: 1px solid #ddd;
         min-height: 150px;
     }
-</style>
+</style> -->
