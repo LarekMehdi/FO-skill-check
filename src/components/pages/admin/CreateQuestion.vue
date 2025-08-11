@@ -17,7 +17,7 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
 import { TagService } from '../../../services/TagService';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import type { OptionSelectInterface } from '../../../interfaces/input.interface';
-import InputCode from '../../ui/inputCode.vue';
+import InputCode from '../../ui/InputCode.vue';
 
 
 
