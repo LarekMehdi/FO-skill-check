@@ -6,3 +6,7 @@ export interface UserInterface {
     email?: string;
     role: Role;
 }
+
+export interface UserDetailsInterface extends UserInterface{
+    
+}

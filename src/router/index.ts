@@ -85,6 +85,7 @@ const routes = [
     path: "/user/:id",
     name: "UserProfil",
     component: Profil,
+    meta: { onlyMe: true }
   },
   ///////////// ERROR ///////////////
   {
@@ -92,16 +93,6 @@ const routes = [
     name: "error403",
     component: Error403,
   },
-  
-  //{
-  //path: "/about",
-  //name: "about",
-  // route level code-splitting
-  // this generates a separate chunk (about.[hash].js) for this route
-  // which is lazy-loaded when the route is visited.
-  //component: () =>
-  //import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  //},
 ];
 
 const router = createRouter({
@@ -111,10 +102,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const { isAdmin } = useAuth();
+  const { isAdmin, userId } = useAuth();
   if (to.meta.requiresAdmin) {
     if (!isAdmin.value) {
       return next({name: 'error403'});
+    }
+  }
+  if (to.meta.onlyMe) {
+    const routeId = Array.isArray(to.params.id) ? to.params.id[0] : to.params.id;
+    if (!isAdmin.value && String(userId.value) !== String(routeId)) {
+      return next({ name: 'error403' });
     }
   }
  
