@@ -1,15 +1,16 @@
 <script lang="ts">
 import useVuelidate from '@vuelidate/core';
-import type { SigninDataInterface } from '../../interfaces/auth.interface';
+
 import { required } from '@vuelidate/validators';
-import { AuthService } from '../../services/AuthService';
-import type { UserInterface } from '../../interfaces/user.interface';
-import { useAuth } from '../../composables/useAuth';
-import InputText from '../ui/InputText.vue';
-import { withMessage } from '../../utils/withMessage';
-import InputPassword from '../ui/InputPassword.vue';
-import ButtonSubmit from '../ui/ButtonSubmit.vue';
+import InputText from '../../ui/InputText.vue';
+import InputPassword from '../../ui/InputPassword.vue';
+import ButtonSubmit from '../../ui/ButtonSubmit.vue';
 import { useToast } from 'vue-toastification';
+import { useAuth } from '../../../composables/useAuth';
+import { withMessage } from '../../../utils/withMessage';
+import type { SigninDataInterface } from '../../../interfaces/auth.interface';
+import { AuthService } from '../../../services/AuthService';
+import type { UserInterface } from '../../../interfaces/user.interface';
 
 
 export default {

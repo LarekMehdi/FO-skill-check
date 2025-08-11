@@ -1,13 +1,14 @@
 <script lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { withMessage } from '../../utils/withMessage';
+
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
-import type { SignupDataInterface } from '../../interfaces/auth.interface';
-import InputText from '../ui/InputText.vue';
-import InputPassword from '../ui/InputPassword.vue';
-import ButtonSubmit from '../ui/ButtonSubmit.vue';
-import { AuthService } from '../../services/AuthService';
+import InputText from '../../ui/InputText.vue';
+import InputPassword from '../../ui/InputPassword.vue';
+import ButtonSubmit from '../../ui/ButtonSubmit.vue';
 import { useToast } from 'vue-toastification';
+import { withMessage } from '../../../utils/withMessage';
+import type { SignupDataInterface } from '../../../interfaces/auth.interface';
+import { AuthService } from '../../../services/AuthService';
 
 const sameAsPassword = withMessage(
     'Les mots de passe ne correspondent pas',

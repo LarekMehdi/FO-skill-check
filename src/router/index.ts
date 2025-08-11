@@ -12,8 +12,7 @@ app.listen(port, () => {
 
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../components/pages/Home.vue";
-import Signin from "../components/pages/Signin.vue";
-import Signup from "../components/pages/Signup.vue";
+
 import { useAuth } from "../composables/useAuth";
 import CreateQuestion from "../components/pages/admin/CreateQuestion.vue";
 import TagList from "../components/pages/admin/TagList.vue";
@@ -21,6 +20,8 @@ import TestList from "../components/pages/test/TestList.vue";
 import TestDetails from "../components/pages/test/TestDetails.vue";
 import TakeTest from "../components/pages/test/TakeTest.vue";
 import TestResult from "../components/pages/test/TestResult.vue";
+import Signin from "../components/pages/auth/Signin.vue";
+import Signup from "../components/pages/auth/Signup.vue";
 
 
 
