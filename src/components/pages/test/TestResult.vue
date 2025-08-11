@@ -24,7 +24,6 @@ import QuestionResult from '../../shared/QuestionResult.vue';
         methods: {
             async initTestResult() {
                 this.item = await SessionService.findTestSession(this.sessionId);
-                console.log(this.item);
             },
         },
         components: {

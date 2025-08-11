@@ -4,7 +4,7 @@ import type { TagInterface } from "./tag.interface";
 
 export interface CreateQuestionInterface {
     content: string;
-    isMultipleAnswer: boolean;
+    code: string;
     timeLimit: number;
     difficulty: Difficulty;
     answers: CreateAnswerInterface[];

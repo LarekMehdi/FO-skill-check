@@ -17,6 +17,9 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
 import { TagService } from '../../../services/TagService';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import type { OptionSelectInterface } from '../../../interfaces/input.interface';
+import InputCode from '../../ui/inputCode.vue';
+
+
 
     export default {
         mounted() {
@@ -36,7 +39,6 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                 data: {
                     content: { required: withMessage('La question est requise', required) },
                     difficulty: { required: withMessage('La difficulté est requise', required) },
-                    isMultipleAnswer: { required: withMessage('Ce champ est requis', required) },
                     timeLimit: { 
                         required: withMessage('La limite de temps est requise', required),
                         minValue: withMessage('La limite de temps doit être supérieur à 30s', minValue(30)),
@@ -59,7 +61,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
             return {
                 data: {
                     content: '',
-                    isMultipleAnswer: false,
+                    code: '',
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
                     answers: [],
@@ -83,6 +85,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
             InputSwitch,
             InputNumber,
             ButtonCustom,
+            InputCode,
         },
         computed: {
 
@@ -101,6 +104,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                 const valid = await this.v$.$validate();
 
                 if (!valid) {
+                    //console.log(this.v$.data.content.$errors);
                     this.toast.error("Il y a des erreurs dans le formulaire");
                     return;
                 }
@@ -140,7 +144,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
             resetForm() {
                 this.data = {
                     content: '',
-                    isMultipleAnswer: false,
+                    code: '',
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
                     answers: [],
@@ -185,16 +189,16 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
             </section>
 
             <section class="row mb-3">
-                <div class="col-md-6">
-                    <InputSwitch
-                        v-model="data.isMultipleAnswer"
-                        name="isMultipleAnswer"
-                        label="Plusieurs bonnes réponses?"
-                        :inline="true"
-                        :validation="v$.data.isMultipleAnswer"
+                <div class="col-md-12">
+                    
+                    <InputCode
+                        v-model="data.code"
                     />
-                </div>
-                <div class="col-md-6">
+                </div> 
+            </section>
+
+            <section class="row mb-3">
+                <div class="col-md-3">
                     <InputSelect
                         v-model="data.difficulty"
                         name="difficulty"
@@ -202,10 +206,7 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                         :options="difficultyOptions"
                     />
                 </div>
-            </section>
-
-            <section class="row mb-3">
-                <div class="col-md-12">
+                <div class="col-md-9">
                     <InputNumber
                         v-model="data.timeLimit"
                         name="timeLimit"
@@ -228,10 +229,9 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
                         :inline="true"
                     />
                 </div>
-                
             </section>
 
-            <hr/>
+            <hr v-if="answerItems.length > 0"/>
 
             <!-- ***************** ANSWERS ***************** -->
 

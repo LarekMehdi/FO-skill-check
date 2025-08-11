@@ -4,6 +4,7 @@ import type { PropType } from 'vue';
 import InputTextArea from '../ui/InputTextArea.vue';
 import AnswerQCM from './AnswerQCM.vue';
 import type { SubmitTestInterface } from '../../interfaces/test.interface';
+import CodeBlock from '../ui/CodeBlock.vue';
 
     export default {
         data(): {
@@ -32,6 +33,7 @@ import type { SubmitTestInterface } from '../../interfaces/test.interface';
         components: {
             InputTextArea,
             AnswerQCM,
+            CodeBlock,
         },
         emits: ['update:modelValue'],
         watch: {
@@ -43,14 +45,18 @@ import type { SubmitTestInterface } from '../../interfaces/test.interface';
 <template>
     <article>
         <section class="mb-3">
-            <InputTextArea
+            <!-- <InputTextArea
                 v-model="question.content"
                 name="content"
                 placeholder="Question"
                 :displayLabel="false"
                 :cols="100"
                 :disabled="true"
-            />
+                inputClass="bg-light rounded"
+            /> -->
+            <!-- TODO: séparer la question et le code -->
+            <!-- TODO: ajouter un type language sur les tags -->
+            <CodeBlock :content="question.content" language="java" />
         </section>
         <section>
             <AnswerQCM
