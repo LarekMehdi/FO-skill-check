@@ -35,8 +35,16 @@ export default {
         <router-link v-if="!isLoggedIn" to="/signin" class="navbar-brand">Se connecter</router-link>
         <router-link v-if="!isLoggedIn" to="/signup" class="navbar-brand">Créer un compte</router-link>
 
-        <section class="ms-auto">
-            <LogoutButton v-if="isLoggedIn"/>
+        <section v-if="isAdmin">
+            <router-link to="/question/create" class="navbar-brand">Questions</router-link>
+            <router-link to="/tag" class="navbar-brand">Tags</router-link>
+            <router-link to="/test" class="navbar-brand">Tests</router-link>
+        </section>
+
+
+        <section v-if="isLoggedIn" class="ms-auto">
+            <router-link to="/profil" class="navbar-brand">Profil</router-link>
+            <LogoutButton />
         </section>
         
   </nav>
