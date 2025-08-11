@@ -22,6 +22,7 @@ import TakeTest from "../components/pages/test/TakeTest.vue";
 import TestResult from "../components/pages/test/TestResult.vue";
 import Signin from "../components/pages/auth/Signin.vue";
 import Signup from "../components/pages/auth/Signup.vue";
+import Profil from "../components/pages/auth/user/Profil.vue";
 
 
 
@@ -32,6 +33,7 @@ const routes = [
     name: "home",
     component: Home,
   },
+  ///////////// AUTH //////////////////
   {
     path: "/signin",
     name: "signin",
@@ -42,18 +44,21 @@ const routes = [
     name: "signup",
     component: Signup,
   },
+  ///////////// QUESTION ///////////////
   {
     path: "/question/create",
     name: "questionCreate",
     component: CreateQuestion,
     meta: { requiresAdmin: true }
   },
+  ///////////// TAG ///////////////////
   {
     path: "/tag",
     name: "tagList",
     component: TagList,
     meta: { requiresAdmin: true }
   },
+  ///////////// TEST //////////////////
   {
     path: "/test",
     name: "testList",
@@ -73,6 +78,12 @@ const routes = [
     path: "/test/:id/result/:sessionId",
     name: "TestResult",
     component: TestResult,
+  },
+  ///////////// USER ///////////////
+  {
+    path: "/user/:id",
+    name: "UserProfil",
+    component: Profil,
   },
   
   //{

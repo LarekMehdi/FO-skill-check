@@ -5,8 +5,8 @@ import LogoutButton from './LogoutButton.vue';
 
 export default {
     setup() {
-        const { isLoggedIn, isAdmin } = useAuth();
-        return { isLoggedIn, isAdmin };
+        const { isLoggedIn, isAdmin, userId } = useAuth();
+        return { isLoggedIn, isAdmin, userId };
     },
     mounted() {
         this.initNavbar();
@@ -43,7 +43,7 @@ export default {
 
 
         <section v-if="isLoggedIn" class="ms-auto">
-            <router-link to="/profil" class="navbar-brand">Profil</router-link>
+            <router-link :to="`/user/${userId}`" class="navbar-brand">Profil</router-link>
             <LogoutButton />
         </section>
         
