@@ -56,10 +56,8 @@ import Timer from '../../ui/Timer.vue';
                 this.item = await TestService.findTestToTake(this.testId);
             },
             async submitTest() {
-                console.log('result => ', this.submitData);
                 try {
                     const testSession: TestSessionInterface = await TestService.submitTestResult(this.submitData);
-                    console.log(testSession);
                     this.$router.push(`/test/${this.testId}/result/${testSession.id}`);
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");

@@ -37,7 +37,7 @@ export default {
             this.$router.push('/question/create');
         },
         goToAddTest() {
-            console.log('test');
+            
         },
         goToTagList() {
             this.$router.push('/tag');

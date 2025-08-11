@@ -36,16 +36,13 @@ import CodeBlock from '../ui/CodeBlock.vue';
             CodeBlock,
         },
         emits: ['update:modelValue'],
-        watch: {
-            'question.id'(newVal: number, oldVal: number) {}
-        }
     }
 </script>
 
 <template>
     <article>
         <section class="mb-3">
-            <!-- <InputTextArea
+            <InputTextArea
                 v-model="question.content"
                 name="content"
                 placeholder="Question"
@@ -53,10 +50,14 @@ import CodeBlock from '../ui/CodeBlock.vue';
                 :cols="100"
                 :disabled="true"
                 inputClass="bg-light rounded"
-            /> -->
-            <!-- TODO: séparer la question et le code -->
+            />
+           
             <!-- TODO: ajouter un type language sur les tags -->
-            <CodeBlock :content="question.content" language="java" />
+            <CodeBlock 
+                v-if="question.code"
+                :content="question.code" 
+                language="java" 
+            />
         </section>
         <section>
             <AnswerQCM
