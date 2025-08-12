@@ -7,7 +7,7 @@
         },
         props: {
             modelValue: {
-                type: [String, undefined],
+                type: String,
                 required: true,
             },
             label: {

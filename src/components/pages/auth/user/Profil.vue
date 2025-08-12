@@ -45,6 +45,9 @@ import type { UserTestSessionInterface } from '../../../../interfaces/testSessio
             displayEmptySession() {
                 return this.isMyId ? "Vous n'avez pas encore passé de test" : `${this.item.pseudo} n'a pas encore passé de test`;
             },
+            getEmail(){
+                return this.item.email || '';
+            },
         },
         watch: {
             '$route.params.id'(newVal: string, oldVal: string) {
@@ -79,7 +82,7 @@ import type { UserTestSessionInterface } from '../../../../interfaces/testSessio
             </div>
             <div class="col-md-6">
                 <InputText
-                    v-model="item.email"
+                    v-model="getEmail"
                     name="email"
                     placeholder="Email"
                     :displayLabel="false"
