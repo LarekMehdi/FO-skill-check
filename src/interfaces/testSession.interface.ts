@@ -8,3 +8,11 @@ export interface ResultTestSessionInterface {
     questionList: ResultQuestionInterface[];
     createdAt: Date;
 }
+
+export interface UserTestSessionInterface {
+    sessionId: number;
+    testId: number;
+    testTitle: string;
+    createdAt: Date;
+    successRate: number;
+}

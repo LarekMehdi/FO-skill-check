@@ -1,4 +1,5 @@
 import type { Role } from "../constants/role.constant";
+import type { UserTestSessionInterface } from "./testSession.interface";
 
 export interface UserInterface {
     id: number;
@@ -8,5 +9,5 @@ export interface UserInterface {
 }
 
 export interface UserDetailsInterface extends UserInterface{
-    
+    sessionList: UserTestSessionInterface[];
 }
