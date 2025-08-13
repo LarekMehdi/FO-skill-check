@@ -277,6 +277,14 @@ import CodeBlock from '../../ui/CodeBlock.vue';
                         {{  slotProps.data.content }}
                     </template>
                 </Column>
+                <Column field="code" style="width: 50%;">
+                    <template #body="slotProps">
+                        <CodeBlock
+                            v-if="slotProps.data.code"
+                            :content="slotProps.data.code"
+                        />
+                    </template>
+                </Column>
                 <Column header="Tag" field="tags" sortable style="width: 20%;">
                     <template #body="slotProps">
                         {{ (slotProps.data.tagList as TagInterface[]).map(tag => tag.label).join(', ') }}

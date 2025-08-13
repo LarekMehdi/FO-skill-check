@@ -32,6 +32,21 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
                 this.$emit('submit');
             }
         },
+        watch: {
+            'visible'(newVal: boolean) {
+                if (newVal) {
+                    const scrollY = window.scrollY;
+                    document.body.style.position = 'fixed';
+                    document.body.style.top = `-${scrollY}px`;
+                    document.body.dataset.scrollY = scrollY.toString();
+                } else {
+                    const scrollY = document.body.dataset.scrollY ? parseInt(document.body.dataset.scrollY) : 0;
+                    document.body.style.position = '';
+                    document.body.style.top = '';
+                    window.scrollTo(0, scrollY);
+                }
+            }
+        },
         emits: ['close', 'submit'],
         components: {
             ButtonCustom,
@@ -88,8 +103,11 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
         padding: 1.5rem;
         max-width: 600px;
         width: 100%;
+        max-height: 80vh;
+        overflow-y: auto;
     }
     .modal-content-large {
         max-width: 1000px;
+        max-height: 80vh;
     }
 </style>
