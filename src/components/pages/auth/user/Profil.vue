@@ -112,7 +112,7 @@ import { UtilDate } from '../../../../utils/UtilDate';
                 </Column>
                 <Column header="Taux de réussite" field="successRate" sortable style="width: 30%;">
                     <template #body="slotProps">
-                        {{ slotProps.data.successRate }}
+                        {{ slotProps.data.successRate }} %
                     </template>
                 </Column>
             </DataTable>
