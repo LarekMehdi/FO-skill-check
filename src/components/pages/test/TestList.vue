@@ -115,7 +115,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 
 <template>
    
-    <h1>Liste des tests</h1>
+    <h1 class="mb-5">Liste des tests</h1>
     <section v-if="isAdmin" class="row mb-3">
         <aside class="col text-end">
             <ButtonCustom 

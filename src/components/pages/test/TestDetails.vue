@@ -151,7 +151,7 @@ import CodeBlock from '../../ui/CodeBlock.vue';
 </script>
 
 <template>
-    <h1>{{ item.title }}</h1>
+    <h1 class="mb-5">{{ item.title }}</h1>
     <section class="row mb-3">
         <aside class="col text-end">
             <ButtonCustom 

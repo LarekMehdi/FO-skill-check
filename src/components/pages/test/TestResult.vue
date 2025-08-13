@@ -34,7 +34,7 @@ import QuestionResult from '../../shared/QuestionResult.vue';
 </script>
 
 <template>
-    <h1>Resultat du test</h1>
+    <h1 class="mb-5">Resultat du test</h1>
     <h3>{{ item.testTitle }}</h3>
 
 

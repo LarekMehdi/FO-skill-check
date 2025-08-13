@@ -81,7 +81,7 @@ export default {
 
 <template>
     <main>
-        <h1>Se connecter</h1>
+        <h1 class="mb-5">Se connecter</h1>
         <div>
             <form @submit.prevent="signin">
                 <section class="mb-3">

@@ -170,7 +170,7 @@ import InputCode from '../../ui/InputCode.vue';
 
 <template>
     <main>
-        <h1>Créer une question</h1>
+        <h1 class="mb-5">Créer une question</h1>
         <form @submit.prevent="createQuestion">
 
             <section class="row mb-3">

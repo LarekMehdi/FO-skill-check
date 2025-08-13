@@ -72,7 +72,7 @@ import { UtilDate } from '../../../../utils/UtilDate';
 </script>
 
 <template>
-    <h1>{{  displayTitle }}</h1>
+    <h1 class="mb-5">{{  displayTitle }}</h1>
     <article>
         <section class="row mb-3">
             <div class="col-md-6">

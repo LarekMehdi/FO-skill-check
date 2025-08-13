@@ -90,7 +90,7 @@ export default {
 
 <template>
     <main>
-        <h1>Créer un compte</h1>
+        <h1 class="mb-5">Créer un compte</h1>
 
         <div>
             <form @submit.prevent="signup">

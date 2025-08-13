@@ -131,7 +131,7 @@ import { Column, DataTable } from 'primevue';
 
 <template>
   
-    <h1>Liste des tags</h1>
+    <h1 class="mb-5">Liste des tags</h1>
     <section class="row mb-3">
         <aside class="col text-end">
             <ButtonCustom 
