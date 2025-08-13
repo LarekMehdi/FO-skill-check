@@ -6,6 +6,7 @@ import type { UserDetailsInterface } from '../../../../interfaces/user.interface
 import { UserService } from '../../../../services/UserService';
 import InputText from '../../../ui/InputText.vue';
 import type { UserTestSessionInterface } from '../../../../interfaces/testSession.interface';
+import { UtilDate } from '../../../../utils/UtilDate';
 
     export default {
         mounted() {
@@ -33,6 +34,9 @@ import type { UserTestSessionInterface } from '../../../../interfaces/testSessio
             },
             onRowClick(event: DataTableRowClickEvent<UserTestSessionInterface>) {
                 console.log(event);
+            },
+            displayDate(date: Date) {
+                return UtilDate.displayDateFr(date);
             }
         },
         computed: {
@@ -103,10 +107,10 @@ import type { UserTestSessionInterface } from '../../../../interfaces/testSessio
                 </Column>
                 <Column header="Date" field="createdAt" sortable style="width: 20%;">
                     <template #body="slotProps">
-                        {{  slotProps.data.createdAt }}
+                        {{ displayDate(slotProps.data.createdAt) }}
                     </template>
                 </Column>
-                <Column header="Taux de réussite" style="width: 30%;">
+                <Column header="Taux de réussite" field="successRate" sortable style="width: 30%;">
                     <template #body="slotProps">
                         {{ slotProps.data.successRate }}
                     </template>
