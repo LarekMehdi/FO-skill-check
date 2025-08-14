@@ -30,10 +30,9 @@ import { UtilDate } from '../../../../utils/UtilDate';
         methods: {
             async initUserDetails() {
                 this.item = await UserService.findDetails(this.idParam);
-                console.log(this.item);
             },
             onRowClick(event: DataTableRowClickEvent<UserTestSessionInterface>) {
-                console.log(event);
+                this.$router.push(`/test/${event.data.testId}/result/${event.data.sessionId}`);
             },
             displayDate(date: Date) {
                 return UtilDate.displayDateFr(date);
@@ -119,3 +118,9 @@ import { UtilDate } from '../../../../utils/UtilDate';
         </section>
     </article>
 </template>
+
+<style scoped>
+    :deep(.p-datatable tbody tr:hover) {
+        cursor: pointer;
+    }
+</style>
