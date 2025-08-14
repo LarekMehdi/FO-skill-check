@@ -1,4 +1,5 @@
 import { UserApi } from "../api/UserApi";
+import type { GenericFilter } from "../interfaces/filter.interface";
 
 export abstract class UserService {
 
@@ -10,7 +11,7 @@ export abstract class UserService {
 
     /** FIND ALL **/
 
-    static async findAll() {
-        return await UserApi.findAll();
+    static async findAll(filter: GenericFilter) {
+        return await UserApi.findAll(filter);
     }
 }

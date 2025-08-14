@@ -1,3 +1,5 @@
+import type { DataTablePageEvent } from "primevue";
+import type { GenericFilter } from "../interfaces/filter.interface";
 import type { OptionSelectInterface } from "../interfaces/input.interface";
 
 export abstract class UtilEntity {
@@ -12,5 +14,11 @@ export abstract class UtilEntity {
             options.push(option);
         }
         return options;
+    }
+
+    static updateFilterOnPage(event: DataTablePageEvent, filter: GenericFilter): GenericFilter {
+        filter.offset = event.first;
+        filter.limit = event.rows;
+        return filter;
     }
 }

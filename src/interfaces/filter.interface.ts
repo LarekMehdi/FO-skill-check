@@ -7,3 +7,8 @@ export interface GenericFilter {
     sortOrder?: SortOrder;
 
 }
+
+export interface PageInterface<T> {
+    datas: T[];
+    totalElement: number;
+}

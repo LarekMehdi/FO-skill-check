@@ -1,3 +1,4 @@
+import type { GenericFilter } from "../interfaces/filter.interface";
 import { useApi } from "./useApi";
 
 export abstract class UserApi {
@@ -8,7 +9,7 @@ export abstract class UserApi {
         try {
             const { data } = await useApi().get(`/users/details/${id}`);
             return data;
-        } catch(e: unknown) {
+        } catch (e: unknown) {
             console.error(e);
             throw e;
         }
@@ -16,11 +17,11 @@ export abstract class UserApi {
 
     /** FIND ALL **/
 
-    static async findAll() {
+    static async findAll(filter: GenericFilter) {
         try {
-            const { data } = await useApi().get(``);
+            const { data } = await useApi().get(`/users`, {params: filter});
             return data;
-        } catch(e: unknown) {
+        } catch (e: unknown) {
             console.error(e);
             throw e;
         }
