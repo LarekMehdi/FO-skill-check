@@ -4,6 +4,7 @@ import type { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/UserService';
 import type { GenericFilter, PageInterface } from '../../../../interfaces/filter.interface';
 import { UtilEntity } from '../../../../utils/UtilEntity';
+import InputSwitch from '../../../ui/InputSwitch.vue';
 
     export default {
         mounted() {
@@ -34,10 +35,14 @@ import { UtilEntity } from '../../../../utils/UtilEntity';
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
                 this.initUserList();
             },
+            updateRole(id: number) {
+                console.log(id);
+            }
         },
         components: {
             DataTable,
             Column,
+            InputSwitch,
         },
     }
 </script>
@@ -75,6 +80,13 @@ import { UtilEntity } from '../../../../utils/UtilEntity';
             <Column header="Role" field="role" sortable style="width: 10%;">
                 <template #body="slotProps">
                     {{  slotProps.data.role }}
+                    <InputSwitch
+                        :modelValue="slotProps.data.role === 'ADMIN'"
+                        name="isAdmin"
+                        :displayLabel="false" 
+                        :inline="true"
+                        @update:model-value="updateRole(slotProps.data.id)"
+                    />
                 </template>
             </Column>
         </DataTable>
