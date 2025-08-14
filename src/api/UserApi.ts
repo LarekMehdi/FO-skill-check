@@ -13,4 +13,16 @@ export abstract class UserApi {
             throw e;
         }
     }
+
+    /** FIND ALL **/
+
+    static async findAll() {
+        try {
+            const { data } = await useApi().get(``);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
 }

@@ -7,4 +7,10 @@ export abstract class UserService {
     static async findDetails(id: number) {
         return await UserApi.findDetails(id);
     }
+
+    /** FIND ALL **/
+
+    static async findAll() {
+        return await UserApi.findAll();
+    }
 }

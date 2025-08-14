@@ -24,6 +24,7 @@ import Signin from "../components/pages/auth/Signin.vue";
 import Signup from "../components/pages/auth/Signup.vue";
 import Profil from "../components/pages/auth/user/Profil.vue";
 import Error403 from "../components/pages/error/Error403.vue";
+import UserList from "../components/pages/auth/user/UserList.vue";
 
 
 
@@ -86,6 +87,12 @@ const routes = [
     name: "UserProfil",
     component: Profil,
     meta: { onlyMe: true }
+  },
+  {
+    path: "/user",
+    name: "UserList",
+    component: UserList,
+    meta: { requiresAdmin: true }
   },
   ///////////// ERROR ///////////////
   {
