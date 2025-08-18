@@ -18,7 +18,7 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
                 },
                 userList: [],
                 filter: {
-                    limit: 2,
+                    limit: 10,
                     offset: 0
                 }
             }
@@ -59,14 +59,14 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
             tableStyle="min-width: 50rem" 
             :lazy="true"
             :paginator="true"
-            :rows="2"
+            :rows="10"
             :totalRecords="item.totalElement"
             @page="onPage"
         >
             <template #empty>Aucun utilisateurs à afficher</template>
             <Column header="Id" field="id" sortable style="width: 10%;">
                 <template #body="slotProps" >
-                    <span @click="goToUserDetails(slotProps.data.id)">
+                    <span @click="goToUserDetails(slotProps.data.id)" class="clickable">
                         {{  slotProps.data.id }}
                     </span>
                     
@@ -74,14 +74,14 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
             </Column>
             <Column header="Pseudo" field="pseudo" sortable style="width: 40%;">
                 <template #body="slotProps">
-                    <span @click="goToUserDetails(slotProps.data.id)">
+                    <span @click="goToUserDetails(slotProps.data.id)" class="clickable">
                         {{  slotProps.data.pseudo }}
                     </span>
                 </template>
             </Column>
             <Column header="Email" field="email" sortable style="width: 40%;">
                 <template #body="slotProps">
-                    <span @click="goToUserDetails(slotProps.data.id)">
+                    <span @click="goToUserDetails(slotProps.data.id)" class="clickable">
                         {{  slotProps.data.email }}
                     </span>
                 </template>
@@ -102,8 +102,9 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
     </section>
 </template>
 
-<style scoped>
-    :deep(.p-datatable tbody tr:hover) {
+<style>
+    .clickable {
         cursor: pointer;
     }
 </style>
+
