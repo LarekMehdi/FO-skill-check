@@ -29,7 +29,10 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
                 this.userList = this.item.datas;
             },
             onRowClick(event: DataTableRowClickEvent<UserInterface>) {
-                this.$router.push(`/user/${event.data.id}`)
+                this.goToUserDetails(event.data.id);
+            },
+            goToUserDetails(id: number) {
+                this.$router.push(`/user/${id}`)
             },
             onPage(event: DataTablePageEvent) {
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
@@ -37,7 +40,7 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
             },
             updateRole(id: number) {
                 console.log(id);
-            }
+            },
         },
         components: {
             DataTable,
@@ -58,23 +61,29 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
             :paginator="true"
             :rows="2"
             :totalRecords="item.totalElement"
-            @row-click="onRowClick"
             @page="onPage"
         >
             <template #empty>Aucun utilisateurs à afficher</template>
             <Column header="Id" field="id" sortable style="width: 10%;">
-                <template #body="slotProps">
-                    {{  slotProps.data.id }}
+                <template #body="slotProps" >
+                    <span @click="goToUserDetails(slotProps.data.id)">
+                        {{  slotProps.data.id }}
+                    </span>
+                    
                 </template>
             </Column>
             <Column header="Pseudo" field="pseudo" sortable style="width: 40%;">
                 <template #body="slotProps">
-                    {{  slotProps.data.pseudo }}
+                    <span @click="goToUserDetails(slotProps.data.id)">
+                        {{  slotProps.data.pseudo }}
+                    </span>
                 </template>
             </Column>
             <Column header="Email" field="email" sortable style="width: 40%;">
                 <template #body="slotProps">
-                    {{  slotProps.data.email }}
+                    <span @click="goToUserDetails(slotProps.data.id)">
+                        {{  slotProps.data.email }}
+                    </span>
                 </template>
             </Column>
             <Column header="Role" field="role" sortable style="width: 10%;">
