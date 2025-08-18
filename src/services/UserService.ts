@@ -1,5 +1,6 @@
 import { UserApi } from "../api/UserApi";
 import type { GenericFilter } from "../interfaces/filter.interface";
+import type { UserInterface } from "../interfaces/user.interface";
 
 export abstract class UserService {
 
@@ -13,5 +14,11 @@ export abstract class UserService {
 
     static async findAll(filter: GenericFilter) {
         return await UserApi.findAll(filter);
+    }
+
+    /** UPDATE **/
+
+    static async changeUserRole(dto: Pick<UserInterface, 'id' | 'role'>) {
+        return await UserApi.changeUserRole(dto);
     }
 }

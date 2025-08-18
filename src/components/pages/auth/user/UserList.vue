@@ -5,8 +5,19 @@ import { UserService } from '../../../../services/UserService';
 import type { GenericFilter, PageInterface } from '../../../../interfaces/filter.interface';
 import { UtilEntity } from '../../../../utils/UtilEntity';
 import InputSwitch from '../../../ui/InputSwitch.vue';
+import { useToast } from 'vue-toastification';
+import { Role } from '../../../../constants/role.constant';
+import { useAuth } from '../../../../composables/useAuth';
 
     export default {
+        setup() {
+            const toast = useToast();
+            const { userId } = useAuth(); 
+            return {
+                toast,
+                userId,
+            }
+        },
         mounted() {
             this.initUserList();
         },
@@ -38,8 +49,32 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
                 this.initUserList();
             },
-            updateRole(id: number) {
-                console.log(id);
+            isRoleAdmin(role: string): boolean {
+                return role === 'ADMIN';
+            },
+            isMyId(id: number) {
+                return id === this.userId;
+            },
+            async updateRole(id: number, newValue: boolean) {
+                try {
+                    
+                    const user: UserInterface | undefined = this.userList.find((u) => u.id === id);
+                    if (!user) {
+                        this.toast.error('Aucun utilisateurs trouvé avec cet id');
+                        return;
+                    }
+                    const newRole: Role = newValue ? Role.ADMIN : Role.USER;
+                    const userDto: Pick<UserInterface, 'id' | 'role'> = {id: user.id, role: newRole};
+                    await UserService.changeUserRole(userDto);
+                    this.toast.success('Role mis a jour');
+
+                } catch(e: unknown) {
+                    console.error(e);
+                    this.toast.error('Une erreur est survenue');
+
+                } finally {
+                    await this.initUserList();
+                }
             },
         },
         components: {
@@ -90,11 +125,12 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
                 <template #body="slotProps">
                     {{  slotProps.data.role }}
                     <InputSwitch
-                        :modelValue="slotProps.data.role === 'ADMIN'"
+                        v-if="!isMyId(slotProps.data.id)"
+                        :modelValue="isRoleAdmin(slotProps.data.role)"
                         name="isAdmin"
                         :displayLabel="false" 
                         :inline="true"
-                        @update:model-value="updateRole(slotProps.data.id)"
+                        @update:model-value="(newValue: boolean) => updateRole(slotProps.data.id, newValue)"
                     />
                 </template>
             </Column>
