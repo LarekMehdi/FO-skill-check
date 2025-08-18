@@ -12,3 +12,7 @@ export interface PageInterface<T> {
     datas: T[];
     totalElement: number;
 }
+
+export interface TestListFilterInterface extends GenericFilter {
+    
+}

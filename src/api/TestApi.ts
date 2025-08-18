@@ -1,4 +1,4 @@
-import type { GenericFilter } from "../interfaces/filter.interface";
+import type { TestListFilterInterface } from "../interfaces/filter.interface";
 import type { CreateTestInterface, SubmitTestInterface, TestWithQuestionIds } from "../interfaces/test.interface";
 import { useApi } from "./useApi";
 
@@ -6,10 +6,19 @@ export abstract class TestApi {
 
     /** FIND ALL **/
 
-    static async findAll(filter: GenericFilter) {
+    static async findAll(filter: TestListFilterInterface) {
         try {
             const { data } = await useApi().get(`/tests`, {params: filter});
             return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    static async exportAll(filter: TestListFilterInterface) {
+        try {
+
         } catch(e: unknown) {
             console.error(e);
             throw e;

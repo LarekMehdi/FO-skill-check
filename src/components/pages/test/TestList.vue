@@ -11,7 +11,7 @@ import { TestService } from '../../../services/TestService';
 
 
 
-import type { GenericFilter } from '../../../interfaces/filter.interface';
+import type { TestListFilterInterface } from '../../../interfaces/filter.interface';
 import { Column, DataTable } from 'primevue';
 import { useAuth } from '../../../composables/useAuth';
 import Modal from '../../shared/Modal.vue';
@@ -34,7 +34,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             this.initTestList();
         },
         data(): {
-            filter: GenericFilter;
+            filter: TestListFilterInterface;
             testList: TestInterface[];
             displayAddTestModal: boolean;
             newTest: CreateTestInterface;
@@ -66,6 +66,15 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                 try {
                     const result = await TestService.findAll(this.filter);
                     this.testList = result.content;
+
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            },
+            async exportList() {
+                try {
+                    const result = await TestService.exportAll(this.filter);
+
 
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");

@@ -69,7 +69,6 @@ import { useAuth } from '../../../../composables/useAuth';
                     this.toast.success('Role mis a jour');
 
                 } catch(e: unknown) {
-                    console.error(e);
                     this.toast.error('Une erreur est survenue');
 
                 } finally {

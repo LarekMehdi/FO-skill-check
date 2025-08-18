@@ -1,13 +1,17 @@
 import { TestApi } from "../api/TestApi";
-import type { GenericFilter } from "../interfaces/filter.interface";
+import type { TestListFilterInterface } from "../interfaces/filter.interface";
 import type { CreateTestInterface, SubmitTestInterface, TestSessionInterface, TestWithQuestionIds } from "../interfaces/test.interface";
 
 export abstract class TestService {
 
     /** FIND ALL **/
 
-    static async findAll(filter: GenericFilter) {
+    static async findAll(filter: TestListFilterInterface) {
         return await TestApi.findAll(filter);
+    }
+
+    static async exportAll(filter: TestListFilterInterface) {
+        return await TestApi.exportAll(filter);
     }
 
     /** FIND **/
