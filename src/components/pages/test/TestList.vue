@@ -126,6 +126,13 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
    
     <h1 class="mb-5">Liste des tests</h1>
     <section v-if="isAdmin" class="row mb-3">
+        <aside class="col text-start">
+            <ButtonCustom 
+                content="Exporter"
+                buttonClass="btn-success"
+                @click="exportList"
+            />
+        </aside>
         <aside class="col text-end">
             <ButtonCustom 
                 content="Ajouter un test"
