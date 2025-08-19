@@ -11,7 +11,21 @@ export abstract class TestService {
     }
 
     static async exportAll(filter: TestListFilterInterface) {
-        return await TestApi.exportAll(filter);
+        try {
+            const blob: Blob = await TestApi.exportAll(filter);
+            const url: string = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'test_export.xlsx');
+            document.body.appendChild(link);
+            link.click();
+
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
     }
 
     /** FIND **/

@@ -18,8 +18,8 @@ export abstract class TestApi {
 
     static async exportAll(filter: TestListFilterInterface) {
         try {
-            const { data } = await useApi().get(`tests/export`, {params: filter});
-            return data;
+            const { data } = await useApi().get(`tests/export`, {params: filter, responseType: 'blob'});
+            return new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         } catch(e: unknown) {
             console.error(e);
             throw e;
