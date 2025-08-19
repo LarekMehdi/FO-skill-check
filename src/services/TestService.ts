@@ -53,4 +53,8 @@ export abstract class TestService {
     static async submitTestResult(submitData: SubmitTestInterface): Promise<TestSessionInterface> {
         return await TestApi.submitTestResult(submitData);
     }
+
+    static async importExcel(file: File) {
+        return await TestApi.importExcel(file);
+    }
 }

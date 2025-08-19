@@ -38,12 +38,14 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             testList: TestInterface[];
             displayAddTestModal: boolean;
             newTest: CreateTestInterface;
+            file: File | null;
         } {
             return {
                 filter: { limit: 10, offset: 0},
                 testList: [],
                 displayAddTestModal: false,
-                newTest: { title: '', description: ''}
+                newTest: { title: '', description: ''},
+                file: null,
             }
             
         },
@@ -73,11 +75,20 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             },
             async exportList() {
                 try {
-                    const result = await TestService.exportAll(this.filter);
-
-
+                    await TestService.exportAll(this.filter);
                 } catch(e: unknown) {
-                    this.toast.error("Une erreur est survenue");
+                    this.toast.error("Une erreur est survenue lors de l'export");
+                }
+            },
+            async importExcel() {
+                try {
+                    if (!this.file) {
+                        this.toast.warning("Aucun fichier à importer");
+                        return;
+                    } 
+                    await TestService.importExcel(this.file);
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de l'import");
                 }
             },
             openAddTestModal() {
@@ -131,6 +142,11 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                 content="Exporter"
                 buttonClass="btn-success"
                 @click="exportList"
+            />
+            <ButtonCustom 
+                content="Importer Excel"
+                buttonClass="btn-warning ms-3"
+                @click="importExcel"
             />
         </aside>
         <aside class="col text-end">

@@ -81,4 +81,17 @@ export abstract class TestApi {
             throw e;
         }
     }
+
+    static async importExcel(file: File) {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const { data } = await useApi().post("/tests/import", formData, { headers: { "Content-Type": "multipart/form-data" }});
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
 }
