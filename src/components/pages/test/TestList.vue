@@ -68,6 +68,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                 try {
                     const result = await TestService.findAll(this.filter);
                     this.testList = result.content;
+                    this.file = null;
 
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
@@ -87,6 +88,8 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                         return;
                     } 
                     await TestService.importExcel(this.file);
+                    this.toast.success("Données importées avec succés");
+                    this.initTestList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de l'import");
                 }
@@ -121,6 +124,16 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             goToDetailsTest(id: number) {
                 this.$router.push(`/test/${id}`);
             },
+            selectFile() {
+                (this.$refs.fileInput as HTMLInputElement).click();
+            },
+            onFileChange(event: Event) {
+                const target = event.target as HTMLInputElement;
+                if (target.files && target.files.length > 0) {
+                    this.file = target.files[0];
+                    this.importExcel();
+                }
+            },
         },
         components: {
             Modal,
@@ -146,7 +159,15 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             <ButtonCustom 
                 content="Importer Excel"
                 buttonClass="btn-warning ms-3"
-                @click="importExcel"
+                @click="selectFile"
+            />
+            <!-- TODO: Composant InputFile -->
+            <input 
+                type="file" 
+                accept=".xlsx,.xls" 
+                ref="fileInput" 
+                style="display: none" 
+                @change="onFileChange"
             />
         </aside>
         <aside class="col text-end">
