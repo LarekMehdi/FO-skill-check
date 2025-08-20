@@ -258,7 +258,10 @@ import CodeBlock from '../../ui/CodeBlock.vue';
     >
         <template #content>
 
-            <DataTable :value="questionList">
+            <!-- TODO: pagination -->
+            <DataTable 
+                :value="questionList"
+            >
                 <template #empty>Aucunes questions à ajouter</template>
                 <Column style="width: 10%;">
                     <template #body="slotProps">
