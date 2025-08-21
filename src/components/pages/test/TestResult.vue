@@ -26,6 +26,14 @@ import QuestionResult from '../../shared/QuestionResult.vue';
                 this.item = await SessionService.findTestSession(this.sessionId);
             },
         },
+        computed: {
+            correctQuestionCount() {
+                return this.item.questionList.filter((q) => q.isCorrect === true).length;
+            },
+            questionCount() {
+                return this.item.questionList.length;
+            },
+        },
         components: {
             QuestionResult,
         }
@@ -36,6 +44,10 @@ import QuestionResult from '../../shared/QuestionResult.vue';
 <template>
     <h1 class="mb-5">Resultat du test</h1>
     <h3>{{ item.testTitle }}</h3>
+
+    <aside>
+        <p>Nombre de bonnes réponses: {{ correctQuestionCount }} / {{ questionCount }}</p>
+    </aside>
 
 
     <article>
