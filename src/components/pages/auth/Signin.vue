@@ -64,7 +64,7 @@ export default {
                     user: user,
                 });
 
-                this.$router.push('/');
+                this.$router.push(`/user/${user.id}`);
                 
             } catch (e: any) {
                 if (e.response && e.response.status === 401) {

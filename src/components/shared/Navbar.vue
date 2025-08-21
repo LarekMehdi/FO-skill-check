@@ -31,7 +31,7 @@ export default {
 
 <template>
     <nav class="navbar fixed-top navbar-expand navbar-dark bg-dark px-3">
-        <router-link to="/" class="navbar-brand">Accueil</router-link>
+        <router-link v-if="!isLoggedIn" to="/" class="navbar-brand">Accueil</router-link>
         <router-link v-if="!isLoggedIn" to="/signin" class="navbar-brand">Se connecter</router-link>
         <router-link v-if="!isLoggedIn" to="/signup" class="navbar-brand">Créer un compte</router-link>
 
