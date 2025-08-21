@@ -11,11 +11,12 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 import type { QuestionInterface } from '../../../interfaces/question.interface';
 import type { GenericFilter } from '../../../interfaces/filter.interface';
 import { QuestionService } from '../../../services/QuestionService';
-import { Column, DataTable } from 'primevue';
+import { Column, DataTable, type DataTablePageEvent } from 'primevue';
 import { Difficulty, getDifficultyLabel } from '../../../constants/difficulty.constant';
 import type { TagInterface } from '../../../interfaces/tag.interface';
 import InputCheck from '../../ui/InputCheck.vue';
 import CodeBlock from '../../ui/CodeBlock.vue';
+import { UtilEntity } from '../../../utils/UtilEntity';
 
     export default {
         setup() {
@@ -38,6 +39,7 @@ import CodeBlock from '../../ui/CodeBlock.vue';
             questionIds: number[],
             questionList: QuestionInterface[],
             questionFilter: GenericFilter,
+            questionTotalElement: number,
         }
         {
             return {
@@ -48,12 +50,13 @@ import CodeBlock from '../../ui/CodeBlock.vue';
                     timeLimit: 0,
                     title: '',
                     description: '',
-                    questionList: []
+                    questionList: [],
                 },
                 displayAddQuestionModal: false,
                 questionIds: [],
                 questionList: [],
-                questionFilter: {limit: 10, offset: 0}
+                questionFilter: {limit: 10, offset: 0},
+                questionTotalElement: 0,
             }
         },
         methods: {
@@ -67,7 +70,10 @@ import CodeBlock from '../../ui/CodeBlock.vue';
             },
             async getAllQuestions() {
                 try {
-                    this.questionList = await QuestionService.findAll(this.questionFilter);
+                    const result = await QuestionService.findAll(this.questionFilter);
+                    this.questionList = result.datas;
+                    this.questionTotalElement = result.totalElement;
+
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
@@ -114,6 +120,10 @@ import CodeBlock from '../../ui/CodeBlock.vue';
             },
             goToTakeTest() {
                 this.$router.push(`/test/${this.testId}/takeTest`);
+            },
+            onPage(event: DataTablePageEvent) {
+                this.questionFilter = UtilEntity.updateFilterOnPage(event, this.questionFilter);
+                this.getAllQuestions();
             },
         },
         computed: {
@@ -258,9 +268,14 @@ import CodeBlock from '../../ui/CodeBlock.vue';
     >
         <template #content>
 
-            <!-- TODO: pagination -->
             <DataTable 
                 :value="questionList"
+                tableStyle="min-width: 50rem" 
+                :lazy="true"
+                :paginator="true"
+                :rows="10"
+                :totalRecords="questionTotalElement"
+                @page="onPage"
             >
                 <template #empty>Aucunes questions à ajouter</template>
                 <Column style="width: 10%;">
