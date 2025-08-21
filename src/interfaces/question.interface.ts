@@ -43,6 +43,7 @@ export interface ResultQuestionInterface {
     id: number;
     content: string;
     code?: string;
+    isCorrect: boolean;
     choices: ResultAnswerInterface[];
 }
 

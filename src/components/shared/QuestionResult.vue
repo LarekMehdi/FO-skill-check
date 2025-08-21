@@ -42,6 +42,8 @@ import CodeBlock from '../ui/CodeBlock.vue';
 <template>
     <article class="my-5">
         <section class="mb-3">
+            <i v-if="question.isCorrect" class="pi pi-check text-success me-2" style="font-size: 2rem"></i>
+            <i v-else class="pi pi-times text-danger me-2" style="font-size: 2rem"></i>
             <InputTextArea
                 v-model="question.content"
                 name="content"
