@@ -94,4 +94,16 @@ export abstract class TestApi {
             throw e;
         }
     }
+
+    /** DELETE **/
+
+    static async deleteTest(id: number) {
+        try {
+            const { data } = await useApi().delete(`/tests/${id}`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
 }

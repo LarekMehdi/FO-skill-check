@@ -57,4 +57,10 @@ export abstract class TestService {
     static async importExcel(file: File) {
         return await TestApi.importExcel(file);
     }
+
+    /** DELETE **/
+
+    static async deleteTest(id: number) {
+        return await TestApi.deleteTest(id);
+    }
 }

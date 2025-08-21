@@ -37,17 +37,20 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             filter: TestListFilterInterface;
             testList: TestInterface[];
             displayAddTestModal: boolean;
+            displayConfirmDeletetModal: boolean;
             newTest: CreateTestInterface;
             file: File | null;
+            testIdToDelete: number | null;
         } {
             return {
                 filter: { limit: 10, offset: 0},
                 testList: [],
                 displayAddTestModal: false,
+                displayConfirmDeletetModal: false,
                 newTest: { title: '', description: ''},
                 file: null,
+                testIdToDelete: null,
             }
-            
         },
         validations() {
             return {
@@ -100,6 +103,26 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             closeAddTestModal() {
                 this.displayAddTestModal = false;
                 this.resetNewTest();
+            },
+            openConfirmDeleteModal(id: number) {
+                this.displayConfirmDeletetModal = true;
+                this.testIdToDelete = id;
+            },
+            closeConfirmDeleteModal() {
+                this.displayConfirmDeletetModal = false;
+                this.testIdToDelete = null;
+            },
+            async deleteTest() {
+                console.log(this.testIdToDelete);
+                if (!this.testIdToDelete) {
+                    this.toast.error("Pas de test selectionné pour la suppression");
+                    return;
+                }
+                try {
+
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de la suppression");
+                }
             },
             async addTest() {
                 this.v$.$touch();
@@ -193,7 +216,19 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             </Column>
             <Column header="Action" style="width: 10%;">
                 <template #body="slotProps">
-                    <ButtonCustom content="Détails" @click="goToDetailsTest(slotProps.data.id)"/>
+                    <div style="display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+                        <ButtonCustom content="Détails" @click="goToDetailsTest(slotProps.data.id)"/>
+                    
+                        <i  v-if="isAdmin"
+                            class="pi pi-trash" 
+                            style="color: red" 
+                            @click="openConfirmDeleteModal(slotProps.data.id)"
+                            title="Supprimer ce test"
+                        >
+                        </i>
+                    </div>
+                    
+                    
                 </template>
             </Column>
         </DataTable>
@@ -236,6 +271,21 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                     />
                 </div>
             </section>
+        </template>
+    </Modal>
+
+    <!-- TODO: ModalDelete -->
+    <Modal 
+        :visible="displayConfirmDeletetModal" 
+        @close="closeConfirmDeleteModal"
+        @submit="deleteTest"
+        title="Supprimer un test"
+        submitLabel="Supprimer"
+    >
+        <template #content>
+            <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
+            <p>Etes vous sur de vouloir supprimer ce test?</p>
+            <p>Cela va aussi supprimer toutes les sessions liées.</p>
         </template>
     </Modal>
 
