@@ -17,7 +17,7 @@ export function getDifficultyLabel(value: Difficulty): string {
     switch(value) {
         case 'EASY': return 'Facile';
         case 'MEDIUM': return 'Moyen';
-        case 'HARD': return 'Difficle';
+        case 'HARD': return 'Difficile';
         default: return value;
     }
 }
