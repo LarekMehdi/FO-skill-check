@@ -119,7 +119,10 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
                     return;
                 }
                 try {
-
+                    await TestService.deleteTest(this.testIdToDelete);
+                    this.closeConfirmDeleteModal();
+                    this.toast.success("Test supprimé avec succés");
+                    this.initTestList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de la suppression");
                 }
