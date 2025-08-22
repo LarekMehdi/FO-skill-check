@@ -198,8 +198,8 @@ import { UtilEntity } from '../../../utils/UtilEntity';
                 <InputNumber
                     v-model="displaySuccessRate"
                     name="successRate"
-                    placeholder="Taux de réussite"
-                    label="Taux de réussite"
+                    placeholder="Taux de réussite moyen"
+                    label="Taux de réussite moyen"
                     :displayLabel="true"
                     :disabled="true"
                     :symbol="'%'"

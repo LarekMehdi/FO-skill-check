@@ -69,9 +69,7 @@ export function useApi() {
                 console.log("ressource indispo");
             }
             if (error.response && error.response.status === 403 && originalRequest.url !== 'auth/signup' && originalRequest.url !== 'auth/signin') {
-                //TODO: page 403
-                //location.href = "/error/403";
-                location.href = "/signin";
+                location.href = "/error/403";
             }
             return Promise.reject(error);
         }
