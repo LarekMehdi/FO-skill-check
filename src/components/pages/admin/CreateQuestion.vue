@@ -112,6 +112,8 @@ import InputCode from '../../ui/InputCode.vue';
                 if (this.answerItems.length < 2) {
                     this.toast.error("Il faut au moins 2 réponses");
                     return;
+                } else if (this.answerItems.length > 4) {
+                    this.answerItems = this.answerItems.splice(0, 4);
                 }
 
                 let atLeastOneCorect: boolean = false;
@@ -155,6 +157,10 @@ import InputCode from '../../ui/InputCode.vue';
                 this.addAnswerItem();
             },
             addAnswerItem() {
+                if (this.answerItems.length > 3) {
+                    this.toast.warning("Il y a déjà 4 réponses pour cette question");
+                    return;
+                }
                 let item: CreateAnswerInterface = {
                     content: '',
                     isCorrect: false,
