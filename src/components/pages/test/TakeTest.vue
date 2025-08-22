@@ -92,6 +92,7 @@ import Timer from '../../ui/Timer.vue';
         <Timer
             v-if="currentQuestion"
             :question="currentQuestion"
+            :key="currentQuestionIndex"
             @timeOut="goToNextQuestion"
         />
     </aside>
