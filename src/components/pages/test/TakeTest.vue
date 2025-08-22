@@ -14,6 +14,7 @@ import Timer from '../../ui/Timer.vue';
             testId: number,
             submitData: SubmitTestInterface,
             currentQuestionIndex: number,
+            questionCount: number | null,
         } {
             return {
                 testId: Number(this.$route.params.id),
@@ -27,6 +28,7 @@ import Timer from '../../ui/Timer.vue';
                     answers: []
                 },
                 currentQuestionIndex: 0,
+                questionCount: null,
             }
         },
         setup() {
@@ -54,6 +56,7 @@ import Timer from '../../ui/Timer.vue';
         methods: {
             async initTakeTest() {
                 this.item = await TestService.findTestToTake(this.testId);
+                this.questionCount = this.item.questionList.length;
             },
             async submitTest() {
                 try {
@@ -82,7 +85,7 @@ import Timer from '../../ui/Timer.vue';
 </script>
 
 <template>
-    <aside class="d-flex align-items-center">
+    <aside class="d-flex align-items-center mb-4">
         <div class="flex-grow-1">
             <h1 class="text-center m-0"> {{ item.title }}</h1>
         </div>
@@ -93,6 +96,9 @@ import Timer from '../../ui/Timer.vue';
         />
     </aside>
     
+    <section class="mb-3">
+         <p class="text-start">Question {{ currentQuestionIndex + 1 }} / {{ questionCount }}</p>
+    </section>
 
     <section v-if="currentQuestion">
         <QuestionQCM
