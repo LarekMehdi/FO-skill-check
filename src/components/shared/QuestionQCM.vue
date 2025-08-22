@@ -23,6 +23,11 @@ import CodeBlock from '../ui/CodeBlock.vue';
                 required: true,
             },
         },
+        computed: {
+            multipleAnswer() {
+                return this.question.isMultipleAnswer;
+            },
+        },
         methods: {
             onAnswerUpdate(ids: number[]) {
                 this.selectedAnswerIds = ids;
@@ -63,6 +68,7 @@ import CodeBlock from '../ui/CodeBlock.vue';
             <AnswerQCM
                 v-model="selectedAnswerIds"
                 :answers="question.choices"
+                :isMultipleAnswer="multipleAnswer"
                 @update:model-value="onAnswerUpdate"
             />
         </section>

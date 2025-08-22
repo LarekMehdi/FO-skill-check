@@ -63,7 +63,7 @@
             <input
                 type="checkbox"
                 :name="name"
-                :class="[isCircle ? 'circle-checkbox' : '']"
+                :class="[isCircle ? 'circle-checkbox' : 'square-checkbox']"
                 :checked="modelValue"
                 :disabled="disabled"
                 @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
@@ -102,6 +102,46 @@
     .circle-checkbox:disabled {
         cursor: default;
     }
+    .square-checkbox {
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border: 2px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    flex-shrink: 0;
+    background-color: white;
+}
+
+.square-checkbox:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.square-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 8px;
+    height: 14px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.square-checkbox:hover:not(:disabled) {
+    border-color: #007bff;
+}
+
+.square-checkbox:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
     
    
 </style>

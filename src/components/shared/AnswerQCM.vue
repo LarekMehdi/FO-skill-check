@@ -16,6 +16,10 @@ import InputText from '../ui/InputText.vue';
             answers: {
                 type: Object as PropType<AnswerInterface[]>,
                 required: true,
+            },
+            isMultipleAnswer: {
+                type: Boolean,
+                required: true,
             }
         },
         methods: {
@@ -55,7 +59,7 @@ import InputText from '../ui/InputText.vue';
                     label="Sélectionner"
                     :displayLabel="false"
                     :inline="true"
-                    :isCircle="true"
+                    :isCircle="!isMultipleAnswer"
                     @update:model-value="(checked: boolean) => toggleAnswer(answer.id, checked)"
                 />
             </div>
