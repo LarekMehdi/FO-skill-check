@@ -83,7 +83,7 @@ import CodeBlock from '../ui/CodeBlock.vue';
                                 label="Sélectionner"
                                 :displayLabel="false"
                                 :inline="true"
-                                :isCircle="true"
+                                :isCircle="question.isMultipleAnswer ? false : true"
                                 :disabled="true"
                             />
                         </div>

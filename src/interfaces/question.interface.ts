@@ -44,6 +44,7 @@ export interface ResultQuestionInterface {
     content: string;
     code?: string;
     isCorrect: boolean;
+    isMultipleAnswer: boolean;
     choices: ResultAnswerInterface[];
 }
 
