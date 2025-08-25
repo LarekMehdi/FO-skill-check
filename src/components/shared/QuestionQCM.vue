@@ -29,10 +29,10 @@ import CodeBlock from '../ui/CodeBlock.vue';
             },
         },
         methods: {
-            onAnswerUpdate(ids: number[]) {
-                this.selectedAnswerIds = ids;
+            onAnswerUpdate(selected: number[] | number | null) {
+                this.selectedAnswerIds = Array.isArray(selected) ? selected : selected !== null ? [selected] : [];
 
-                this.$emit('update:modelValue', { questionId: this.question.id, selectedAnswerIds: [...ids]});
+                this.$emit('update:modelValue', { questionId: this.question.id, selectedAnswerIds: this.selectedAnswerIds});
             },
         },
         components: {
@@ -69,6 +69,7 @@ import CodeBlock from '../ui/CodeBlock.vue';
                 v-model="selectedAnswerIds"
                 :answers="question.choices"
                 :isMultipleAnswer="multipleAnswer"
+                :questionId="question.id"
                 @update:model-value="onAnswerUpdate"
             />
         </section>

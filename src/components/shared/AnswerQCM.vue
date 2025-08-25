@@ -3,6 +3,7 @@ import type { PropType } from 'vue';
 import type { AnswerInterface } from '../../interfaces/answer.interface';
 import InputCheck from '../ui/InputCheck.vue';
 import InputText from '../ui/InputText.vue';
+import InputRadio from '../ui/InputRadio.vue';
 
     export default {
         data() {
@@ -10,7 +11,7 @@ import InputText from '../ui/InputText.vue';
         },
         props: {
             modelValue: {
-                type: Array as PropType<Number[]>,
+                type: [Array, Number] as PropType<number[] | number | null>,
                 required: true,
             },
             answers: {
@@ -20,20 +21,32 @@ import InputText from '../ui/InputText.vue';
             isMultipleAnswer: {
                 type: Boolean,
                 required: true,
+            },
+            questionId: {
+                type: Number,
+                required: false,
+                default: -1,
             }
         },
         methods: {
             toggleAnswer(answerId: number, checked: boolean) {
-                const updated = checked ? [...this.modelValue, answerId] : this.modelValue.filter((id) => id !== answerId);
-                this.$emit('update:modelValue', updated);
+                if (this.isMultipleAnswer) {
+                    const current = Array.isArray(this.modelValue) ? this.modelValue : [];
+                    const updated = checked ? [...current, answerId] : current.filter((id) => id !== answerId);
+                    this.$emit('update:modelValue', updated);
+                } else {
+                    this.$emit("update:modelValue", checked ? answerId : null);
+                }
+                
             },
             isChecked(id: number) {
-                return this.modelValue.includes(id);
+                return this.isMultipleAnswer ? Array.isArray(this.modelValue) && this.modelValue.includes(id) : this.modelValue === id;
             }
         },
         components: {
             InputCheck,
             InputText,
+            InputRadio,
         },
         emits: ['update:modelValue']
     }
@@ -54,6 +67,7 @@ import InputText from '../ui/InputText.vue';
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
                 <InputCheck
+                    v-if="isMultipleAnswer"
                     :modelValue="isChecked(answer.id)"
                     :name="`answer-${answer.id}`"
                     label="Sélectionner"
@@ -61,6 +75,17 @@ import InputText from '../ui/InputText.vue';
                     :inline="true"
                     :isCircle="!isMultipleAnswer"
                     @update:model-value="(checked: boolean) => toggleAnswer(answer.id, checked)"
+                />
+
+                <InputRadio
+                    v-else
+                    :modelValue="typeof modelValue === 'number' ? modelValue : null"
+                    :value="answer.id"
+                    :name="`answer-${questionId}`"
+                    label="Sélectionner"
+                    :displayLabel="false"
+                    :inline="true"
+                    @update:model-value="$emit('update:modelValue', $event)"
                 />
             </div>
         </section>
