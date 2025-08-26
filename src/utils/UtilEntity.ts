@@ -1,6 +1,7 @@
-import type { DataTablePageEvent } from "primevue";
+import type { DataTablePageEvent, DataTableSortEvent } from "primevue";
 import type { GenericFilter } from "../interfaces/filter.interface";
 import type { OptionSelectInterface } from "../interfaces/input.interface";
+import { SortOrder } from "../constants/filter.constant";
 
 export abstract class UtilEntity {
 
@@ -21,4 +22,18 @@ export abstract class UtilEntity {
         filter.limit = event.rows;
         return filter;
     }
-}
+
+    static updatefilterOnSort(event: DataTableSortEvent, filter: GenericFilter): GenericFilter {
+        filter.sortBy = event.sortField as string;
+
+        if (event.sortOrder === 1) {
+            filter.sortOrder = SortOrder.ASC;
+        } else if (event.sortOrder === -1) {
+            filter.sortOrder = SortOrder.DESC;
+        } else {
+            filter.sortOrder = undefined;
+        }
+    
+        return filter;
+    }
+ }
