@@ -39,4 +39,14 @@ export abstract class UserApi {
             throw e;
         }
     }
+
+    static async updateProfil(dto: Pick<UserInterface, 'id' | 'pseudo' | 'email'>) {
+        try {
+            const { data } = await useApi().patch(`/users/${dto.id}/profil`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
 }

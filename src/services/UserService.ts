@@ -21,4 +21,8 @@ export abstract class UserService {
     static async changeUserRole(dto: Pick<UserInterface, 'id' | 'role'>) {
         return await UserApi.changeUserRole(dto);
     }
+
+    static async updateProfil(dto: Pick<UserInterface, 'id' | 'pseudo' | 'email'>) {
+        return await UserApi.updateProfil(dto);
+    }
 }

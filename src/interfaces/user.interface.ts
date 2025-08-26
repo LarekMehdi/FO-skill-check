@@ -4,7 +4,7 @@ import type { UserTestSessionInterface } from "./testSession.interface";
 export interface UserInterface {
     id: number;
     pseudo: string;
-    email?: string;
+    email: string;
     role: Role;
 }
 

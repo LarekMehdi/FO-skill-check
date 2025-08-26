@@ -9,6 +9,9 @@ import type { UserTestSessionInterface } from '../../../../interfaces/testSessio
 import { UtilDate } from '../../../../utils/UtilDate';
 import { useToast } from 'vue-toastification';
 import ButtonCustom from '../../../ui/ButtonCustom.vue';
+import { email, maxLength, minLength, required } from '@vuelidate/validators';
+import { withMessage } from '../../../../utils/withMessage';
+import useVuelidate from '@vuelidate/core';
 
     export default {
         mounted() {
@@ -17,7 +20,7 @@ import ButtonCustom from '../../../ui/ButtonCustom.vue';
         setup() {
             const { isAdmin, userId } = useAuth();
             const toast = useToast();
-            return { isAdmin, userId, toast }
+            return { isAdmin, userId, toast, v$: useVuelidate() }
         },
         data(): { idParam: number, item: UserDetailsInterface, isUpdateOn: boolean} {
             return {
@@ -25,10 +28,26 @@ import ButtonCustom from '../../../ui/ButtonCustom.vue';
                 item: {
                     id: 0,
                     pseudo: '',
+                    email: '',
                     role: Role.USER,
                     sessionList: [],
                 },
                 isUpdateOn: false,
+            }
+        },
+        validations() {
+            return {
+                item: {
+                    pseudo: { 
+                        required: withMessage('Le pseudo est requis', required),
+                        minLength: withMessage('Le pseudo doit faire au moins 2 charactères', minLength(2)),
+                        maxLength: withMessage('Le pseudo doit faire moins de 50 charactères', maxLength(50)),
+                    },
+                    email: { 
+                        required: withMessage("L'adresse email est requise", required),
+                        email: withMessage("L'adresse email n'est pas valide", email)
+                    },
+                }
             }
         },
         methods: {
@@ -36,7 +55,12 @@ import ButtonCustom from '../../../ui/ButtonCustom.vue';
                 this.item = await UserService.findDetails(this.idParam);
             },
             async update() {
+                this.v$.$touch();
+                if (this.v$.$invalid) return;
+                
                 try {
+                    await UserService.updateProfil(this.item);
+
                     this.isUpdateOn = false;
                     this.toast.success("Profil mis à jour avec succés");
                     this.initUserDetails();
@@ -64,9 +88,6 @@ import ButtonCustom from '../../../ui/ButtonCustom.vue';
             },
             displayEmptySession() {
                 return this.isMyId ? "Vous n'avez pas encore passé de test" : `${this.item.pseudo} n'a pas encore passé de test`;
-            },
-            getEmail(){
-                return this.item.email || '';
             },
         },
         watch: {
@@ -99,15 +120,17 @@ import ButtonCustom from '../../../ui/ButtonCustom.vue';
                     placeholder="Pseudo"
                     :displayLabel="false"
                     :disabled="!isUpdateOn"
+                    :validation="v$.item.pseudo"
                 />
             </div>
             <div class="col-md-5">
                 <InputText
-                    v-model="getEmail"
+                    v-model="item.email"
                     name="email"
                     placeholder="Email"
                     :displayLabel="false"
                     :disabled="!isUpdateOn"
+                    :validation="v$.item.email"
                 />
             </div>
             <div class="col-md-2 d-flex align-items-center justify-content-center">
