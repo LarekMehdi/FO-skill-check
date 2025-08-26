@@ -42,7 +42,7 @@ export abstract class UserApi {
 
     static async updateProfil(dto: Pick<UserInterface, 'id' | 'pseudo' | 'email'>) {
         try {
-            const { data } = await useApi().patch(`/users/${dto.id}/profil`);
+            const { data } = await useApi().patch(`/users/${dto.id}/profil`, dto);
             return data;
         } catch(e: unknown) {
             console.error(e);

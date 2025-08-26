@@ -12,6 +12,7 @@ import ButtonCustom from '../../../ui/ButtonCustom.vue';
 import { email, maxLength, minLength, required } from '@vuelidate/validators';
 import { withMessage } from '../../../../utils/withMessage';
 import useVuelidate from '@vuelidate/core';
+import { AxiosError } from 'axios';
 
     export default {
         mounted() {
@@ -66,7 +67,15 @@ import useVuelidate from '@vuelidate/core';
                     this.initUserDetails();
 
                 } catch(e: unknown) {
-                    this.toast.error("Une erreur est survenue");
+                    if (e instanceof AxiosError && e.response) {
+                        if (e.response.status === 409) {
+                            this.toast.error("Ce pseudo est déjà utilisé");
+                        } else if (e.response.status === 412) {
+                            this.toast.error("Cet email est déjà utilisé");
+                        }
+                    } else {
+                        this.toast.error("Une erreur est survenue");
+                    }
                 }
             },
             onRowClick(event: DataTableRowClickEvent<UserTestSessionInterface>) {
