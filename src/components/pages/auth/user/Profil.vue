@@ -7,6 +7,8 @@ import { UserService } from '../../../../services/UserService';
 import InputText from '../../../ui/InputText.vue';
 import type { UserTestSessionInterface } from '../../../../interfaces/testSession.interface';
 import { UtilDate } from '../../../../utils/UtilDate';
+import { useToast } from 'vue-toastification';
+import ButtonCustom from '../../../ui/ButtonCustom.vue';
 
     export default {
         mounted() {
@@ -14,29 +16,44 @@ import { UtilDate } from '../../../../utils/UtilDate';
         },
         setup() {
             const { isAdmin, userId } = useAuth();
-            return { isAdmin, userId }
+            const toast = useToast();
+            return { isAdmin, userId, toast }
         },
-        data(): { idParam: number, item: UserDetailsInterface} {
+        data(): { idParam: number, item: UserDetailsInterface, isUpdateOn: boolean} {
             return {
                 idParam: Number(this.$route.params.id),
                 item: {
                     id: 0,
                     pseudo: '',
                     role: Role.USER,
-                    sessionList: []
-                }
+                    sessionList: [],
+                },
+                isUpdateOn: false,
             }
         },
         methods: {
             async initUserDetails() {
                 this.item = await UserService.findDetails(this.idParam);
             },
+            async update() {
+                try {
+                    this.isUpdateOn = false;
+                    this.toast.success("Profil mis à jour avec succés");
+                    this.initUserDetails();
+
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            },
             onRowClick(event: DataTableRowClickEvent<UserTestSessionInterface>) {
                 this.$router.push(`/test/${event.data.testId}/result/${event.data.sessionId}`);
             },
             displayDate(date: Date) {
                 return UtilDate.displayDateFr(date);
-            }
+            },
+            toggleUpdateItemOn() {
+                this.isUpdateOn = true;
+            },
         },
         computed: {
             isMyId() {
@@ -66,6 +83,7 @@ import { UtilDate } from '../../../../utils/UtilDate';
             InputText,
             DataTable,
             Column,
+            ButtonCustom,
         },
     }
 </script>
@@ -74,22 +92,36 @@ import { UtilDate } from '../../../../utils/UtilDate';
     <h1 class="mb-5">{{  displayTitle }}</h1>
     <article>
         <section class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <InputText
                     v-model="item.pseudo"
                     name="pseudo"
                     placeholder="Pseudo"
                     :displayLabel="false"
-                    :disabled="true"
+                    :disabled="!isUpdateOn"
                 />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <InputText
                     v-model="getEmail"
                     name="email"
                     placeholder="Email"
                     :displayLabel="false"
-                    :disabled="true"
+                    :disabled="!isUpdateOn"
+                />
+            </div>
+            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                <i 
+                    v-if="!isUpdateOn"
+                    class="pi pi-pen-to-square primary" 
+                    style="font-size: 1.5rem; color: var(--bs-primary)"
+                    @click="toggleUpdateItemOn"
+                >
+                </i>
+                <ButtonCustom 
+                    v-else
+                    content="Sauvegarder" 
+                    @click="update"
                 />
             </div>
         </section>
