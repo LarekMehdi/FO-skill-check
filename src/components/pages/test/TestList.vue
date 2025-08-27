@@ -114,7 +114,6 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                 this.testIdToDelete = null;
             },
             async deleteTest() {
-                console.log(this.testIdToDelete);
                 if (!this.testIdToDelete) {
                     this.toast.error("Pas de test selectionné pour la suppression");
                     return;
