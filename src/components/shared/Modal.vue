@@ -40,15 +40,17 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
         watch: {
             'visible'(newVal: boolean) {
                 if (newVal) {
-                    const scrollY = window.scrollY;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${scrollY}px`;
-                    document.body.dataset.scrollY = scrollY.toString();
+                    document.body.style.overflow = 'hidden';
+                    // const scrollY = window.scrollY;
+                    // document.body.style.position = 'fixed';
+                    // document.body.style.top = `-${scrollY}px`;
+                    // document.body.dataset.scrollY = scrollY.toString();
                 } else {
-                    const scrollY = document.body.dataset.scrollY ? parseInt(document.body.dataset.scrollY) : 0;
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    window.scrollTo(0, scrollY);
+                    document.body.style.overflow = '';
+                    // const scrollY = document.body.dataset.scrollY ? parseInt(document.body.dataset.scrollY) : 0;
+                    // document.body.style.position = '';
+                    // document.body.style.top = '';
+                    // window.scrollTo(0, scrollY);
                 }
             }
         },
