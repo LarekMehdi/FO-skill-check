@@ -282,6 +282,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
         :visible="displayConfirmDeletetModal" 
         @close="closeConfirmDeleteModal"
         @submit="deleteTest"
+        :isCancelOnLeft="false"
         title="Supprimer un test"
         submitLabel="Supprimer"
     >

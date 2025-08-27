@@ -22,6 +22,11 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
                 type: Boolean,
                 required: false,
                 default: false,
+            },
+            isCancelOnLeft: {
+                type: Boolean,
+                required: false,
+                default: true,
             }
         },
         methods: {
@@ -67,14 +72,26 @@ import ButtonSubmit from '../ui/ButtonSubmit.vue';
                 <aside class="row my-3">
                     <section class="col text-start">
                         <ButtonCustom 
+                            v-if="isCancelOnLeft"
                             content="Annuler"
                             buttonClass="btn-danger"
                             @click="close"
                         />
+                        <ButtonSubmit 
+                            v-else
+                            :content="submitLabel"
+                        />
                     </section>
                     <section class="col text-end">
                         <ButtonSubmit 
+                            v-if="isCancelOnLeft"
                             :content="submitLabel"
+                        />
+                        <ButtonCustom 
+                            v-else
+                            content="Annuler"
+                            buttonClass="btn-danger"
+                            @click="close"
                         />
                     </section>
                 </aside>
