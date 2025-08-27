@@ -7,7 +7,7 @@
             buttonClass: {
                 type: String,
                 required: false,
-                default: 'btn btn-primary btn-block'
+                default: 'btn-primary'
             },
             content: {
                 type: String,
@@ -21,7 +21,7 @@
 <template>
     <button
         type="submit" 
-        :class="buttonClass"
+        :class="['btn btn-block', buttonClass]"
     >
         {{ content }}
     </button>

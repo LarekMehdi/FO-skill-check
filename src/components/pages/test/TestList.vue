@@ -18,6 +18,7 @@ import Modal from '../../shared/Modal.vue';
 import InputText from '../../ui/InputText.vue';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
+import ModalCancel from '../../shared/ModalCancel.vue';
 
 
     export default {
@@ -168,6 +169,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             ButtonCustom,
             DataTable,
             Column,
+            ModalCancel,
         }
     }
 </script>
@@ -277,12 +279,10 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
         </template>
     </Modal>
 
-    <!-- TODO: ModalDelete -->
-    <Modal 
+    <ModalCancel
         :visible="displayConfirmDeletetModal" 
         @close="closeConfirmDeleteModal"
         @submit="deleteTest"
-        :isCancelOnLeft="false"
         title="Supprimer un test"
         submitLabel="Supprimer"
     >
@@ -291,6 +291,6 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
             <p>Etes vous sur de vouloir supprimer ce test?</p>
             <p>Cela va aussi supprimer toutes les sessions liées.</p>
         </template>
-    </Modal>
+    </ModalCancel>
 
 </template>
