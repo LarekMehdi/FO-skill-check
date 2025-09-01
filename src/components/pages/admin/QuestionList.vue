@@ -45,6 +45,9 @@ import TagBadge from '../../ui/TagBadge.vue';
             displayLabelDifficulty(value: Difficulty) {
                 return getDifficultyLabel(value);
             },
+            displaySuccessRate(value: number) {
+                return UtilEntity.displaySuccessRate(value);
+            },
             onRowClick(event: DataTableRowClickEvent<QuestionListInterface>) {
                 this.goToQuestionDetails(event.data.id);
             },
@@ -96,7 +99,7 @@ import TagBadge from '../../ui/TagBadge.vue';
             @sort="onSort"
         >
             <template #empty>Aucune questions à afficher</template>
-            <Column header="Id" field="id" sortable style="width: 10%;">
+            <Column header="Id" field="id" sortable style="width: 5%;">
                 <template #body="slotProps" >
                     <span @click="goToQuestionDetails(slotProps.data.id)" class="clickable">
                         {{  slotProps.data.id }}
@@ -104,35 +107,45 @@ import TagBadge from '../../ui/TagBadge.vue';
                     
                 </template>
             </Column>
-            <Column header="Question" field="content" sortable style="width: 40%;">
+            <Column header="Question" field="content" sortable style="width: 25%;">
                 <template #body="slotProps">
                     <span @click="goToQuestionDetails(slotProps.data.id)" class="clickable">
                         {{  slotProps.data.content }}
                     </span>
                 </template>
             </Column>
-            <Column field="code" style="width: 50%;">
+            <Column field="code" style="width: 25%;">
                     <template #body="slotProps">
                         <CodeBlock
                             v-if="slotProps.data.code"
                             :content="slotProps.data.code"
                         />
                     </template>
-                </Column>
-                <Column header="Tag" field="tags" sortable style="width: 20%;">
-                    <template #body="slotProps">
-                        <TagBadge
-                            v-for="tag in slotProps.data.tagList"
-                            :key="tag.id"
-                            :content="tag.label"
-                        />
-                    </template>
-                </Column>
-                <Column header="Difficulté" field="difficulty" sortable style="width: 10%;">
-                    <template #body="slotProps">
-                        {{  displayLabelDifficulty(slotProps.data.difficulty) }}
-                    </template>
-                </Column>
+            </Column>
+            <Column header="Tag" field="tags" style="width: 15%;">
+                <template #body="slotProps">
+                    <TagBadge
+                        v-for="tag in slotProps.data.tagList"
+                        :key="tag.id"
+                        :content="tag.label"
+                    />
+                </template>
+            </Column>
+            <Column header="Difficulté" field="difficulty" sortable style="width: 10%;">
+                <template #body="slotProps">
+                    {{  displayLabelDifficulty(slotProps.data.difficulty) }}
+                </template>
+            </Column>
+            <Column header="Nombre de fois répondu" field="doneCount" sortable style="width: 10%;">
+                <template #body="slotProps">
+                    {{  slotProps.data.doneCount }}
+                </template>
+            </Column>
+            <Column header="Taux de réussite" field="successRate" sortable style="width: 10%;">
+                <template #body="slotProps">
+                    {{ displaySuccessRate(slotProps.data.successRate) }} %
+                </template>
+            </Column>
             
         </DataTable>
     </section>

@@ -36,4 +36,8 @@ export abstract class UtilEntity {
     
         return filter;
     }
+
+    static displaySuccessRate(successRate: number) {
+        return Number((successRate * 100).toFixed(1));
+    }
  }
