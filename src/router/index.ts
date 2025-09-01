@@ -25,6 +25,7 @@ import Signup from "../components/pages/auth/Signup.vue";
 import Profil from "../components/pages/auth/user/Profil.vue";
 import Error403 from "../components/pages/error/Error403.vue";
 import UserList from "../components/pages/auth/user/UserList.vue";
+import QuestionList from "../components/pages/admin/QuestionList.vue";
 
 
 
@@ -47,6 +48,12 @@ const routes = [
     component: Signup,
   },
   ///////////// QUESTION ///////////////
+  {
+    path: "/question",
+    name: "questionList",
+    component: QuestionList,
+    meta: { requiresAdmin: true }
+  },
   {
     path: "/question/create",
     name: "questionCreate",

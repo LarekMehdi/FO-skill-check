@@ -36,7 +36,7 @@ export default {
         <router-link v-if="!isLoggedIn" to="/signup" class="navbar-brand">Créer un compte</router-link>
 
         <section v-if="isAdmin">
-            <router-link to="/question/create" class="navbar-brand">Questions</router-link>
+            <router-link to="/question" class="navbar-brand">Questions</router-link>
             <router-link to="/tag" class="navbar-brand">Tags</router-link>
             <router-link to="/test" class="navbar-brand">Tests</router-link>
             <router-link to="/user" class="navbar-brand">Utilisateurs</router-link>
