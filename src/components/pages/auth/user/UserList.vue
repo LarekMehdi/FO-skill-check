@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Column, DataTable, type DataTablePageEvent, type DataTableRowClickEvent, type DataTableSortEvent } from 'primevue';
+import { Column, DataTable, type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue';
 import type { UserInterface } from '../../../../interfaces/user.interface';
 import { UserService } from '../../../../services/UserService';
 import type { GenericFilter, PageInterface } from '../../../../interfaces/filter.interface';
@@ -49,11 +49,6 @@ import { useAuth } from '../../../../composables/useAuth';
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
                 this.initUserList();
             },
-            onSort(event: DataTableSortEvent) {
-                this.filter = UtilEntity.updatefilterOnSort(event, this.filter);
-                
-                this.initUserList();
-            },
             isRoleAdmin(role: string): boolean {
                 return role === 'ADMIN';
             },
@@ -93,7 +88,6 @@ import { useAuth } from '../../../../composables/useAuth';
     <h1 class="mb-5">Liste des utilisateurs</h1>
 
     <section>
-        <!-- TODO: @sort="onSort" Gérer le tri coté back -->
         <DataTable 
             :value="userList" 
             tableStyle="min-width: 50rem" 
