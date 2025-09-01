@@ -23,7 +23,7 @@ export abstract class UtilEntity {
         return filter;
     }
 
-    static updatefilterOnSort(event: DataTableSortEvent, filter: GenericFilter): GenericFilter {
+    static updateFilterOnSort(event: DataTableSortEvent, filter: GenericFilter): GenericFilter {
         filter.sortBy = event.sortField as string;
 
         if (event.sortOrder === 1) {
