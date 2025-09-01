@@ -6,9 +6,10 @@ import type { QuestionListInterface } from '../../../interfaces/question.interfa
 import type { GenericFilter, PageInterface } from '../../../interfaces/filter.interface';
 import { QuestionService } from '../../../services/QuestionService';
 import { UtilEntity } from '../../../utils/UtilEntity';
-import type { TagInterface } from '../../../interfaces/tag.interface';
 import CodeBlock from '../../ui/CodeBlock.vue';
 import { getDifficultyLabel, type Difficulty } from '../../../constants/difficulty.constant';
+import ButtonCustom from '../../ui/ButtonCustom.vue';
+import TagBadge from '../../ui/TagBadge.vue';
 
 
     export default {
@@ -50,6 +51,9 @@ import { getDifficultyLabel, type Difficulty } from '../../../constants/difficul
             goToQuestionDetails(id: number) {
                 this.$router.push(`/question/${id}`)
             },
+            goToQuestionCreate() {
+                this.$router.push(`/question/create`);
+            },
             onPage(event: DataTablePageEvent) {
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
                 this.initQuestionList();
@@ -63,12 +67,22 @@ import { getDifficultyLabel, type Difficulty } from '../../../constants/difficul
             DataTable,
             Column,
             CodeBlock,
+            ButtonCustom,
+            TagBadge,
         },
     }
 </script>
 
 <template>
     <h1 class="mb-5">Liste des questions</h1>
+    <section v-if="isAdmin" class="row mb-3">
+        <aside class="col text-end">
+            <ButtonCustom 
+                content="Créer une question"
+                @click="goToQuestionCreate"
+            />
+        </aside>
+    </section>
 
     <section>
         <DataTable 
@@ -107,7 +121,11 @@ import { getDifficultyLabel, type Difficulty } from '../../../constants/difficul
                 </Column>
                 <Column header="Tag" field="tags" sortable style="width: 20%;">
                     <template #body="slotProps">
-                        {{ (slotProps.data.tagList as TagInterface[]).map(tag => tag.label).join(', ') }}
+                        <TagBadge
+                            v-for="tag in slotProps.data.tagList"
+                            :key="tag.id"
+                            :content="tag.label"
+                        />
                     </template>
                 </Column>
                 <Column header="Difficulté" field="difficulty" sortable style="width: 10%;">
