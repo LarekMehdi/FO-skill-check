@@ -10,6 +10,7 @@ import CodeBlock from '../../ui/CodeBlock.vue';
 import { getDifficultyLabel, type Difficulty } from '../../../constants/difficulty.constant';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import TagBadge from '../../ui/TagBadge.vue';
+import ModalCancel from '../../shared/ModalCancel.vue';
 
 
     export default {
@@ -24,7 +25,7 @@ import TagBadge from '../../ui/TagBadge.vue';
         mounted() {
             this.initQuestionList();
         },
-        data(): {item: PageInterface<QuestionListInterface>, questionList: QuestionListInterface[], filter: GenericFilter} {
+        data(): {item: PageInterface<QuestionListInterface>, questionList: QuestionListInterface[], filter: GenericFilter, displayDeleteModal: boolean, questionIdToDelete: number | null} {
             return {
                 item: {
                     datas: [],
@@ -34,13 +35,39 @@ import TagBadge from '../../ui/TagBadge.vue';
                 filter: {
                     limit: 10,
                     offset: 0
-                }
+                },
+                displayDeleteModal: false,
+                questionIdToDelete: null,
             }
         },
         methods: {
             async initQuestionList() {
                 this.item = await QuestionService.findAll(this.filter);
                 this.questionList = this.item.datas;
+            },
+            async deleteQuestion() {
+                if (!this.questionIdToDelete) {
+                    this.toast.error("Pas de question à supprimer");
+                    return;
+                }
+
+                try {
+
+                    
+                    this.toast.success("Question supprimée avec succés");
+                    this.closeDeleteModal();
+                    this.initQuestionList();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            },
+            openDeleteModal(questionId: number) {
+                this.questionIdToDelete = questionId;
+                this.displayDeleteModal = true;
+            },
+            closeDeleteModal() {
+                this.questionIdToDelete = null;
+                this.displayDeleteModal = false;
             },
             displayLabelDifficulty(value: Difficulty) {
                 return getDifficultyLabel(value);
@@ -72,6 +99,7 @@ import TagBadge from '../../ui/TagBadge.vue';
             CodeBlock,
             ButtonCustom,
             TagBadge,
+            ModalCancel,
         },
     }
 </script>
@@ -114,7 +142,7 @@ import TagBadge from '../../ui/TagBadge.vue';
                     </span>
                 </template>
             </Column>
-            <Column field="code" style="width: 25%;">
+            <Column field="code" style="width: 45%;">
                     <template #body="slotProps">
                         <CodeBlock
                             v-if="slotProps.data.code"
@@ -122,7 +150,7 @@ import TagBadge from '../../ui/TagBadge.vue';
                         />
                     </template>
             </Column>
-            <Column header="Tag" field="tags" style="width: 15%;">
+            <Column header="Tag" field="tags" style="width: 10%;">
                 <template #body="slotProps">
                     <TagBadge
                         v-for="tag in slotProps.data.tagList"
@@ -131,23 +159,48 @@ import TagBadge from '../../ui/TagBadge.vue';
                     />
                 </template>
             </Column>
-            <Column header="Difficulté" field="difficulty" sortable style="width: 10%;">
+            <Column header="Difficulté" field="difficulty" sortable style="width: 5%;">
                 <template #body="slotProps">
                     {{  displayLabelDifficulty(slotProps.data.difficulty) }}
                 </template>
             </Column>
-            <Column header="Nombre de fois répondu" field="doneCount" sortable style="width: 10%;">
+            <Column header="Tentatives" field="doneCount" sortable style="width: 5%;">
                 <template #body="slotProps">
                     {{  slotProps.data.doneCount }}
                 </template>
             </Column>
-            <Column header="Taux de réussite" field="successRate" sortable style="width: 10%;">
+            <Column header="Taux de réussite" field="successRate" sortable style="width: 5%;">
                 <template #body="slotProps">
                     {{ displaySuccessRate(slotProps.data.successRate) }} %
+                </template>
+            </Column>
+            <Column v-if="isAdmin" header="Action" style="width: 5%;">
+                <template #body="slotProps">
+                    <i 
+                        class="pi pi-trash" 
+                        style="color: red" 
+                        @click="openDeleteModal(slotProps.data.id)"
+                        title="Supprimer cette question"
+                    >
+                    </i>
                 </template>
             </Column>
             
         </DataTable>
     </section>
+
+    <!-- *************** MODAL *************** -->
+     <ModalCancel
+        :visible="displayDeleteModal" 
+        @close="closeDeleteModal"
+        @submit="deleteQuestion"
+        title="Supprimer une question"
+        submitLabel="Supprimer"
+    >
+        <template #content>
+            <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
+            <p>Etes vous sur de vouloir supprimer cette question ?</p>
+        </template>
+    </ModalCancel>
 </template>
 
