@@ -1,9 +1,13 @@
 import type { QuestionInterface, SubmitQuestionInterface, TakeQuestionInterface } from "./question.interface";
 
+
+export interface SmallTestInterface {
+    id: number;
+    title: string;
+}
 export interface CreateTestInterface {
     title: string;
     description: string;
-
 }
 
 export interface TestInterface extends CreateTestInterface {
