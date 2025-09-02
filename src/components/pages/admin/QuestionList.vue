@@ -118,7 +118,7 @@ import ModalCancel from '../../shared/ModalCancel.vue';
     <section>
         <DataTable 
             :value="questionList" 
-            tableStyle="min-width: 50rem" 
+            class="p-datatable-sm compact-table"
             :lazy="true"
             :paginator="true"
             :rows="10"
@@ -203,4 +203,11 @@ import ModalCancel from '../../shared/ModalCancel.vue';
         </template>
     </ModalCancel>
 </template>
+
+<style scoped>
+    .compact-table .p-datatable-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+</style>
 
