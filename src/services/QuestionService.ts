@@ -15,4 +15,10 @@ export abstract class QuestionService {
     static async create(question: CreateQuestionInterface) {
         return await QuestionApi.create(question);
     }
+
+    /** DELETE **/
+
+    static async delete(questionId: number) {
+        return await QuestionApi.delete(questionId);
+    }
 }

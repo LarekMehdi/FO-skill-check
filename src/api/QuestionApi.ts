@@ -27,4 +27,16 @@ export abstract class QuestionApi {
             throw error;
         }
     }
+
+    /** DELETE **/
+
+    static async delete(questionId: number) {
+        try {
+            const { data } = await useApi().delete(`questions/${questionId}`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
 }

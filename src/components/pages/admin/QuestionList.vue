@@ -52,8 +52,8 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                 }
 
                 try {
+                    await QuestionService.delete(this.questionIdToDelete);
 
-                    
                     this.toast.success("Question supprimée avec succés");
                     this.closeDeleteModal();
                     this.initQuestionList();
