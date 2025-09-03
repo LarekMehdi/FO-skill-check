@@ -4,6 +4,12 @@ import type { CreateQuestionInterface } from "../interfaces/question.interface";
 
 export abstract class QuestionService {
 
+    /** FIND **/
+
+    static async findDetails(id: number) {
+        return await QuestionApi.findDetails(id);
+    }
+
     /** FIND ALL **/
 
     static async findAll(filter: GenericFilter) {

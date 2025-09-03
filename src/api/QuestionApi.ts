@@ -4,6 +4,18 @@ import { useApi } from "./useApi";
 
 export abstract class QuestionApi {
 
+    /** FIND **/
+
+    static async findDetails(id: number) {
+        try {
+            const { data } = await useApi().get(`questions/${id}`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
     /** FIND ALL **/
 
     static async findAll(filter: GenericFilter) {
