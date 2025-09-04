@@ -63,7 +63,7 @@
                 :disabled="disabled"
                 @input="$emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
             >
-            <span class="slider round"></span>
+            <span :class="`slider round ${disabled ? '' : 'pointer'}`"></span>
         </label>
     </div>
     
@@ -87,7 +87,6 @@
     }
     .slider {
         position: absolute;
-        cursor: pointer;
         top: 0;
         left: 0;
         right: 0;
@@ -95,6 +94,9 @@
         background-color: #ccc;
         -webkit-transition: .4s;
         transition: .4s;
+    }
+    .pointer {
+        cursor: pointer;
     }
     .slider:before {
         position: absolute;
