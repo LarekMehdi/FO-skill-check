@@ -210,6 +210,7 @@ import InputSelect from '../../ui/InputSelect.vue';
                         class="pi pi-external-link mt-2 text-primary"
                         style="font-size: 1rem"
                         @click="goToTestDetails(test.id)"
+                        title="Détails du test"
                     >
                     </i>
                 </div>

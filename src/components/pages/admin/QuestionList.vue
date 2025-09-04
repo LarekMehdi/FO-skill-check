@@ -173,6 +173,12 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                         title="Supprimer cette question"
                     >
                     </i>
+                    <i 
+                        class="pi pi-external-link text-primary ms-2"
+                        @click="goToQuestionDetails(slotProps.data.id)"
+                        title="Détails de la question"
+                    >
+                    </i>
                 </template>
             </Column>
             
