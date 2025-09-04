@@ -71,20 +71,40 @@ import InputSelect from '../../ui/InputSelect.vue';
     <article>
 
         <section class="row mb-3">
-            <div class="col-md-6 text-start">
-                <InputSwitch
-                    v-model="item.isMultipleAnswer"
-                    name="isCorrect"
-                    label="Plusieurs bonne réponses?"
+            <div class="col-md-6">
+                <InputText
+                    v-model="item.createdBy.pseudo"
+                    name="createdByPseudo"
+                    label="Créée par"
                     :disabled="true"
                 />
             </div>
-            <div class="col-md-6">
+        </section>
+
+        <section class="row mb-3">
+            <div class="col-md-4">
                 <InputNumber
                     v-model="item.timeLimit"
                     name="timeLimit"
                     label="Limite de temps"
                     :symbol="'secondes'"
+                    :disabled="true"
+                />
+            </div>
+            <div class="col-md-4">
+                <InputSelect
+                    v-model="item.difficulty"
+                    name="difficulty"
+                    label="Difficulté"
+                    :disabled="true"
+                    :options="difficultyOptions"
+                />
+            </div>
+            <div class="col-md-4 text-start">
+                <InputSwitch
+                    v-model="item.isMultipleAnswer"
+                    name="isCorrect"
+                    label="Plusieurs bonne réponses?"
                     :disabled="true"
                 />
             </div>
@@ -117,27 +137,8 @@ import InputSelect from '../../ui/InputSelect.vue';
                 />
             </div>
         </section>
-
-        <section class="row mb-3">
-            <div class="col-md-6">
-                <InputSelect
-                    v-model="item.difficulty"
-                    name="difficulty"
-                    label="Difficulté"
-                    :disabled="true"
-                    :options="difficultyOptions"
-                />
-            </div>
-            <div class="col-md-6">
-                <InputText
-                    v-model="item.createdBy.pseudo"
-                    name="createdByPseudo"
-                    label="Créée par"
-                    :disabled="true"
-                />
-            </div>
-        </section>
         
+        <hr/>
 
         <section class="row mb-3">
             <div class="col-md-12">
@@ -163,7 +164,7 @@ import InputSelect from '../../ui/InputSelect.vue';
         </section>
 
         <section v-for="answer in item.answerList" :key="answer.id" class="row mb-3">
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <InputTextArea
                     v-model="answer.content"
                     :name="`answer-${answer.id}`"
@@ -174,7 +175,7 @@ import InputSelect from '../../ui/InputSelect.vue';
                     :rows="3"
                 />
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3 text-start">
                 <InputSwitch
                     v-model="answer.isCorrect"
                     :name="`answer-${answer.id}-correct`"
