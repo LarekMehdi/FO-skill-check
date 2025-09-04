@@ -43,8 +43,6 @@ export interface QuestionDetailsInterface extends SmallQuestionInterface {
 }
 
 export interface QuestionListInterface extends SmallQuestionInterface {
-    successRate: number;
-    doneCount: number;
     tagList: TagInterface[];
 }
 

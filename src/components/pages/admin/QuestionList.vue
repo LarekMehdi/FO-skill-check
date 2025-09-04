@@ -164,16 +164,6 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                     {{  displayLabelDifficulty(slotProps.data.difficulty) }}
                 </template>
             </Column>
-            <Column header="Tentatives" field="doneCount" sortable style="width: 5%;">
-                <template #body="slotProps">
-                    {{  slotProps.data.doneCount }}
-                </template>
-            </Column>
-            <Column header="Taux de réussite" field="successRate" sortable style="width: 5%;">
-                <template #body="slotProps">
-                    {{ displaySuccessRate(slotProps.data.successRate) }} %
-                </template>
-            </Column>
             <Column v-if="isAdmin" header="Action" style="width: 5%;">
                 <template #body="slotProps">
                     <i 
