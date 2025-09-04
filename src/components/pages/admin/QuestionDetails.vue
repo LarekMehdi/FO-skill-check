@@ -52,6 +52,9 @@ import InputSelect from '../../ui/InputSelect.vue';
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
+            },
+            goToTestDetails(testId: number) {
+                this.$router.push(`/test/${testId}`);
             }
         },
         components: {
@@ -143,14 +146,14 @@ import InputSelect from '../../ui/InputSelect.vue';
         <section class="row mb-3">
             <div class="col-md-12">
                 <InputTextArea
-                        v-model="item.content"
-                        name="question-content"
-                        placeholder="Question"
-                        :disabled="true"
-                        :displayLabel="false"
-                        :cols="70"
-                        :rows="3"
-                    />
+                    v-model="item.content"
+                    name="question-content"
+                    placeholder="Question"
+                    :disabled="true"
+                    :displayLabel="false"
+                    :cols="70"
+                    :rows="3"
+                />
             </div>
         </section>
 
@@ -186,6 +189,32 @@ import InputSelect from '../../ui/InputSelect.vue';
             </div>
         </section>
 
+        <hr/>
 
+        <aside>
+            <div class="col-md-12 text-start">
+                <p>Cette question est présente dans {{ item.testList.length }} test{{ item.testList.length > 1 ? 's' : '' }}</p>
+            </div>
+            <section v-for="test in item.testList" :key="test.id" class="row mb-3">
+                <div class="col-md-9">
+                    <InputText
+                        v-model="test.title"
+                        :name="`test-${test.id}`"
+                        label="Présent dans:"
+                        :displayLabel="false"
+                        :disabled="true"
+                    />
+                </div>
+                <div class="col-md-3">
+                    <i 
+                        class="pi pi-external-link mt-2 text-primary"
+                        style="font-size: 1rem"
+                        @click="goToTestDetails(test.id)"
+                    >
+                    </i>
+                </div>
+            </section>
+        </aside>
+        
     </article>
 </template>
