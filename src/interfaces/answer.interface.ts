@@ -1,7 +1,10 @@
-export interface AnswerInterface {
+export interface SmallAnswerInterface {
     id: number;
     content: string;
     isCorrect: boolean;
+}
+
+export interface AnswerInterface extends SmallAnswerInterface {
     questionId: number;
 }
 

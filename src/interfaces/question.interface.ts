@@ -1,5 +1,5 @@
 import type { Difficulty } from "../constants/difficulty.constant";
-import type { AnswerInterface, ResultAnswerInterface } from "./answer.interface";
+import type { AnswerInterface, ResultAnswerInterface, SmallAnswerInterface } from "./answer.interface";
 import type { TagInterface } from "./tag.interface";
 import type { SmallTestInterface } from "./test.interface";
 import type { SmallUserInterface } from "./user.interface";
@@ -38,6 +38,7 @@ export interface QuestionDetailsInterface extends SmallQuestionInterface {
     timeLimit: number;
     difficulty: Difficulty;
     createdBy: SmallUserInterface;
+    answerList: SmallAnswerInterface[];
     tagList: TagInterface[];
     testList: SmallTestInterface[];
 }

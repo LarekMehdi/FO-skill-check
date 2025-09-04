@@ -35,6 +35,7 @@ import InputSelect from '../../ui/InputSelect.vue';
                         id: -1,
                         pseudo: ''
                     },
+                    answerList: [],
                     tagList: [],
                     testList: [],
                     content: ''
@@ -157,6 +158,29 @@ import InputSelect from '../../ui/InputSelect.vue';
                 <CodeBlock
                     v-if="item.code"
                     :content="item.code"
+                />
+            </div>
+        </section>
+
+        <section v-for="answer in item.answerList" :key="answer.id" class="row mb-3">
+            <div class="col-md-10">
+                <InputTextArea
+                    v-model="answer.content"
+                    :name="`answer-${answer.id}`"
+                    placeholder="Réponse"
+                    :disabled="true"
+                    :displayLabel="false"
+                    :cols="70"
+                    :rows="3"
+                />
+            </div>
+            <div class="col-md-2">
+                <InputSwitch
+                    v-model="answer.isCorrect"
+                    :name="`answer-${answer.id}-correct`"
+                    label="Réponse correct?"
+                    :displayLabel="true"
+                    :disabled="true"
                 />
             </div>
         </section>
