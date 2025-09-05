@@ -9,6 +9,7 @@ import CodeBlock from '../../ui/CodeBlock.vue';
 import InputSwitch from '../../ui/InputSwitch.vue';
 import InputNumber from '../../ui/InputNumber.vue';
 import InputSelect from '../../ui/InputSelect.vue';
+import TagBadge from '../../ui/TagBadge.vue';
 
     export default {
         setup() {
@@ -64,6 +65,7 @@ import InputSelect from '../../ui/InputSelect.vue';
             InputSwitch,
             InputNumber,
             InputSelect,
+            TagBadge,
         }
     }
 </script>
@@ -216,6 +218,29 @@ import InputSelect from '../../ui/InputSelect.vue';
                 </div>
             </section>
         </aside>
+
+        <hr/>
+
+        <aside>
+            <div class="d-flex flex-wrap gap-2">
+                <TagBadge
+                    v-for="tag in item.tagList"
+                    :key="tag.id"
+                    :content="tag.label"
+                    :canDelete="true"
+                />
+                <i 
+                    class="pi pi-plus-circle mt-1 text-success pointer"
+                    title="Ajouter un tag"
+                ></i>
+            </div>
+        </aside>
         
     </article>
 </template>
+
+<style>
+    .pointer {
+        cursor: pointer;
+    }
+</style>
