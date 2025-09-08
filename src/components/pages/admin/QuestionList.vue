@@ -174,7 +174,7 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                     >
                     </i>
                     <i 
-                        class="pi pi-external-link text-primary ms-2"
+                        class="pi pi-eye text-primary ms-2"
                         @click="goToQuestionDetails(slotProps.data.id)"
                         title="Détails de la question"
                     >

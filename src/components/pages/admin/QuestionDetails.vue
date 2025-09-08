@@ -285,9 +285,9 @@ import Modal from '../../shared/Modal.vue';
                         :disabled="true"
                     />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 text-start">
                     <i 
-                        class="pi pi-external-link mt-2 text-primary"
+                        class="pi pi-eye mt-2 text-primary"
                         style="font-size: 1rem"
                         @click="goToTestDetails(test.id)"
                         title="Détails du test"
