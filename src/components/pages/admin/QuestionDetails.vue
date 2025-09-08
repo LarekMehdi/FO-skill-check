@@ -79,7 +79,7 @@ import Modal from '../../shared/Modal.vue';
             },
             async addTag() {
                 if (!this.newTagId) {
-                    this.toast.warning("Pas de tag séléctionné");
+                    this.toast.warning("Pas de tag sélectionné");
                     return;
                 }
                 try {
@@ -119,6 +119,11 @@ import Modal from '../../shared/Modal.vue';
             goToTestDetails(testId: number) {
                 this.$router.push(`/test/${testId}`);
             }
+        },
+        computed: {
+            canAddTag() {
+                return this.tagOptions.length > 0;
+            },
         },
         components: {
             InputTextArea,
@@ -315,10 +320,12 @@ import Modal from '../../shared/Modal.vue';
         <template #content>
 
             <InputSelect
+                v-if="canAddTag"
                 v-model="newTagId"
                 name="newTag"
                 :options="tagOptions"
             />
+            <p v-else>Aucun tag à ajouter</p>
            
         </template>
     </Modal>
