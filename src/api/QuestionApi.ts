@@ -54,7 +54,7 @@ export abstract class QuestionApi {
 
     static async removeTagFromQuestion(questionTag: QuestionHasTagInterface) {
         try {
-            const { data } = await useApi().patch(`questions/${questionTag.questionId}/tag/remove`);
+            const { data } = await useApi().patch(`questions/${questionTag.questionId}/tag/remove`, questionTag);
             return data;
         } catch(e: unknown) {
             console.error(e);

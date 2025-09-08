@@ -90,9 +90,26 @@ import Modal from '../../shared/Modal.vue';
                     await QuestionService.addTagToQuestion(questionTag); 
                     this.toast.success("Tag ajouté avec succés");
                     this.closeAddTagModal();
-                    this;this.initQuestionDetails();
+                    this.initQuestionDetails();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de l'ajout du tag");
+                }
+            },
+            async removeTag(tagId: number | undefined) {
+                if (!tagId) {
+                    this.toast.error("Une erreur est survenue");
+                    return;
+                }
+                try {
+                    const questionTag: QuestionHasTagInterface = {
+                        questionId: this.questionId,
+                        tagId: tagId
+                    }
+                    await QuestionService.removeTagFromQuestion(questionTag);
+                    this.toast.success("Tag supprimé avec succés");
+                    this.initQuestionDetails();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de la suppression du tag");
                 }
             },
             filterTagList() {
@@ -108,13 +125,6 @@ import Modal from '../../shared/Modal.vue';
             closeAddTagModal() {
                 this.displayAddTagModal = false;
                 this.newTagId = null;
-            },
-            removeTag(tagId: number | undefined) {
-                if (!tagId) {
-                    this.toast.error("Une erreur est survenue");
-                    return;
-                }
-                console.log(tagId);
             },
             goToTestDetails(testId: number) {
                 this.$router.push(`/test/${testId}`);
