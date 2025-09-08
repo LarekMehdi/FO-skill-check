@@ -58,12 +58,13 @@ import Modal from '../../shared/Modal.vue';
         },
         mounted() {
             this.initQuestionDetails();
-            this.initTagList();
         },
         methods: {
             async initQuestionDetails() {
                 try {
                     this.item = await QuestionService.findDetails(this.questionId);
+                    console.log(this.item);
+                    await this.initTagList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
@@ -72,6 +73,7 @@ import Modal from '../../shared/Modal.vue';
                 try {
                     const tagList: TagInterface[] = await TagService.findAll();
                     this.tagOptions = UtilEntity.formatListForInputSelect<TagInterface>(tagList, 'label', 'id');
+                    this.filterTagList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de la récupération des tags");
                 }
@@ -79,11 +81,19 @@ import Modal from '../../shared/Modal.vue';
             async addTag() {
 
             },
+            filterTagList() {
+                const existingIds: (number|undefined)[] = this.item.tagList.map((tag) => tag.id);
+                this.tagOptions = this.tagOptions.filter(opt => {
+                    const optId = Number(opt.value);
+                    return !existingIds.includes(optId);
+                });
+            },
             openAddTagModal() {
                 this.displayAddTagModal = true;
             },
             closeAddTagModal() {
                 this.displayAddTagModal = false;
+                this.newTagId = null;
             },
             removeTag(tagId: number | undefined) {
                 if (!tagId) {
