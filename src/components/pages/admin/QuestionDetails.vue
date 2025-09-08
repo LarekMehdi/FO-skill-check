@@ -10,6 +10,12 @@ import InputSwitch from '../../ui/InputSwitch.vue';
 import InputNumber from '../../ui/InputNumber.vue';
 import InputSelect from '../../ui/InputSelect.vue';
 import TagBadge from '../../ui/TagBadge.vue';
+import useVuelidate from '@vuelidate/core';
+import type { TagInterface } from '../../../interfaces/tag.interface';
+import { TagService } from '../../../services/TagService';
+import type { OptionSelectInterface } from '../../../interfaces/input.interface';
+import { UtilEntity } from '../../../utils/UtilEntity';
+import Modal from '../../shared/Modal.vue';
 
     export default {
         setup() {
@@ -18,9 +24,13 @@ import TagBadge from '../../ui/TagBadge.vue';
             return {
                 toast,
                 difficultyOptions,
+                v$: useVuelidate(),
             }
         },
-        data(): { questionId: number, item: QuestionDetailsInterface}
+        validations() {
+            return {}
+        },
+        data(): { questionId: number, item: QuestionDetailsInterface, displayAddTagModal: boolean, newTagId: number|null, tagOptions: OptionSelectInterface[]}
         {
             return {
                 questionId: Number(this.$route.params.id),
@@ -40,11 +50,15 @@ import TagBadge from '../../ui/TagBadge.vue';
                     tagList: [],
                     testList: [],
                     content: ''
-                }
+                },
+                displayAddTagModal: false,
+                newTagId: null,
+                tagOptions: [],
             }
         },
         mounted() {
             this.initQuestionDetails();
+            this.initTagList();
         },
         methods: {
             async initQuestionDetails() {
@@ -53,6 +67,30 @@ import TagBadge from '../../ui/TagBadge.vue';
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
                 }
+            },
+            async initTagList() {
+                try {
+                    const tagList: TagInterface[] = await TagService.findAll();
+                    this.tagOptions = UtilEntity.formatListForInputSelect<TagInterface>(tagList, 'label', 'id');
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de la récupération des tags");
+                }
+            },
+            async addTag() {
+
+            },
+            openAddTagModal() {
+                this.displayAddTagModal = true;
+            },
+            closeAddTagModal() {
+                this.displayAddTagModal = false;
+            },
+            removeTag(tagId: number | undefined) {
+                if (!tagId) {
+                    this.toast.error("Une erreur est survenue");
+                    return;
+                }
+                console.log(tagId);
             },
             goToTestDetails(testId: number) {
                 this.$router.push(`/test/${testId}`);
@@ -66,6 +104,7 @@ import TagBadge from '../../ui/TagBadge.vue';
             InputNumber,
             InputSelect,
             TagBadge,
+            Modal,
         }
     }
 </script>
@@ -228,15 +267,37 @@ import TagBadge from '../../ui/TagBadge.vue';
                     :key="tag.id"
                     :content="tag.label"
                     :canDelete="true"
+                    @delete="removeTag(tag.id)"
                 />
                 <i 
                     class="pi pi-plus-circle mt-1 text-success pointer"
+                    style="font-size: 1.5rem"
                     title="Ajouter un tag"
+                    @click="openAddTagModal"
                 ></i>
             </div>
         </aside>
         
     </article>
+
+    <!-- ************************* ADD TAG ************************* -->
+    <Modal 
+        :visible="displayAddTagModal" 
+        @close="closeAddTagModal"
+        @submit="addTag"
+        title="Ajouter un tag"
+        submitLabel="Ajouter"
+    >
+        <template #content>
+
+            <InputSelect
+                v-model="newTagId"
+                name="newTag"
+                :options="tagOptions"
+            />
+           
+        </template>
+    </Modal>
 </template>
 
 <style>
