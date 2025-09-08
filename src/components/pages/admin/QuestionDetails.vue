@@ -19,6 +19,7 @@ import Modal from '../../shared/Modal.vue';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import { withMessage } from '../../../utils/withMessage';
 import { helpers, minValue, required } from '@vuelidate/validators';
+import InputCode from '../../ui/InputCode.vue';
 
     export default {
         setup() {
@@ -146,7 +147,7 @@ import { helpers, minValue, required } from '@vuelidate/validators';
                 }
             },
             async updateQuestion() {
-                const valid = await this.v$.$validate();
+                const valid = await this.v$.updatedItem.$validate();
 
                 if (!valid) {
                     this.toast.error("Il y a des erreurs dans le formulaire");
@@ -193,16 +194,31 @@ import { helpers, minValue, required } from '@vuelidate/validators';
                 this.newTagId = null;
             },
             startUpdating() {
+                this.initUpdatedItem();
                 this.isUpdating = true;
             },
             stopUpdating() {
                 this.isUpdating = false;
+                this.v$.$reset();
+            },
+            initUpdatedItem() {
+                this.updatedItem = {
+                    id: this.item.id,
+                    content: this.item.content,
+                    code: this.item.code,
+                    timeLimit: this.item.timeLimit,
+                    difficulty: this.item.difficulty,
+                    answers: this.item.answerList,
+                }
             },
             goToTestDetails(testId: number) {
                 this.$router.push(`/test/${testId}`);
             }
         },
         computed: {
+            form() {
+                return this.isUpdating ? this.updatedItem : this.item;
+            },
             canAddTag() {
                 return this.tagOptions.length > 0;
             },
@@ -217,6 +233,7 @@ import { helpers, minValue, required } from '@vuelidate/validators';
             TagBadge,
             Modal,
             ButtonCustom,
+            InputCode,
         }
     }
 </script>
@@ -252,7 +269,7 @@ import { helpers, minValue, required } from '@vuelidate/validators';
                     v-if="isUpdating"
                     content="Sauvegarder" 
                     buttonClass="btn-primary mt-4 ms-3"
-                    @click="stopUpdating"
+                    @click="updateQuestion"
                 />
             </div>
         </section>
@@ -260,7 +277,7 @@ import { helpers, minValue, required } from '@vuelidate/validators';
         <section class="row mb-3">
             <div class="col-md-4">
                 <InputNumber
-                    v-model="item.timeLimit"
+                    v-model="form.timeLimit"
                     name="timeLimit"
                     label="Limite de temps"
                     :symbol="'secondes'"
@@ -270,11 +287,12 @@ import { helpers, minValue, required } from '@vuelidate/validators';
             </div>
             <div class="col-md-4">
                 <InputSelect
-                    v-model="item.difficulty"
+                    v-model="form.difficulty"
                     name="difficulty"
                     label="Difficulté"
-                    :disabled="true"
+                    :disabled="!isUpdating"
                     :options="difficultyOptions"
+                    :validation="v$.updatedItem.difficulty"
                 />
             </div>
             <div class="col-md-4 text-start">
@@ -320,13 +338,14 @@ import { helpers, minValue, required } from '@vuelidate/validators';
         <section class="row mb-3">
             <div class="col-md-12">
                 <InputTextArea
-                    v-model="item.content"
+                    v-model="form.content"
                     name="question-content"
                     placeholder="Question"
-                    :disabled="true"
+                    :disabled="!isUpdating"
                     :displayLabel="false"
                     :cols="70"
                     :rows="3"
+                    :validation="v$.updatedItem.content"
                 />
             </div>
         </section>
@@ -334,8 +353,12 @@ import { helpers, minValue, required } from '@vuelidate/validators';
         <section class="row mb-3">
             <div class="col-md-12">
                 <CodeBlock
-                    v-if="item.code"
+                    v-if="item.code && !isUpdating"
                     :content="item.code"
+                />
+                <InputCode
+                    v-if="updatedItem.code && isUpdating"
+                    v-model="updatedItem.code"
                 />
             </div>
         </section>
