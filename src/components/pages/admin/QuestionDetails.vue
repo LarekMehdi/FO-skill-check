@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
 import { Difficulty, getDifficultyOptions } from '../../../constants/difficulty.constant';
-import type { QuestionDetailsInterface, QuestionHasTagInterface } from '../../../interfaces/question.interface';
+import type { QuestionDetailsInterface, QuestionHasTagInterface, UpdateQuestionInterface } from '../../../interfaces/question.interface';
 import { QuestionService } from '../../../services/QuestionService';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputText from '../../ui/InputText.vue';
@@ -16,6 +16,9 @@ import { TagService } from '../../../services/TagService';
 import type { OptionSelectInterface } from '../../../interfaces/input.interface';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import Modal from '../../shared/Modal.vue';
+import ButtonCustom from '../../ui/ButtonCustom.vue';
+import { withMessage } from '../../../utils/withMessage';
+import { helpers, minValue, required } from '@vuelidate/validators';
 
     export default {
         setup() {
@@ -28,9 +31,31 @@ import Modal from '../../shared/Modal.vue';
             }
         },
         validations() {
-            return {}
+            return {
+                updatedItem: {
+                    content: { required: withMessage('La question est requise', required) },
+                    difficulty: { required: withMessage('La difficulté est requise', required) },
+                    timeLimit: { 
+                        required: withMessage('La limite de temps est requise', required),
+                        minValue: withMessage('La limite de temps doit être supérieur à 30s', minValue(30)),
+                    },
+                    answerItems: {
+                    $each: helpers.forEach( {
+                        content: { required: withMessage('La réponse est requise', required) },
+                    })
+                }
+                }
+            }
         },
-        data(): { questionId: number, item: QuestionDetailsInterface, displayAddTagModal: boolean, newTagId: number|null, tagOptions: OptionSelectInterface[]}
+        data(): { 
+            questionId: number, 
+            item: QuestionDetailsInterface, 
+            displayAddTagModal: boolean, 
+            newTagId: number|null, 
+            tagOptions: OptionSelectInterface[],
+            isUpdating: boolean,
+            updatedItem: UpdateQuestionInterface,
+        }
         {
             return {
                 questionId: Number(this.$route.params.id),
@@ -54,6 +79,14 @@ import Modal from '../../shared/Modal.vue';
                 displayAddTagModal: false,
                 newTagId: null,
                 tagOptions: [],
+                isUpdating: false,
+                updatedItem: {
+                    timeLimit: 0,
+                    difficulty: Difficulty.EASY,
+                    answers: [],
+                    id: 0,
+                    content: '',
+                }
             }
         },
         mounted() {
@@ -112,6 +145,39 @@ import Modal from '../../shared/Modal.vue';
                     this.toast.error("Une erreur est survenue lors de la suppression du tag");
                 }
             },
+            async updateQuestion() {
+                const valid = await this.v$.$validate();
+
+                if (!valid) {
+                    this.toast.error("Il y a des erreurs dans le formulaire");
+                    return;
+                }
+
+                if (this.updatedItem.answers.length < 2) {
+                    this.toast.error("Il faut au moins 2 réponses");
+                    return;
+                } else if (this.updatedItem.answers.length > 4) {
+                    this.updatedItem.answers = this.updatedItem.answers.splice(0, 4);
+                }
+
+                let atLeastOneCorect: boolean = false;
+                for (const a of this.updatedItem.answers) {
+                    if (a.isCorrect) {
+                        atLeastOneCorect = true;
+                        break;
+                    } 
+                }
+                if (!atLeastOneCorect) {
+                    this.toast.error("Au moins une réponse doit être correct");
+                    return;
+                } 
+
+                try {
+
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de la mise à jour de la question");
+                }
+            },
             filterTagList() {
                 const existingIds: (number|undefined)[] = this.item.tagList.map((tag) => tag.id);
                 this.tagOptions = this.tagOptions.filter(opt => {
@@ -125,6 +191,12 @@ import Modal from '../../shared/Modal.vue';
             closeAddTagModal() {
                 this.displayAddTagModal = false;
                 this.newTagId = null;
+            },
+            startUpdating() {
+                this.isUpdating = true;
+            },
+            stopUpdating() {
+                this.isUpdating = false;
             },
             goToTestDetails(testId: number) {
                 this.$router.push(`/test/${testId}`);
@@ -144,6 +216,7 @@ import Modal from '../../shared/Modal.vue';
             InputSelect,
             TagBadge,
             Modal,
+            ButtonCustom,
         }
     }
 </script>
@@ -153,13 +226,33 @@ import Modal from '../../shared/Modal.vue';
 
     <article>
 
-        <section class="row mb-3">
+        <section class="row mb-3 align-items-center">
             <div class="col-md-6">
                 <InputText
                     v-model="item.createdBy.pseudo"
                     name="createdByPseudo"
                     label="Créée par"
                     :disabled="true"
+                />
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+                <i 
+                    v-if="!isUpdating"
+                    class="pi pi-pen-to-square pointer mt-4 text-primary" 
+                    style="font-size: 1.5rem"
+                    @click="startUpdating"
+                ></i>
+                <ButtonCustom 
+                    v-if="isUpdating"
+                    content="Annuler" 
+                    buttonClass="btn-danger mt-4"
+                    @click="stopUpdating"
+                />
+                <ButtonCustom 
+                    v-if="isUpdating"
+                    content="Sauvegarder" 
+                    buttonClass="btn-primary mt-4 ms-3"
+                    @click="stopUpdating"
                 />
             </div>
         </section>
@@ -171,7 +264,8 @@ import Modal from '../../shared/Modal.vue';
                     name="timeLimit"
                     label="Limite de temps"
                     :symbol="'secondes'"
-                    :disabled="true"
+                    :disabled="!isUpdating"
+                    :validation="v$.updatedItem.timeLimit"
                 />
             </div>
             <div class="col-md-4">

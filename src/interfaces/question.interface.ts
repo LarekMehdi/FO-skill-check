@@ -24,6 +24,12 @@ export interface CreateAnswerInterface {
     isCorrect: boolean;
 }
 
+export interface UpdateQuestionInterface extends SmallQuestionInterface {
+    timeLimit: number;
+    difficulty: Difficulty;
+    answers: SmallAnswerInterface[];
+}
+
 export interface QuestionInterface extends SmallQuestionInterface {
     timeLimit: number;
     difficulty: Difficulty;
