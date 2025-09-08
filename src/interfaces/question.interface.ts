@@ -64,3 +64,8 @@ export interface ResultQuestionInterface extends SmallQuestionInterface {
     choices: ResultAnswerInterface[];
 }
 
+export interface QuestionHasTagInterface {
+    questionId: number;
+    tagId: number;
+}
+

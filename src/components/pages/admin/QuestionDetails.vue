@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
 import { Difficulty, getDifficultyOptions } from '../../../constants/difficulty.constant';
-import type { QuestionDetailsInterface } from '../../../interfaces/question.interface';
+import type { QuestionDetailsInterface, QuestionHasTagInterface } from '../../../interfaces/question.interface';
 import { QuestionService } from '../../../services/QuestionService';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputText from '../../ui/InputText.vue';
@@ -79,7 +79,21 @@ import Modal from '../../shared/Modal.vue';
                 }
             },
             async addTag() {
-
+                if (!this.newTagId) {
+                    this.toast.warning("Pas de tag séléctionné");
+                    return;
+                }
+                try {
+                    const questionTag: QuestionHasTagInterface = {
+                        questionId: this.questionId,
+                        tagId: this.newTagId
+                    }
+                    await QuestionService.addTagToQuestion(questionTag); 
+                    this.toast.success("Tag ajouté avec succés");
+                    this.closeAddTagModal();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de l'ajout du tag");
+                }
             },
             filterTagList() {
                 const existingIds: (number|undefined)[] = this.item.tagList.map((tag) => tag.id);

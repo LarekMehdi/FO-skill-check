@@ -1,5 +1,5 @@
 import type { GenericFilter } from "../interfaces/filter.interface";
-import type { CreateQuestionInterface } from "../interfaces/question.interface";
+import type { CreateQuestionInterface, QuestionHasTagInterface } from "../interfaces/question.interface";
 import { useApi } from "./useApi";
 
 export abstract class QuestionApi {
@@ -37,6 +37,28 @@ export abstract class QuestionApi {
         } catch(error: unknown) {
             console.error(error);
             throw error;
+        }
+    }
+
+    /** UPDATE **/
+
+    static async addTagToQuestion(questionTag: QuestionHasTagInterface) {
+        try {
+            const { data } = await useApi().patch(`questions/${questionTag.questionId}/tag/add`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    static async removeTagFromQuestion(questionTag: QuestionHasTagInterface) {
+        try {
+            const { data } = await useApi().patch(`questions/${questionTag.questionId}/tag/remove`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
         }
     }
 
