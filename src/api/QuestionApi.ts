@@ -44,7 +44,7 @@ export abstract class QuestionApi {
 
     static async addTagToQuestion(questionTag: QuestionHasTagInterface) {
         try {
-            const { data } = await useApi().patch(`questions/${questionTag.questionId}/tag/add`);
+            const { data } = await useApi().patch(`questions/${questionTag.questionId}/tag/add`, questionTag);
             return data;
         } catch(e: unknown) {
             console.error(e);

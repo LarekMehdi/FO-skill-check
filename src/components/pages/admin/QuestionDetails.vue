@@ -63,7 +63,6 @@ import Modal from '../../shared/Modal.vue';
             async initQuestionDetails() {
                 try {
                     this.item = await QuestionService.findDetails(this.questionId);
-                    console.log(this.item);
                     await this.initTagList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
@@ -91,6 +90,7 @@ import Modal from '../../shared/Modal.vue';
                     await QuestionService.addTagToQuestion(questionTag); 
                     this.toast.success("Tag ajouté avec succés");
                     this.closeAddTagModal();
+                    this;this.initQuestionDetails();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de l'ajout du tag");
                 }
