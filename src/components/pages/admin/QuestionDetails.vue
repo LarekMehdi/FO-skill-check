@@ -40,7 +40,7 @@ import InputCode from '../../ui/InputCode.vue';
                         required: withMessage('La limite de temps est requise', required),
                         minValue: withMessage('La limite de temps doit être supérieur à 30s', minValue(30)),
                     },
-                    answerItems: {
+                    answers: {
                     $each: helpers.forEach( {
                         content: { required: withMessage('La réponse est requise', required) },
                     })
@@ -150,6 +150,7 @@ import InputCode from '../../ui/InputCode.vue';
                 const valid = await this.v$.updatedItem.$validate();
 
                 if (!valid) {
+                    console.log(this.v$.updatedItem.$errors);
                     this.toast.error("Il y a des erreurs dans le formulaire");
                     return;
                 }
@@ -367,16 +368,17 @@ import InputCode from '../../ui/InputCode.vue';
             </div>
         </section>
 
-        <section v-for="answer in item.answerList" :key="answer.id" class="row mb-3">
+        <section v-for="(answer, index) in item.answerList" :key="answer.id" class="row mb-3">
             <div class="col-md-9">
                 <InputTextArea
                     v-model="answer.content"
                     :name="`answer-${answer.id}`"
                     placeholder="Réponse"
-                    :disabled="true"
+                    :disabled="!isUpdating"
                     :displayLabel="false"
                     :cols="70"
                     :rows="3"
+                    :validation="v$.updatedItem.answers.$each[index]?.content"
                 />
             </div>
             <div class="col-md-3 text-start">
@@ -385,7 +387,7 @@ import InputCode from '../../ui/InputCode.vue';
                     :name="`answer-${answer.id}-correct`"
                     label="Réponse correct?"
                     :displayLabel="true"
-                    :disabled="true"
+                    :disabled="!isUpdating"
                 />
             </div>
         </section>
