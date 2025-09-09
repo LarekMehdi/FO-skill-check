@@ -15,7 +15,7 @@ import hljs from 'highlight.js';
         },
         data(): {localCode: string} {
             return {
-                localCode: '',
+                localCode: this.modelValue ?? '',
             }
         },
         computed: {
