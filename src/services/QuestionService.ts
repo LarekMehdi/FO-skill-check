@@ -1,6 +1,6 @@
 import { QuestionApi } from "../api/QuestionApi";
 import type { GenericFilter } from "../interfaces/filter.interface";
-import type { CreateQuestionInterface, QuestionHasTagInterface } from "../interfaces/question.interface";
+import type { CreateQuestionInterface, QuestionHasTagInterface, UpdateQuestionInterface } from "../interfaces/question.interface";
 
 export abstract class QuestionService {
 
@@ -30,6 +30,10 @@ export abstract class QuestionService {
 
     static async removeTagFromQuestion(questionTag: QuestionHasTagInterface) {
         return await QuestionApi.removeTagFromQuestion(questionTag);
+    }
+
+    static async update(updatedQuestion: UpdateQuestionInterface) {
+        return await QuestionApi.update(updatedQuestion);
     }
 
     /** DELETE **/

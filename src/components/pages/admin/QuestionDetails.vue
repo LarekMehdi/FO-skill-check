@@ -174,6 +174,10 @@ import InputCode from '../../ui/InputCode.vue';
                 } 
 
                 try {
+                    await QuestionService.update(this.updatedItem);
+                    this.stopUpdating();
+                    this.toast.success("Question mise à jour avec succés");
+                    this.initQuestionDetails();
 
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de la mise à jour de la question");

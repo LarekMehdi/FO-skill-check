@@ -27,7 +27,7 @@ type ThisTypeComponent = Props & {
             language: {
                 type: String,
                 required: false,
-                default: 'bash',
+                default: 'js',
             }
         },
         methods: {
