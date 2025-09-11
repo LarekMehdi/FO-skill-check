@@ -41,4 +41,8 @@ export abstract class QuestionService {
     static async delete(questionId: number) {
         return await QuestionApi.delete(questionId);
     }
+
+    static async deleteAll(questionIds: number[]) {
+        return await QuestionApi.deleteAll(questionIds);
+    }
 }

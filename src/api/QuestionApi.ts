@@ -83,4 +83,14 @@ export abstract class QuestionApi {
             throw e;
         }
     }
+
+    static async deleteAll(questionIds: number[]) {
+        try {
+            const { data } = await useApi().delete(`questions/delete`, {params: {ids: questionIds}});
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
 }

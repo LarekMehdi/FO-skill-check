@@ -11,6 +11,7 @@ import { getDifficultyLabel, type Difficulty } from '../../../constants/difficul
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import TagBadge from '../../ui/TagBadge.vue';
 import ModalCancel from '../../shared/ModalCancel.vue';
+import InputCheck from '../../ui/InputCheck.vue';
 
 
     export default {
@@ -29,7 +30,15 @@ import ModalCancel from '../../shared/ModalCancel.vue';
             }
             this.initQuestionList();
         },
-        data(): {item: PageInterface<QuestionListInterface>, questionList: QuestionListInterface[], filter: GenericFilter, displayDeleteModal: boolean, questionIdToDelete: number | null} {
+        data(): {
+            item: PageInterface<QuestionListInterface>, 
+            questionList: QuestionListInterface[], 
+            filter: GenericFilter, 
+            displayDeleteModal: boolean,
+            displayDeleteAllModal: boolean,
+            questionIdToDelete: number | null,
+            selectedIds: number[],
+        } {
             return {
                 item: {
                     datas: [],
@@ -41,7 +50,9 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                     offset: 0
                 },
                 displayDeleteModal: false,
+                displayDeleteAllModal: false,
                 questionIdToDelete: null,
+                selectedIds: [],
             }
         },
         methods: {
@@ -60,6 +71,22 @@ import ModalCancel from '../../shared/ModalCancel.vue';
 
                     this.toast.success("Question supprimée avec succés");
                     this.closeDeleteModal();
+                    this.initQuestionList();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            },
+            async deleteAllQuestions() {
+                if (this.selectedIds.length <= 0) {
+                    this.toast.error("Pas de question à supprimer");
+                    return;
+                }
+
+                try {
+                    await QuestionService.deleteAll(this.selectedIds);
+
+                    this.toast.success("Questions supprimées avec succés");
+                    this.closeDeleteAllModal();
                     this.initQuestionList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
@@ -96,6 +123,26 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                 this.filter = UtilEntity.updateFilterOnSort(event, this.filter);
                 this.initQuestionList();
             },
+            updateSelectedIds(questionId: number, checked: boolean) {
+                if (checked) {
+                    if (!this.selectedIds.includes(questionId)) {
+                        this.selectedIds.push(questionId);
+                    }
+                } else {
+                    this.selectedIds = this.selectedIds.filter((id) => id !== questionId);
+                }
+            },
+            openDeleteAllModal() {
+                this.displayDeleteAllModal = true;
+            },
+            closeDeleteAllModal() {
+                this.displayDeleteAllModal = false;
+            },
+        },
+        computed: {
+            canDeleteAll() {
+                return this.selectedIds.length > 0;
+            },
         },
         components: {
             DataTable,
@@ -104,6 +151,7 @@ import ModalCancel from '../../shared/ModalCancel.vue';
             ButtonCustom,
             TagBadge,
             ModalCancel,
+            InputCheck,
         },
     }
 </script>
@@ -111,6 +159,14 @@ import ModalCancel from '../../shared/ModalCancel.vue';
 <template>
     <h1 class="mb-5">Liste des questions</h1>
     <section v-if="isAdmin" class="row mb-3">
+        <aside class="col text-start">
+            <ButtonCustom 
+                v-if="canDeleteAll"
+                content="Supprimer"
+                buttonClass="btn-danger"
+                @click="deleteAllQuestions"
+            />
+        </aside>
         <aside class="col text-end">
             <ButtonCustom 
                 content="Créer une question"
@@ -131,6 +187,18 @@ import ModalCancel from '../../shared/ModalCancel.vue';
             @sort="onSort"
         >
             <template #empty>Aucune questions à afficher</template>
+            <Column header="Sélectionner" style="width: 5%;">
+                <template #body="slotProps" >
+                    <InputCheck
+                        :modelValue="selectedIds.includes(slotProps.data.id)"
+                        :name="`question-${slotProps.data.id}`"
+                        label="Sélectionner"
+                        :displayLabel="false"
+                        :inline="true"
+                        @update:modelValue="(checked: boolean) => updateSelectedIds(slotProps.data.id, checked)"
+                    />
+                </template>
+            </Column>
             <Column header="Id" field="id" sortable style="width: 5%;">
                 <template #body="slotProps" >
                     <span @click="goToQuestionDetails(slotProps.data.id)" class="clickable">
@@ -146,7 +214,7 @@ import ModalCancel from '../../shared/ModalCancel.vue';
                     </span>
                 </template>
             </Column>
-            <Column field="code" style="width: 45%;">
+            <Column field="code" style="width: 40%;">
                     <template #body="slotProps">
                         <CodeBlock
                             v-if="slotProps.data.code"
@@ -189,8 +257,8 @@ import ModalCancel from '../../shared/ModalCancel.vue';
         </DataTable>
     </section>
 
-    <!-- *************** MODAL *************** -->
-     <ModalCancel
+    <!-- *************** DELETE *************** -->
+    <ModalCancel
         :visible="displayDeleteModal" 
         @close="closeDeleteModal"
         @submit="deleteQuestion"
@@ -200,6 +268,21 @@ import ModalCancel from '../../shared/ModalCancel.vue';
         <template #content>
             <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
             <p>Etes vous sur de vouloir supprimer cette question ?</p>
+        </template>
+    </ModalCancel>
+
+    <!-- *************** DELETE ALL *************** -->
+    <ModalCancel
+        :visible="displayDeleteAllModal" 
+        @close="closeDeleteAllModal"
+        @submit="deleteAllQuestions"
+        title="Supprimer des questions"
+        submitLabel="Supprimer"
+    >
+        <template #content>
+            <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
+            <p>{{ selectedIds.length }} question{{ selectedIds.length > 1 ? 's' : '' }} sélectionnée{{ selectedIds.length > 1 ? 's' : '' }}</p>
+            <p>Etes vous sur de vouloir supprimer {{ selectedIds.length > 1 ? 'ces' : 'cette' }} question{{ selectedIds.length > 1 ? 's' : '' }} ?</p>
         </template>
     </ModalCancel>
 </template>
