@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
 import { useAuthStore } from "../stores/auth.store";
+import qs from "qs";
 
 
 export function useApi() {
@@ -10,6 +11,7 @@ export function useApi() {
 
     const api: AxiosInstance = axios.create({
         baseURL: import.meta.env.VITE_API_BASE_URL,
+        paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'}),
         // headers: {
         //     'Content-Type': 'application/json'
         // }
