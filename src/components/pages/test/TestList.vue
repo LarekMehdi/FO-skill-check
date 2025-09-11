@@ -221,7 +221,12 @@ import ModalCancel from '../../shared/ModalCancel.vue';
             <Column header="Action" style="width: 10%;">
                 <template #body="slotProps">
                     <div style="display: flex; align-items: center; gap: 1rem; cursor: pointer;">
-                        <ButtonCustom content="Détails" @click="goToDetailsTest(slotProps.data.id)"/>
+                        <i 
+                            class="pi pi-eye text-primary ms-2"
+                            @click="goToDetailsTest(slotProps.data.id)"
+                            title="Détails de la question"
+                        >
+                        </i>
                     
                         <i  v-if="isAdmin"
                             class="pi pi-trash" 
