@@ -27,7 +27,7 @@ export interface CreateAnswerInterface {
 export interface UpdateQuestionInterface extends SmallQuestionInterface {
     timeLimit: number;
     difficulty: Difficulty;
-    answers: SmallAnswerInterface[];
+    answerList: SmallAnswerInterface[];
 }
 
 export interface QuestionInterface extends SmallQuestionInterface {

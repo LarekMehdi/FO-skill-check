@@ -40,7 +40,7 @@ import InputCode from '../../ui/InputCode.vue';
                         required: withMessage('La limite de temps est requise', required),
                         minValue: withMessage('La limite de temps doit être supérieur à 30s', minValue(30)),
                     },
-                    answers: {
+                    answerList: {
                     $each: helpers.forEach( {
                         content: { required: withMessage('La réponse est requise', required) },
                     })
@@ -84,7 +84,7 @@ import InputCode from '../../ui/InputCode.vue';
                 updatedItem: {
                     timeLimit: 0,
                     difficulty: Difficulty.EASY,
-                    answers: [],
+                    answerList: [],
                     id: 0,
                     content: '',
                 }
@@ -155,15 +155,15 @@ import InputCode from '../../ui/InputCode.vue';
                     return;
                 }
 
-                if (this.updatedItem.answers.length < 2) {
+                if (this.updatedItem.answerList.length < 2) {
                     this.toast.error("Il faut au moins 2 réponses");
                     return;
-                } else if (this.updatedItem.answers.length > 4) {
-                    this.updatedItem.answers = this.updatedItem.answers.splice(0, 4);
+                } else if (this.updatedItem.answerList.length > 4) {
+                    this.updatedItem.answerList = this.updatedItem.answerList.splice(0, 4);
                 }
 
                 let atLeastOneCorect: boolean = false;
-                for (const a of this.updatedItem.answers) {
+                for (const a of this.updatedItem.answerList) {
                     if (a.isCorrect) {
                         atLeastOneCorect = true;
                         break;
@@ -191,6 +191,9 @@ import InputCode from '../../ui/InputCode.vue';
                     return !existingIds.includes(optId);
                 });
             },
+            removeAnswerItem(answerId: number) {
+                this.updatedItem.answerList = this.updatedItem.answerList.filter((a) => a.id !== answerId);
+            },
             openAddTagModal() {
                 this.displayAddTagModal = true;
             },
@@ -213,7 +216,7 @@ import InputCode from '../../ui/InputCode.vue';
                     code: this.item.code,
                     timeLimit: this.item.timeLimit,
                     difficulty: this.item.difficulty,
-                    answers: this.item.answerList,
+                    answerList: this.item.answerList.map(a => ({ ...a })),
                 }
             },
             goToTestDetails(testId: number) {
@@ -368,8 +371,8 @@ import InputCode from '../../ui/InputCode.vue';
             </div>
         </section>
 
-        <section v-for="(answer, index) in item.answerList" :key="answer.id" class="row mb-3">
-            <div class="col-md-9">
+        <section v-for="(answer, index) in form.answerList" :key="answer.id" class="row mb-3">
+            <div class="col-md-8">
                 <InputTextArea
                     v-model="answer.content"
                     :name="`answer-${answer.id}`"
@@ -378,7 +381,7 @@ import InputCode from '../../ui/InputCode.vue';
                     :displayLabel="false"
                     :cols="70"
                     :rows="3"
-                    :validation="v$.updatedItem.answers.$each[index]?.content"
+                    :validation="v$.updatedItem.answerList.$each[index]?.content"
                 />
             </div>
             <div class="col-md-3 text-start">
@@ -390,6 +393,17 @@ import InputCode from '../../ui/InputCode.vue';
                     :disabled="!isUpdating"
                 />
             </div>
+            <div class="col-md-1">
+                <i 
+                    v-if="isUpdating"
+                    class="pi pi-trash pointer mt-4" 
+                    style="color: red" 
+                    @click="removeAnswerItem(answer.id)"
+                    title="Supprimer cette réponse"
+                > </i>
+            </div>
+             
+            <!-- pi trash -->
         </section>
 
         <hr/>
