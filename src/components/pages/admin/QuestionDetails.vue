@@ -20,6 +20,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 import { withMessage } from '../../../utils/withMessage';
 import { helpers, minValue, required } from '@vuelidate/validators';
 import InputCode from '../../ui/InputCode.vue';
+import type { SmallAnswerInterface } from '../../../interfaces/answer.interface';
 
     export default {
         setup() {
@@ -191,8 +192,19 @@ import InputCode from '../../ui/InputCode.vue';
                     return !existingIds.includes(optId);
                 });
             },
-            removeAnswerItem(answerId: number) {
-                this.updatedItem.answerList = this.updatedItem.answerList.filter((a) => a.id !== answerId);
+            removeAnswerItem(index: number) {
+                this.updatedItem.answerList.splice(index, 1);
+            },
+            addAnswerItem() {
+                if (this.updatedItem.answerList.length > 3) {
+                    this.toast.warning("Il y a déjà 4 réponses pour cette question");
+                    return;
+                }
+                let item: SmallAnswerInterface = {
+                    content: '',
+                    isCorrect: false,
+                }
+                this.updatedItem.answerList.push(item);
             },
             openAddTagModal() {
                 this.displayAddTagModal = true;
@@ -398,13 +410,20 @@ import InputCode from '../../ui/InputCode.vue';
                     v-if="isUpdating"
                     class="pi pi-trash pointer mt-4" 
                     style="color: red" 
-                    @click="removeAnswerItem(answer.id)"
+                    @click="removeAnswerItem(index)"
                     title="Supprimer cette réponse"
                 > </i>
             </div>
-             
-            <!-- pi trash -->
         </section>
+
+        <aside v-if="isUpdating" class="row mb-3">
+            <section class="col text-start">
+                <ButtonCustom
+                    content="Ajouter une réponse"
+                    @click="addAnswerItem"
+                />
+            </section>
+        </aside>
 
         <hr/>
 

@@ -1,5 +1,5 @@
 export interface SmallAnswerInterface {
-    id: number;
+    id?: number;
     content: string;
     isCorrect: boolean;
 }
