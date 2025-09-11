@@ -38,8 +38,10 @@ export default {
         <section v-if="isAdmin">
             <router-link to="/question" class="navbar-brand">Questions</router-link>
             <router-link to="/tag" class="navbar-brand">Tags</router-link>
-            <router-link to="/test" class="navbar-brand">Tests</router-link>
             <router-link to="/user" class="navbar-brand">Utilisateurs</router-link>
+        </section>
+        <section>
+            <router-link to="/test" class="navbar-brand">Tests</router-link>
         </section>
 
 
