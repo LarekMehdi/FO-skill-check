@@ -145,6 +145,9 @@ import { UtilEntity } from '../../../utils/UtilEntity';
             displaySuccessRate() {
                 return Number((this.item.successRate * 100).toFixed(1));
             },
+            canDoTest() {
+                return this.item.questionList.length > 0;
+            }
         },
         components: {
             InputTextArea,
@@ -170,7 +173,7 @@ import { UtilEntity } from '../../../utils/UtilEntity';
                 @click="openAddQuestionModal"
             />
             <ButtonCustom 
-                v-if="isLoggedIn"
+                v-if="isLoggedIn && canDoTest"
                 buttonClass="ms-3 btn-success"
                 content="Passer le test"
                 @click="goToTakeTest"
