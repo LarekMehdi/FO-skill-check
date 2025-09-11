@@ -23,6 +23,10 @@ import ModalCancel from '../../shared/ModalCancel.vue';
             }
         },
         mounted() {
+            if (this.$route.hash === '#deleted') {
+                this.toast.success("Question supprimée avec succès");
+                this.$router.replace({ hash: '' });
+            }
             this.initQuestionList();
         },
         data(): {item: PageInterface<QuestionListInterface>, questionList: QuestionListInterface[], filter: GenericFilter, displayDeleteModal: boolean, questionIdToDelete: number | null} {

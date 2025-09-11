@@ -21,6 +21,7 @@ import { withMessage } from '../../../utils/withMessage';
 import { helpers, minValue, required } from '@vuelidate/validators';
 import InputCode from '../../ui/InputCode.vue';
 import type { SmallAnswerInterface } from '../../../interfaces/answer.interface';
+import ModalCancel from '../../shared/ModalCancel.vue';
 
     export default {
         setup() {
@@ -57,6 +58,7 @@ import type { SmallAnswerInterface } from '../../../interfaces/answer.interface'
             tagOptions: OptionSelectInterface[],
             isUpdating: boolean,
             updatedItem: UpdateQuestionInterface,
+            displayDeleteModal: boolean,
         }
         {
             return {
@@ -88,7 +90,8 @@ import type { SmallAnswerInterface } from '../../../interfaces/answer.interface'
                     answerList: [],
                     id: 0,
                     content: '',
-                }
+                },
+                displayDeleteModal: false,
             }
         },
         mounted() {
@@ -185,6 +188,24 @@ import type { SmallAnswerInterface } from '../../../interfaces/answer.interface'
                     this.toast.error("Une erreur est survenue lors de la mise à jour de la question");
                 }
             },
+            async deleteQuestion() {
+
+                try {
+                    await QuestionService.delete(this.questionId);
+
+                    this.closeDeleteModal();
+                    this.$router.push({ path: '/question', hash: '#deleted' });
+                    
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
+            },
+            openDeleteModal() {
+                this.displayDeleteModal = true;
+            },
+            closeDeleteModal() {
+                this.displayDeleteModal = false;
+            },
             filterTagList() {
                 const existingIds: (number|undefined)[] = this.item.tagList.map((tag) => tag.id);
                 this.tagOptions = this.tagOptions.filter(opt => {
@@ -254,6 +275,7 @@ import type { SmallAnswerInterface } from '../../../interfaces/answer.interface'
             Modal,
             ButtonCustom,
             InputCode,
+            ModalCancel,
         }
     }
 </script>
@@ -278,6 +300,14 @@ import type { SmallAnswerInterface } from '../../../interfaces/answer.interface'
                     class="pi pi-pen-to-square pointer mt-4 text-primary" 
                     style="font-size: 1.5rem"
                     @click="startUpdating"
+                ></i>
+                <i 
+                    v-if="!isUpdating"
+                    class="pi pi-trash pointer mt-4 ms-3" 
+                    style="color: red; font-size: 1.5rem;" 
+                    
+                    @click="openDeleteModal()"
+                    title="Supprimer cette question"
                 ></i>
                 <ButtonCustom 
                     v-if="isUpdating"
@@ -495,6 +525,21 @@ import type { SmallAnswerInterface } from '../../../interfaces/answer.interface'
            
         </template>
     </Modal>
+
+    <!-- *************** MODAL *************** -->
+     <ModalCancel
+        :visible="displayDeleteModal" 
+        @close="closeDeleteModal"
+        @submit="deleteQuestion"
+        title="Supprimer cette question"
+        submitLabel="Supprimer"
+    >
+        <template #content>
+            <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
+            <p>Etes vous sur de vouloir supprimer cette question ?</p>
+        </template>
+    </ModalCancel>
+
 </template>
 
 <style>
