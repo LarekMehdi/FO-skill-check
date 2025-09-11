@@ -195,6 +195,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                         label="Sélectionner"
                         :displayLabel="false"
                         :inline="true"
+                        :isSmall="true"
                         @update:modelValue="(checked: boolean) => updateSelectedIds(slotProps.data.id, checked)"
                     />
                 </template>
