@@ -37,7 +37,7 @@ import InputCheck from '../../ui/InputCheck.vue';
             displayDeleteModal: boolean,
             displayDeleteAllModal: boolean,
             questionIdToDelete: number | null,
-            selectedIds: number[],
+            selectedQuestions: QuestionListInterface[],
         } {
             return {
                 item: {
@@ -52,7 +52,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                 displayDeleteModal: false,
                 displayDeleteAllModal: false,
                 questionIdToDelete: null,
-                selectedIds: [],
+                selectedQuestions: [],
             }
         },
         methods: {
@@ -77,16 +77,18 @@ import InputCheck from '../../ui/InputCheck.vue';
                 }
             },
             async deleteAllQuestions() {
-                if (this.selectedIds.length <= 0) {
+                if (this.selectedQuestions.length <= 0) {
                     this.toast.error("Pas de question à supprimer");
                     return;
                 }
 
                 try {
-                    await QuestionService.deleteAll(this.selectedIds);
+                    const ids: number[] = this.selectedQuestions.map((q) => q.id);
+                    await QuestionService.deleteAll(ids);
 
                     this.toast.success("Questions supprimées avec succés");
                     this.closeDeleteAllModal();
+                    this.selectedQuestions = [];
                     this.initQuestionList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
@@ -123,15 +125,6 @@ import InputCheck from '../../ui/InputCheck.vue';
                 this.filter = UtilEntity.updateFilterOnSort(event, this.filter);
                 this.initQuestionList();
             },
-            updateSelectedIds(questionId: number, checked: boolean) {
-                if (checked) {
-                    if (!this.selectedIds.includes(questionId)) {
-                        this.selectedIds.push(questionId);
-                    }
-                } else {
-                    this.selectedIds = this.selectedIds.filter((id) => id !== questionId);
-                }
-            },
             openDeleteAllModal() {
                 this.displayDeleteAllModal = true;
             },
@@ -141,7 +134,7 @@ import InputCheck from '../../ui/InputCheck.vue';
         },
         computed: {
             canDeleteAll() {
-                return this.selectedIds.length > 0;
+                return this.selectedQuestions.length > 0;
             },
         },
         components: {
@@ -164,7 +157,7 @@ import InputCheck from '../../ui/InputCheck.vue';
                 v-if="canDeleteAll"
                 content="Supprimer"
                 buttonClass="btn-danger"
-                @click="deleteAllQuestions"
+                @click="openDeleteAllModal"
             />
         </aside>
         <aside class="col text-end">
@@ -178,6 +171,8 @@ import InputCheck from '../../ui/InputCheck.vue';
     <section>
         <DataTable 
             :value="questionList" 
+            v-model:selection="selectedQuestions"
+            dataKey="id"
             class="p-datatable-sm compact-table"
             :lazy="true"
             :paginator="true"
@@ -187,19 +182,8 @@ import InputCheck from '../../ui/InputCheck.vue';
             @sort="onSort"
         >
             <template #empty>Aucune questions à afficher</template>
-            <Column header="Sélectionner" style="width: 5%;">
-                <template #body="slotProps" >
-                    <InputCheck
-                        :modelValue="selectedIds.includes(slotProps.data.id)"
-                        :name="`question-${slotProps.data.id}`"
-                        label="Sélectionner"
-                        :displayLabel="false"
-                        :inline="true"
-                        :isSmall="true"
-                        @update:modelValue="(checked: boolean) => updateSelectedIds(slotProps.data.id, checked)"
-                    />
-                </template>
-            </Column>
+            <Column selectionMode="multiple" style="width: 5%;"></Column>
+
             <Column header="Id" field="id" sortable style="width: 5%;">
                 <template #body="slotProps" >
                     <span @click="goToQuestionDetails(slotProps.data.id)" class="clickable">
@@ -282,8 +266,8 @@ import InputCheck from '../../ui/InputCheck.vue';
     >
         <template #content>
             <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
-            <p>{{ selectedIds.length }} question{{ selectedIds.length > 1 ? 's' : '' }} sélectionnée{{ selectedIds.length > 1 ? 's' : '' }}</p>
-            <p>Etes vous sur de vouloir supprimer {{ selectedIds.length > 1 ? 'ces' : 'cette' }} question{{ selectedIds.length > 1 ? 's' : '' }} ?</p>
+            <p>{{ selectedQuestions.length }} question{{ selectedQuestions.length > 1 ? 's' : '' }} sélectionnée{{ selectedQuestions.length > 1 ? 's' : '' }}</p>
+            <p>Etes vous sur de vouloir supprimer {{ selectedQuestions.length > 1 ? 'ces' : 'cette' }} question{{ selectedQuestions.length > 1 ? 's' : '' }}?</p>
         </template>
     </ModalCancel>
 </template>
