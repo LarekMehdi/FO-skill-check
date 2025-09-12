@@ -38,6 +38,7 @@ import InputCheck from '../../ui/InputCheck.vue';
             displayDeleteAllModal: boolean,
             questionIdToDelete: number | null,
             selectedQuestions: QuestionListInterface[],
+            allSelectedQuestions: QuestionListInterface[],
         } {
             return {
                 item: {
@@ -53,12 +54,16 @@ import InputCheck from '../../ui/InputCheck.vue';
                 displayDeleteAllModal: false,
                 questionIdToDelete: null,
                 selectedQuestions: [],
+                allSelectedQuestions: [],
             }
         },
         methods: {
             async initQuestionList() {
                 this.item = await QuestionService.findAll(this.filter);
                 this.questionList = this.item.datas;
+                this.selectedQuestions = this.questionList.filter(q =>
+                    this.allSelectedQuestions.some(sq => sq.id === q.id)
+                );
             },
             async deleteQuestion() {
                 if (!this.questionIdToDelete) {
@@ -77,13 +82,13 @@ import InputCheck from '../../ui/InputCheck.vue';
                 }
             },
             async deleteAllQuestions() {
-                if (this.selectedQuestions.length <= 0) {
+                if (this.allSelectedQuestions.length <= 0) {
                     this.toast.error("Pas de question à supprimer");
                     return;
                 }
 
                 try {
-                    const ids: number[] = this.selectedQuestions.map((q) => q.id);
+                    const ids: number[] = this.allSelectedQuestions.map((q) => q.id);
                     await QuestionService.deleteAll(ids);
 
                     this.toast.success("Questions supprimées avec succés");
@@ -118,6 +123,12 @@ import InputCheck from '../../ui/InputCheck.vue';
                 this.$router.push(`/question/create`);
             },
             onPage(event: DataTablePageEvent) {
+                this.allSelectedQuestions = [
+                    ...this.allSelectedQuestions.filter(
+                    q => !this.selectedQuestions.some(sq => sq.id === q.id)
+                    ),
+                    ...this.selectedQuestions
+                ];
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
                 this.initQuestionList();
             },
@@ -134,7 +145,7 @@ import InputCheck from '../../ui/InputCheck.vue';
         },
         computed: {
             canDeleteAll() {
-                return this.selectedQuestions.length > 0;
+                return this.allSelectedQuestions.length > 0;
             },
         },
         components: {
@@ -266,8 +277,8 @@ import InputCheck from '../../ui/InputCheck.vue';
     >
         <template #content>
             <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
-            <p>{{ selectedQuestions.length }} question{{ selectedQuestions.length > 1 ? 's' : '' }} sélectionnée{{ selectedQuestions.length > 1 ? 's' : '' }}</p>
-            <p>Etes vous sur de vouloir supprimer {{ selectedQuestions.length > 1 ? 'ces' : 'cette' }} question{{ selectedQuestions.length > 1 ? 's' : '' }}?</p>
+            <p>{{ allSelectedQuestions.length }} question{{ allSelectedQuestions.length > 1 ? 's' : '' }} sélectionnée{{ allSelectedQuestions.length > 1 ? 's' : '' }}</p>
+            <p>Etes vous sur de vouloir supprimer {{ allSelectedQuestions.length > 1 ? 'ces' : 'cette' }} question{{ allSelectedQuestions.length > 1 ? 's' : '' }}?</p>
         </template>
     </ModalCancel>
 </template>
