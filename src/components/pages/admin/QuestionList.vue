@@ -97,6 +97,7 @@ import { SortOrder } from '../../../constants/filter.constant';
                     this.toast.success("Questions supprimées avec succés");
                     this.closeDeleteAllModal();
                     this.selectedQuestions = [];
+                    this.allSelectedQuestions = [];
                     this.initQuestionList();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
@@ -126,12 +127,7 @@ import { SortOrder } from '../../../constants/filter.constant';
                 this.$router.push(`/question/create`);
             },
             onPage(event: DataTablePageEvent) {
-                this.allSelectedQuestions = [
-                    ...this.allSelectedQuestions.filter(
-                    q => !this.selectedQuestions.some(sq => sq.id === q.id)
-                    ),
-                    ...this.selectedQuestions
-                ];
+                this.saveCurrentPageSelections();
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
                 this.initQuestionList();
             },
@@ -145,11 +141,24 @@ import { SortOrder } from '../../../constants/filter.constant';
             closeDeleteAllModal() {
                 this.displayDeleteAllModal = false;
             },
+            saveCurrentPageSelections() {
+                const currentPageIds: number[] = this.questionList.map((q) => q.id);
+                this.allSelectedQuestions = this.allSelectedQuestions.filter(
+                    (q) => !currentPageIds.includes(q.id)
+                );
+
+                this.allSelectedQuestions.push(...this.selectedQuestions);
+            },
         },
         computed: {
             canDeleteAll() {
                 return this.allSelectedQuestions.length > 0;
             },
+        },
+        watch: {
+            'selectedQuestions'(newVal, oldVal) {
+                if (newVal && newVal !== oldVal) this.saveCurrentPageSelections();
+            }
         },
         components: {
             DataTable,
