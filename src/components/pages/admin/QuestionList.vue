@@ -13,6 +13,7 @@ import TagBadge from '../../ui/TagBadge.vue';
 import ModalCancel from '../../shared/ModalCancel.vue';
 import InputCheck from '../../ui/InputCheck.vue';
 import { SortOrder } from '../../../constants/filter.constant';
+import FilterPanel from '../../shared/FilterPanel.vue';
 
 
     export default {
@@ -37,6 +38,7 @@ import { SortOrder } from '../../../constants/filter.constant';
             filter: GenericFilter, 
             displayDeleteModal: boolean,
             displayDeleteAllModal: boolean,
+            displayFilterPanel: boolean,
             questionIdToDelete: number | null,
             selectedQuestions: QuestionListInterface[],
             allSelectedQuestions: QuestionListInterface[],
@@ -55,6 +57,7 @@ import { SortOrder } from '../../../constants/filter.constant';
                 },
                 displayDeleteModal: false,
                 displayDeleteAllModal: false,
+                displayFilterPanel: false,
                 questionIdToDelete: null,
                 selectedQuestions: [],
                 allSelectedQuestions: [],
@@ -141,6 +144,12 @@ import { SortOrder } from '../../../constants/filter.constant';
             closeDeleteAllModal() {
                 this.displayDeleteAllModal = false;
             },
+            openFilterPanel() {
+                this.displayFilterPanel = true;
+            },
+            closeFilterPanel() {
+                this.displayFilterPanel = false;
+            },
             saveCurrentPageSelections() {
                 const currentPageIds: number[] = this.questionList.map((q) => q.id);
                 this.allSelectedQuestions = this.allSelectedQuestions.filter(
@@ -168,6 +177,7 @@ import { SortOrder } from '../../../constants/filter.constant';
             TagBadge,
             ModalCancel,
             InputCheck,
+            FilterPanel,
         },
     }
 </script>
@@ -188,6 +198,13 @@ import { SortOrder } from '../../../constants/filter.constant';
                 content="Créer une question"
                 @click="goToQuestionCreate"
             />
+
+            <ButtonCustom 
+                content="Filtrer"
+                buttonClass="ms-3 btn-primary"
+                @click="openFilterPanel"
+            />
+
         </aside>
     </section>
 
@@ -293,6 +310,14 @@ import { SortOrder } from '../../../constants/filter.constant';
             <p>Etes vous sur de vouloir supprimer {{ allSelectedQuestions.length > 1 ? 'ces' : 'cette' }} question{{ allSelectedQuestions.length > 1 ? 's' : '' }}?</p>
         </template>
     </ModalCancel>
+
+    <!-- *************** FILTER *************** -->
+    <FilterPanel 
+        :isActive="displayFilterPanel"
+        :filter="filter"
+        @close="closeFilterPanel"
+    >
+    </FilterPanel>
 </template>
 
 <style scoped>
