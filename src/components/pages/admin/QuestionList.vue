@@ -12,6 +12,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 import TagBadge from '../../ui/TagBadge.vue';
 import ModalCancel from '../../shared/ModalCancel.vue';
 import InputCheck from '../../ui/InputCheck.vue';
+import { SortOrder } from '../../../constants/filter.constant';
 
 
     export default {
@@ -48,7 +49,9 @@ import InputCheck from '../../ui/InputCheck.vue';
                 questionList: [],
                 filter: {
                     limit: 10,
-                    offset: 0
+                    offset: 0,
+                    sortBy: 'id',
+                    sortOrder: SortOrder.ASC,
                 },
                 displayDeleteModal: false,
                 displayDeleteAllModal: false,
