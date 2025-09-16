@@ -1,5 +1,5 @@
 import { QuestionApi } from "../api/QuestionApi";
-import type { GenericFilter } from "../interfaces/filter.interface";
+import type { QuestionListFilterInterface } from "../interfaces/filter.interface";
 import type { CreateQuestionInterface, QuestionHasTagInterface, UpdateQuestionInterface } from "../interfaces/question.interface";
 
 export abstract class QuestionService {
@@ -12,7 +12,7 @@ export abstract class QuestionService {
 
     /** FIND ALL **/
 
-    static async findAll(filter: GenericFilter) {
+    static async findAll(filter: QuestionListFilterInterface) {
         return await QuestionApi.findAll(filter);
     }
 

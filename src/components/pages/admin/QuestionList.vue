@@ -69,9 +69,8 @@ import InputSelect from '../../ui/InputSelect.vue';
         },
         methods: {
             async initQuestionList() {
-                console.log(this.filter);
                 if (this.displayFilterPanel) this.closeFilterPanel();
-                
+
                 this.item = await QuestionService.findAll(this.filter);
                 this.questionList = this.item.datas;
                 this.selectedQuestions = this.questionList.filter(q =>
