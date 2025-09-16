@@ -3,26 +3,29 @@ import { Column, DataTable, type DataTablePageEvent, type DataTableRowClickEvent
 import { useToast } from 'vue-toastification';
 import { useAuth } from '../../../composables/useAuth';
 import type { QuestionListInterface } from '../../../interfaces/question.interface';
-import type { GenericFilter, PageInterface } from '../../../interfaces/filter.interface';
+import type { PageInterface, QuestionListFilterInterface } from '../../../interfaces/filter.interface';
 import { QuestionService } from '../../../services/QuestionService';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import CodeBlock from '../../ui/CodeBlock.vue';
-import { getDifficultyLabel, type Difficulty } from '../../../constants/difficulty.constant';
+import { getDifficultyLabel, getDifficultyOptions, type Difficulty } from '../../../constants/difficulty.constant';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import TagBadge from '../../ui/TagBadge.vue';
 import ModalCancel from '../../shared/ModalCancel.vue';
 import InputCheck from '../../ui/InputCheck.vue';
 import { SortOrder } from '../../../constants/filter.constant';
 import FilterPanel from '../../shared/FilterPanel.vue';
+import InputSelect from '../../ui/InputSelect.vue';
 
 
     export default {
         setup() {
             const toast = useToast();
             const { isAdmin } = useAuth(); 
+            const difficultyOptions = getDifficultyOptions();
             return {
                 toast,
                 isAdmin,
+                difficultyOptions,
             }
         },
         mounted() {
@@ -35,7 +38,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
         data(): {
             item: PageInterface<QuestionListInterface>, 
             questionList: QuestionListInterface[], 
-            filter: GenericFilter, 
+            filter: QuestionListFilterInterface, 
             displayDeleteModal: boolean,
             displayDeleteAllModal: boolean,
             displayFilterPanel: boolean,
@@ -54,6 +57,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
                     offset: 0,
                     sortBy: 'id',
                     sortOrder: SortOrder.ASC,
+                    difficulty: null,
                 },
                 displayDeleteModal: false,
                 displayDeleteAllModal: false,
@@ -65,6 +69,9 @@ import FilterPanel from '../../shared/FilterPanel.vue';
         },
         methods: {
             async initQuestionList() {
+                console.log(this.filter);
+                if (this.displayFilterPanel) this.closeFilterPanel();
+                
                 this.item = await QuestionService.findAll(this.filter);
                 this.questionList = this.item.datas;
                 this.selectedQuestions = this.questionList.filter(q =>
@@ -178,6 +185,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
             ModalCancel,
             InputCheck,
             FilterPanel,
+            InputSelect,
         },
     }
 </script>
@@ -315,8 +323,22 @@ import FilterPanel from '../../shared/FilterPanel.vue';
     <FilterPanel 
         :isActive="displayFilterPanel"
         :filter="filter"
-        @close="closeFilterPanel"
+        @onClose="closeFilterPanel"
+        @onFilter="initQuestionList"
     >
+        <template #content>
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <InputSelect 
+                        v-model="filter.difficulty"
+                        name="difficulty"
+                        label="Difficulté"
+                        :options="difficultyOptions"
+                        :inline="true"
+                    />
+                </div>
+            </section>
+        </template>
     </FilterPanel>
 </template>
 

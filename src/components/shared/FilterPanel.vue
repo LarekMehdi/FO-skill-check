@@ -14,7 +14,7 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
                 required: true,
             }
         },
-        emits: ["close", "filter"],
+        emits: ["onClose", "onFilter"],
         methods: {
 
         },
@@ -29,7 +29,7 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
         <article 
             v-if="isActive"
             class="overlay"
-            @click.self="$emit('close')"
+            @click.self="$emit('onClose')"
         >
             <section class="drawer">
                 <header class="drawer-header">
@@ -37,20 +37,17 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
                 </header>
                 
                 <section class="drawer-content">
-                    <slot></slot>
+
+                    <slot name="content"></slot>
+
+                    <div class="filter-btn">
+                        <ButtonCustom 
+                            content="Filtrer"
+                            buttonClass="btn-primary btn-half"
+                            @click="$emit('onFilter', filter)"
+                        />
+                    </div>
                 </section>
-                
-                <footer class="drawer-footer">
-                    <ButtonCustom 
-                        content="Annuler"
-                        @click="$emit('close')"
-                        buttonClass="btn-danger"
-                    />
-                    <ButtonCustom 
-                        content="Filtrer"
-                        @click="$emit('filter', filter)"
-                    />
-                </footer>
             </section>
         </article>
     </transition>
@@ -112,4 +109,15 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
     .drawer-overlay-leave-to .drawer {
         transform: translateX(100%);
     }
+
+    .filter-btn {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+
+    .btn-half {
+        width: 50%;
+    }
+
 </style>

@@ -1,3 +1,4 @@
+import type { Difficulty } from "../constants/difficulty.constant";
 import type { SortOrder } from "../constants/filter.constant";
 
 export interface GenericFilter {
@@ -15,4 +16,8 @@ export interface PageInterface<T> {
 
 export interface TestListFilterInterface extends GenericFilter {
     
+}
+
+export interface QuestionListFilterInterface extends GenericFilter {
+    difficulty?: Difficulty | null;
 }

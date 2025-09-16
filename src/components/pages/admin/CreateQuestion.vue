@@ -229,7 +229,7 @@ import InputCode from '../../ui/InputCode.vue';
                 <div class="col-md-12">
                     <InputSelect 
                         v-model="tagId"
-                        name="difficulty"
+                        name="tag"
                         label="Ajouter un tag?"
                         :options="tagList"
                         :inline="true"
