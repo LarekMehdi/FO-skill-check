@@ -25,45 +25,39 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
 </script>
 
 <template>
-    <transition name="fade" class="mt-5">
+    <transition name="drawer-overlay" class="mt-5">
         <article 
             v-if="isActive"
             class="overlay"
             @click.self="$emit('close')"
         >
-            <transition name="slide">
-                <section class="drawer">
-
-                    <header class="drawer-header">
-                        <h3>Filtres</h3>
-                        
-                    </header>
-
-                    <section class="drawer-content">
-                        <slot></slot>
-                    </section>
-
-                    <footer class="drawer-footer">
-                        <ButtonCustom 
-                            content="Annuler"
-                            @click="$emit('close')"
-                            buttonClass="btn-danger"
-                        />
-                        <ButtonCustom 
-                            content="Filtrer"
-                            @click="$emit('filter', filter)"
-                        />
-                    </footer>
-
+            <section class="drawer">
+                <header class="drawer-header">
+                    <h3>Filtres</h3>
+                </header>
+                
+                <section class="drawer-content">
+                    <slot></slot>
                 </section>
-            </transition>
+                
+                <footer class="drawer-footer">
+                    <ButtonCustom 
+                        content="Annuler"
+                        @click="$emit('close')"
+                        buttonClass="btn-danger"
+                    />
+                    <ButtonCustom 
+                        content="Filtrer"
+                        @click="$emit('filter', filter)"
+                    />
+                </footer>
+            </section>
         </article>
     </transition>
-   
 </template>
 
-<style scoped>
 
+<style scoped>
     .overlay {
         position: fixed;
         inset: 0;
@@ -84,34 +78,38 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
 
     .drawer-header, .drawer-footer {
         padding: 1rem;
-        /* border-bottom: 1px solid #eee; */
         display: flex;
         justify-content: center;
         align-items: center;
     }
+
     .drawer-footer {
         justify-content: space-between;
         border-top: 1px solid #eee;
         border-bottom: none;
     }
+
     .drawer-content {
         flex: 1;
         overflow-y: auto;
         padding: 1rem;
     }
 
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity 0.2s;
+    .drawer-overlay-enter-active, .drawer-overlay-leave-active {
+        transition: opacity 0.3s ease;
     }
-    .fade-enter-from, .fade-leave-to {
+
+    .drawer-overlay-enter-active .drawer, 
+    .drawer-overlay-leave-active .drawer {
+        transition: transform 0.3s ease;
+    }
+
+    .drawer-overlay-enter-from, .drawer-overlay-leave-to {
         opacity: 0;
     }
 
-    .slide-enter-active, .slide-leave-active {
-        transition: transform 1s ease;
-    }
-    .slide-enter-from, .slide-leave-to {
+    .drawer-overlay-enter-from .drawer, 
+    .drawer-overlay-leave-to .drawer {
         transform: translateX(100%);
     }
-
 </style>
