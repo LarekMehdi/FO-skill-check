@@ -9,6 +9,7 @@ import { useToast } from 'vue-toastification';
 import { withMessage } from '../../../utils/withMessage';
 import type { SignupDataInterface } from '../../../interfaces/auth.interface';
 import { AuthService } from '../../../services/AuthService';
+import Title from '../../shared/Title.vue';
 
 const sameAsPassword = withMessage(
     'Les mots de passe ne correspondent pas',
@@ -59,7 +60,8 @@ export default {
     components: {
         InputText,
         InputPassword,
-        ButtonSubmit
+        ButtonSubmit,
+        Title,
     },
     computed: {
         
@@ -90,7 +92,8 @@ export default {
 
 <template>
     <main>
-        <h1 class="mb-5">Créer un compte</h1>
+
+        <Title content="Créer un compte"></Title>
 
         <div>
             <form @submit.prevent="signup">

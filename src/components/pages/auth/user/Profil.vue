@@ -13,6 +13,7 @@ import { email, maxLength, minLength, required } from '@vuelidate/validators';
 import { withMessage } from '../../../../utils/withMessage';
 import useVuelidate from '@vuelidate/core';
 import { AxiosError } from 'axios';
+import Title from '../../../shared/Title.vue';
 
     export default {
         mounted() {
@@ -114,12 +115,15 @@ import { AxiosError } from 'axios';
             DataTable,
             Column,
             ButtonCustom,
+            Title,
         },
     }
 </script>
 
 <template>
-    <h1 class="mb-5">{{  displayTitle }}</h1>
+
+    <Title :content="displayTitle"></Title>
+
     <article>
         <section class="row mb-3">
             <div class="col-md-5">

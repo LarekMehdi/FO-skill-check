@@ -15,6 +15,7 @@ import InputCheck from '../../ui/InputCheck.vue';
 import { SortOrder } from '../../../constants/filter.constant';
 import FilterPanel from '../../shared/FilterPanel.vue';
 import InputSelect from '../../ui/InputSelect.vue';
+import Title from '../../shared/Title.vue';
 
 
     export default {
@@ -188,12 +189,15 @@ import InputSelect from '../../ui/InputSelect.vue';
             InputCheck,
             FilterPanel,
             InputSelect,
+            Title,
         },
     }
 </script>
 
 <template>
-    <h1 class="mb-5">Liste des questions</h1>
+
+    <Title content="Liste des questions"></Title>
+
     <section v-if="isAdmin" class="row mb-3">
         <aside class="col text-start">
             <ButtonCustom 
@@ -330,6 +334,7 @@ import InputSelect from '../../ui/InputSelect.vue';
         @onReset="resetFilter"
     >
         <template #content>
+
             <section class="row mb-3">
                 <div class="col-md-12">
                     <InputSelect 
@@ -341,6 +346,7 @@ import InputSelect from '../../ui/InputSelect.vue';
                     />
                 </div>
             </section>
+
         </template>
     </FilterPanel>
 </template>

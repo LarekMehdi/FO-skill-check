@@ -19,6 +19,7 @@ import InputText from '../../ui/InputText.vue';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import ModalCancel from '../../shared/ModalCancel.vue';
+import Title from '../../shared/Title.vue';
 
 
     export default {
@@ -169,13 +170,15 @@ import ModalCancel from '../../shared/ModalCancel.vue';
             DataTable,
             Column,
             ModalCancel,
+            Title,
         }
     }
 </script>
 
 <template>
    
-    <h1 class="mb-5">Liste des tests</h1>
+    <Title content="Liste des tests"></Title>
+
     <section v-if="isAdmin" class="row mb-3">
         <aside class="col text-start">
             <ButtonCustom 

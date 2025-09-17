@@ -2,6 +2,7 @@
 import type { ResultTestSessionInterface } from '../../../interfaces/testSession.interface';
 import { SessionService } from '../../../services/SessionService';
 import QuestionResult from '../../shared/QuestionResult.vue';
+import Title from '../../shared/Title.vue';
 
     export default {
         mounted() {
@@ -36,13 +37,15 @@ import QuestionResult from '../../shared/QuestionResult.vue';
         },
         components: {
             QuestionResult,
+            Title,
         }
 
     }
 </script>
 
 <template>
-    <h1 class="mb-5">Resultat du test</h1>
+
+    <Title content="Résultat du test"></Title>
     <h3>{{ item.testTitle }}</h3>
 
     <aside>

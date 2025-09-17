@@ -17,6 +17,7 @@ import type { TagInterface } from '../../../interfaces/tag.interface';
 import InputCheck from '../../ui/InputCheck.vue';
 import CodeBlock from '../../ui/CodeBlock.vue';
 import { UtilEntity } from '../../../utils/UtilEntity';
+import Title from '../../shared/Title.vue';
 
     export default {
         setup() {
@@ -159,12 +160,15 @@ import { UtilEntity } from '../../../utils/UtilEntity';
             Column,
             InputCheck,
             CodeBlock,
+            Title,
         },
     }
 </script>
 
 <template>
-    <h1 class="mb-5">{{ item.title }}</h1>
+
+    <Title :content="item.title"></Title>
+
     <section class="row mb-3">
         <aside class="col text-end">
             <ButtonCustom 

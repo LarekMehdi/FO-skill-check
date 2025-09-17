@@ -22,6 +22,7 @@ import { helpers, minValue, required } from '@vuelidate/validators';
 import InputCode from '../../ui/InputCode.vue';
 import type { SmallAnswerInterface } from '../../../interfaces/answer.interface';
 import ModalCancel from '../../shared/ModalCancel.vue';
+import Title from '../../shared/Title.vue';
 
     export default {
         setup() {
@@ -276,12 +277,13 @@ import ModalCancel from '../../shared/ModalCancel.vue';
             ButtonCustom,
             InputCode,
             ModalCancel,
+            Title,
         }
     }
 </script>
 
 <template>
-    <h1 class="mb-5">Détails de la question</h1>
+    <Title content="Détails de la question"></Title>
 
     <article>
 

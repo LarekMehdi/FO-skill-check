@@ -8,6 +8,7 @@ import InputSwitch from '../../../ui/InputSwitch.vue';
 import { useToast } from 'vue-toastification';
 import { Role } from '../../../../constants/role.constant';
 import { useAuth } from '../../../../composables/useAuth';
+import Title from '../../../shared/Title.vue';
 
     export default {
         setup() {
@@ -80,12 +81,14 @@ import { useAuth } from '../../../../composables/useAuth';
             DataTable,
             Column,
             InputSwitch,
+            Title,
         },
     }
 </script>
 
 <template>
-    <h1 class="mb-5">Liste des utilisateurs</h1>
+
+    <Title content="Liste des utilisateurs"></Title>
 
     <section>
         <DataTable 

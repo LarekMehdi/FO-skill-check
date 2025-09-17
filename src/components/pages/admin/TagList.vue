@@ -9,6 +9,7 @@ import type { CreateTagInterface, TagInterface } from '../../../interfaces/tag.i
 import { useToast } from 'vue-toastification';
 import { TagService } from '../../../services/TagService';
 import { Column, DataTable } from 'primevue';
+import Title from '../../shared/Title.vue';
 
 
     export default {
@@ -124,14 +125,16 @@ import { Column, DataTable } from 'primevue';
             ButtonCustom,
             InputText,
             DataTable,
-            Column
+            Column,
+            Title,
         }
     }
 </script>
 
 <template>
   
-    <h1 class="mb-5">Liste des tags</h1>
+    <Title content="Liste des tags"></Title>
+
     <section class="row mb-3">
         <aside class="col text-end">
             <ButtonCustom 

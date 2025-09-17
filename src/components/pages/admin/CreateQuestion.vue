@@ -18,6 +18,7 @@ import { TagService } from '../../../services/TagService';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import type { OptionSelectInterface } from '../../../interfaces/input.interface';
 import InputCode from '../../ui/InputCode.vue';
+import Title from '../../shared/Title.vue';
 
 
 
@@ -86,6 +87,7 @@ import InputCode from '../../ui/InputCode.vue';
             InputNumber,
             ButtonCustom,
             InputCode,
+            Title,
         },
         computed: {
 
@@ -176,7 +178,7 @@ import InputCode from '../../ui/InputCode.vue';
 
 <template>
     <main>
-        <h1 class="mb-5">Créer une question</h1>
+        <Title content="Créer une question"></Title>
         <form @submit.prevent="createQuestion">
 
             <section class="row mb-3">

@@ -11,6 +11,7 @@ import { withMessage } from '../../../utils/withMessage';
 import type { SigninDataInterface } from '../../../interfaces/auth.interface';
 import { AuthService } from '../../../services/AuthService';
 import type { UserInterface } from '../../../interfaces/user.interface';
+import Title from '../../shared/Title.vue';
 
 
 export default {
@@ -41,7 +42,8 @@ export default {
     components: {
         InputText,
         InputPassword,
-        ButtonSubmit
+        ButtonSubmit,
+        Title,
     },
     computed: {},
     methods: {
@@ -81,7 +83,9 @@ export default {
 
 <template>
     <main>
-        <h1 class="mb-5">Se connecter</h1>
+
+        <Title content="Se connecter"></Title>
+
         <div>
             <form @submit.prevent="signin">
                 <section class="mb-3">
