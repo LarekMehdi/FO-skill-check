@@ -14,7 +14,7 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
                 required: true,
             }
         },
-        emits: ["onClose", "onFilter"],
+        emits: ["onClose", "onFilter", "onReset"],
         methods: {
 
         },
@@ -40,13 +40,20 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
 
                     <slot name="content"></slot>
 
-                    <div class="filter-btn">
-                        <ButtonCustom 
-                            content="Filtrer"
-                            buttonClass="btn-primary btn-half"
-                            @click="$emit('onFilter', filter)"
-                        />
+                    <div class="filter-actions">
+                        <i @click="$emit('onReset')" class="pi  pi-refresh text-secondary" style="font-size: 2rem"></i>
+                   
+
+                        <div class="filter-btn">
+                            <ButtonCustom 
+                                content="Filtrer"
+                                buttonClass="btn-primary"
+                                @click="$emit('onFilter', filter)"
+                            />
+                        </div>
                     </div>
+
+                    
                 </section>
             </section>
         </article>
@@ -113,11 +120,19 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
     .filter-btn {
         display: flex;
         justify-content: flex-end;
-        margin-top: 1rem;
+        width: 50%;
+        margin-left: auto;
     }
 
-    .btn-half {
-        width: 50%;
+    .filter-btn :deep(button) {
+        width: 100% !important;
+    }
+
+    .filter-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
     }
 
 </style>

@@ -164,6 +164,9 @@ import InputSelect from '../../ui/InputSelect.vue';
 
                 this.allSelectedQuestions.push(...this.selectedQuestions);
             },
+            resetFilter() {
+                this.filter.difficulty = null;
+            }
         },
         computed: {
             canDeleteAll() {
@@ -324,6 +327,7 @@ import InputSelect from '../../ui/InputSelect.vue';
         :filter="filter"
         @onClose="closeFilterPanel"
         @onFilter="initQuestionList"
+        @onReset="resetFilter"
     >
         <template #content>
             <section class="row mb-3">
