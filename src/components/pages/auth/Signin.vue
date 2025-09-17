@@ -57,6 +57,7 @@ export default {
                 const user: UserInterface = {
                     id: res.id,
                     pseudo: res.pseudo,
+                    email: '',
                     role: res.role,
                 };
 
