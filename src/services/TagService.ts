@@ -1,4 +1,5 @@
 import { TagApi } from "../api/TagApi";
+import type { QuerySearchInterface } from "../interfaces/filter.interface";
 import type { CreateTagInterface, TagInterface } from "../interfaces/tag.interface";
 
 export abstract class TagService {
@@ -16,7 +17,8 @@ export abstract class TagService {
     }
 
     static async findAllByLabel(query: string) {
-        return await TagApi.findAllByLabel(query);
+        const search: QuerySearchInterface = {label: query};
+        return await TagApi.findAllByLabel(search);
     }
 
     /** UPDATE **/

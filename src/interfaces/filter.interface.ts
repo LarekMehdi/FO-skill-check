@@ -14,6 +14,10 @@ export interface PageInterface<T> {
     totalElement: number;
 }
 
+export interface QuerySearchInterface {
+    label: string;
+}
+
 export interface TestListFilterInterface extends GenericFilter {
     
 }
