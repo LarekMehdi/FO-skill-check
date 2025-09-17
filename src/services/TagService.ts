@@ -15,6 +15,10 @@ export abstract class TagService {
         return await TagApi.findAll();
     }
 
+    static async findAllByLabel(query: string) {
+        return await TagApi.findAllByLabel(query);
+    }
+
     /** UPDATE **/
 
     static async update(tag: TagInterface) {

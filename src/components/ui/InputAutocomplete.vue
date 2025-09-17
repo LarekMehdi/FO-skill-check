@@ -49,13 +49,20 @@ import InputText from './InputText.vue';
             },
             apiCall: {
                 type: Function as PropType<(query: string) => Promise<any[]>>,
+                required: true,
             },
             getResultLabel: {
                 type: Function as PropType<(item: any) => string>,
+                required: true,
             },
-            onSelect: {
-                type: Function as PropType<(item: any) => void>,
+            getResultField: {
+                type: Function as PropType<(item: any) => any>,
+                required: true,
             },
+            // onSelect: {
+            //     type: Function as PropType<(item: any) => void>,
+            //     required: true,
+            // },
         },
         data(): {query: string, results: any[], displayDropbox: boolean,} 
         {
@@ -75,8 +82,9 @@ import InputText from './InputText.vue';
                 this.displayDropbox = this.results.length > 0;
             },
             handleSelect(item: any) {
-                if (this.onSelect) this.onSelect(item);
+                //if (this.onSelect) this.onSelect(item);
                 this.query = this.getResultLabel ? this.getResultLabel(item) : '';
+                this.$emit('update:modelValue', this.getResultField ? this.getResultField(item) : item);
                 
                 this.displayDropbox = false;
                 this.results = [];
@@ -87,6 +95,7 @@ import InputText from './InputText.vue';
                 if (newVal && newVal !== oldVal) this.search();
             }
         },
+        emits: ['update:modelValue'],
         components: {
             InputText,
         },

@@ -17,6 +17,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
 import InputSelect from '../../ui/InputSelect.vue';
 import Title from '../../shared/Title.vue';
 import InputAutocomplete from '../../ui/InputAutocomplete.vue';
+import TagAutocomplete from '../../ui/TagAutocomplete.vue';
 
 
     export default {
@@ -193,6 +194,7 @@ import InputAutocomplete from '../../ui/InputAutocomplete.vue';
             InputSelect,
             Title,
             InputAutocomplete,
+            TagAutocomplete,
         },
     }
 </script>
@@ -352,7 +354,15 @@ import InputAutocomplete from '../../ui/InputAutocomplete.vue';
 
             <section class="row mb-3">
                 <div class="col-md-12">
-                    <InputAutocomplete 
+                    <!-- <InputAutocomplete 
+                        v-model="filter.tagId"
+                        placeholder="Tag"
+                        name="tag"
+                        label="Tag"
+                        :displayLabel="true"
+                        :inline="true"
+                    /> -->
+                    <TagAutocomplete 
                         v-model="filter.tagId"
                         placeholder="Tag"
                         name="tag"

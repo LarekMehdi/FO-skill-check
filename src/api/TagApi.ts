@@ -27,6 +27,16 @@ export abstract class TagApi {
         }
     }
 
+    static async findAllByLabel(query: string) {
+        try {
+            const { data } = await useApi().get(`tags/search`, { params: query});
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
     /** UPDATE **/
 
     static async update(tag: TagInterface) {
