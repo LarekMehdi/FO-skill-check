@@ -92,7 +92,7 @@ import InputText from './InputText.vue';
         },
         watch: {
             'query'(newVal, oldVal) {
-                if (newVal && newVal !== oldVal) this.search();
+                if (newVal !== oldVal) this.search();
             }
         },
         emits: ['update:modelValue'],
