@@ -16,6 +16,7 @@ import { SortOrder } from '../../../constants/filter.constant';
 import FilterPanel from '../../shared/FilterPanel.vue';
 import InputSelect from '../../ui/InputSelect.vue';
 import Title from '../../shared/Title.vue';
+import InputAutocomplete from '../../ui/InputAutocomplete.vue';
 
 
     export default {
@@ -59,6 +60,7 @@ import Title from '../../shared/Title.vue';
                     sortBy: 'id',
                     sortOrder: SortOrder.ASC,
                     difficulty: null,
+                    tagId: null,
                 },
                 displayDeleteModal: false,
                 displayDeleteAllModal: false,
@@ -190,6 +192,7 @@ import Title from '../../shared/Title.vue';
             FilterPanel,
             InputSelect,
             Title,
+            InputAutocomplete,
         },
     }
 </script>
@@ -342,6 +345,19 @@ import Title from '../../shared/Title.vue';
                         name="difficulty"
                         label="Difficulté"
                         :options="difficultyOptions"
+                        :inline="true"
+                    />
+                </div>
+            </section>
+
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <InputAutocomplete 
+                        v-model="filter.tagId"
+                        placeholder="Tag"
+                        name="tag"
+                        label="Tag"
+                        :displayLabel="true"
                         :inline="true"
                     />
                 </div>
