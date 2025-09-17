@@ -167,7 +167,7 @@ import Title from '../../shared/Title.vue';
 
 <template>
 
-    <Title :content="item.title"></Title>
+    <Title :canGoBack="true" :content="item.title"></Title>
 
     <section class="row mb-3">
         <aside class="col text-end">

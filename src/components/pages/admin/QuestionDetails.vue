@@ -283,7 +283,7 @@ import Title from '../../shared/Title.vue';
 </script>
 
 <template>
-    <Title content="Détails de la question"></Title>
+    <Title content="Détails de la question" :canGoBack="true"></Title>
 
     <article>
 

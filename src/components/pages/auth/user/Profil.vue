@@ -122,7 +122,7 @@ import Title from '../../../shared/Title.vue';
 
 <template>
 
-    <Title :content="displayTitle"></Title>
+    <Title :canGoBack="true" :content="displayTitle"></Title>
 
     <article>
         <section class="row mb-3">

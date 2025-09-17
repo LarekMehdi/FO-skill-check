@@ -178,7 +178,8 @@ import Title from '../../shared/Title.vue';
 
 <template>
     <main>
-        <Title content="Créer une question"></Title>
+        <Title :canGoBack="true" content="Créer une question"></Title>
+        
         <form @submit.prevent="createQuestion">
 
             <section class="row mb-3">
