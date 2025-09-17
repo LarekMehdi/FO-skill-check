@@ -42,7 +42,6 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
 
                     <div class="filter-actions">
                         <i @click="$emit('onReset')" class="pi  pi-refresh text-secondary" style="font-size: 2rem"></i>
-                   
 
                         <div class="filter-btn">
                             <ButtonCustom 
@@ -53,9 +52,9 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
                         </div>
                     </div>
 
-                    
                 </section>
             </section>
+
         </article>
     </transition>
 </template>
@@ -132,7 +131,7 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 1rem;
+        margin-top: 5rem;
     }
 
 </style>
