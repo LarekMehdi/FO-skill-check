@@ -6,7 +6,7 @@ import InputAutocomplete from './InputAutocomplete.vue';
     export default {
         props: {
             modelValue: {
-                type: [String, null],
+                type: [String, Number, Boolean, null],
                 required: true,
             },
             label: {
