@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { PropType } from 'vue';
+import { nextTick, type PropType } from 'vue';
 import InputText from './InputText.vue';
 
     export default {
@@ -65,26 +65,32 @@ import InputText from './InputText.vue';
                 required: true,
             },
         },
-        data(): {query: string, results: any[], displayDropbox: boolean,} 
+        data(): {query: string, results: any[], displayDropbox: boolean, isSelecting: boolean} 
         {
             return {
                 query: '',
                 results: [],
                 displayDropbox: false,
+                isSelecting: false,
             }
         },
         methods: {
             async search() {
-                if (!this.apiCall) return;
+                if (!this.apiCall || this.isSelecting) return;
                 this.results = await this.apiCall(this.query);
                 this.displayDropbox = this.results.length > 0;
             },
             handleSelect(item: any) {
+                this.isSelecting = true;
                 this.query = this.getResultLabel ? this.getResultLabel(item) : '';
                 this.$emit('update:modelValue', this.getResultField ? this.getResultField(item) : item);
                 
                 this.displayDropbox = false;
                 this.results = [];
+
+                nextTick(() => {
+                    this.isSelecting = false;
+                });
             }
         },
         watch: {
