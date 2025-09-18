@@ -170,6 +170,7 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
             },
             resetFilter() {
                 this.filter.difficulty = null;
+                this.filter.tagId = null;
             }
         },
         computed: {

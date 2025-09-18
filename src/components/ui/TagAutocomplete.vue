@@ -53,7 +53,7 @@ import InputAutocomplete from './InputAutocomplete.vue';
 
 <template>
     <InputAutocomplete
-        modelValue="modelValue"
+        :modelValue="modelValue"
         :label="label"
         :name="name"
         :placeholder="placeholder"

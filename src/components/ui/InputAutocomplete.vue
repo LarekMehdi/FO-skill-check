@@ -5,7 +5,7 @@ import InputText from './InputText.vue';
     export default {
         props: {
             modelValue: {
-                type: [String, null],
+                type: [String, Number, Boolean, null],
                 required: true,
             },
             label: {
@@ -95,7 +95,19 @@ import InputText from './InputText.vue';
         },
         watch: {
             'query'(newVal, oldVal) {
+                if (!newVal) {
+                    this.results = [];
+                    this.displayDropbox = false;
+
+                }
                 if (newVal !== oldVal) this.search();
+            },
+            'modelValue'(newVal) {
+                if (!newVal) {
+                    this.query = '';
+                    this.results = [];
+                    this.displayDropbox = false;
+                }
             }
         },
         emits: ['update:modelValue'],

@@ -40,7 +40,7 @@ import ButtonCustom from '../ui/ButtonCustom.vue';
 
                     <slot name="content"></slot>
 
-                    <div class="filter-actions">
+                    <div class="filter-actions pointer">
                         <i @click="$emit('onReset')" class="pi  pi-refresh text-secondary" style="font-size: 2rem"></i>
 
                         <div class="filter-btn">
