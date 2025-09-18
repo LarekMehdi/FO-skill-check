@@ -347,28 +347,18 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
                         name="difficulty"
                         label="Difficulté"
                         :options="difficultyOptions"
-                        :inline="true"
                     />
                 </div>
             </section>
 
             <section class="row mb-3">
                 <div class="col-md-12">
-                    <!-- <InputAutocomplete 
-                        v-model="filter.tagId"
-                        placeholder="Tag"
-                        name="tag"
-                        label="Tag"
-                        :displayLabel="true"
-                        :inline="true"
-                    /> -->
                     <TagAutocomplete 
                         v-model="filter.tagId"
                         placeholder="Tag"
                         name="tag"
                         label="Tag"
                         :displayLabel="true"
-                        :inline="true"
                     />
                 </div>
             </section>

@@ -37,6 +37,11 @@ import InputText from './InputText.vue';
                 required: false,
                 default: ''
             },
+            listItemClass: {
+                type: String,
+                required: false,
+                default: ''
+            },
             displayLabel: {
                 type: Boolean,
                 required: false,
@@ -95,7 +100,7 @@ import InputText from './InputText.vue';
 </script>
 
 <template>
-    <section>
+    <section class="position-relative">
         <InputText
             v-model="query"
             :name="name"
@@ -105,14 +110,19 @@ import InputText from './InputText.vue';
             :inputClass="inputClass"
             :inline="inline"
         />
-        <ul v-if="displayDropbox" :class="listClass">
+        <ul v-if="displayDropbox" :class="`dropdown-menu show w-100 ${listClass}`">
             <li 
                 v-for="(item, index) in results" 
                 :key="index" 
-                class="px-4 py-2 hover:bg-gray-100 cursor-pointer bg-zinc-100"
-                @click="handleSelect(item)"
             >
-                {{ getResultLabel ? getResultLabel(item) : '' }}
+                <button
+                    type="button"
+                    :class="`dropdown-item ${listItemClass}`"
+                    @click="handleSelect(item)"
+                >
+                    {{ getResultLabel ? getResultLabel(item) : '' }}
+                </button>
+                
             </li>
         </ul>
     </section>
