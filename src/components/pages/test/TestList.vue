@@ -78,6 +78,8 @@ import FilterPanel from '../../shared/FilterPanel.vue';
         methods: {
             async initTestList() {
                 try {
+                    if ( this.displayFilterPanel) this.closeFilterPanel();
+
                     const result = await TestService.findAll(this.filter);
                     this.testList = result.content;
                     this.file = null;
@@ -175,7 +177,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
                 }
             },
             resetFilter() {
-
+                this.filter.title = null;
             },
         },
         components: {
