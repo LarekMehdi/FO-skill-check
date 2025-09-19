@@ -20,6 +20,7 @@ import InputTextArea from '../../ui/InputTextArea.vue';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import ModalCancel from '../../shared/ModalCancel.vue';
 import Title from '../../shared/Title.vue';
+import FilterPanel from '../../shared/FilterPanel.vue';
 
 
     export default {
@@ -40,15 +41,21 @@ import Title from '../../shared/Title.vue';
             testList: TestInterface[];
             displayAddTestModal: boolean;
             displayConfirmDeletetModal: boolean;
+            displayFilterPanel: boolean,
             newTest: CreateTestInterface;
             file: File | null;
             testIdToDelete: number | null;
         } {
             return {
-                filter: { limit: 10, offset: 0},
+                filter: { 
+                    limit: 10, 
+                    offset: 0,
+                    title: '',
+                },
                 testList: [],
                 displayAddTestModal: false,
                 displayConfirmDeletetModal: false,
+                displayFilterPanel: false,
                 newTest: { title: '', description: ''},
                 file: null,
                 testIdToDelete: null,
@@ -114,6 +121,12 @@ import Title from '../../shared/Title.vue';
                 this.displayConfirmDeletetModal = false;
                 this.testIdToDelete = null;
             },
+            openFilterPanel() {
+                this.displayFilterPanel = true;
+            },
+            closeFilterPanel() {
+                this.displayFilterPanel = false;
+            },
             async deleteTest() {
                 if (!this.testIdToDelete) {
                     this.toast.error("Pas de test selectionné pour la suppression");
@@ -161,6 +174,9 @@ import Title from '../../shared/Title.vue';
                     this.importExcel();
                 }
             },
+            resetFilter() {
+
+            },
         },
         components: {
             Modal,
@@ -171,6 +187,7 @@ import Title from '../../shared/Title.vue';
             Column,
             ModalCancel,
             Title,
+            FilterPanel,
         }
     }
 </script>
@@ -204,6 +221,12 @@ import Title from '../../shared/Title.vue';
             <ButtonCustom 
                 content="Ajouter un test"
                 @click="openAddTestModal"
+            />
+
+            <ButtonCustom 
+                content="Filtrer"
+                buttonClass="ms-3 btn-primary"
+                @click="openFilterPanel"
             />
         </aside>
     </section>
@@ -299,5 +322,28 @@ import Title from '../../shared/Title.vue';
             <p>Cela va aussi supprimer toutes les sessions liées.</p>
         </template>
     </ModalCancel>
+
+    <!-- *************** FILTER *************** -->
+    <FilterPanel 
+        :isActive="displayFilterPanel"
+        :filter="filter"
+        @onClose="closeFilterPanel"
+        @onFilter="initTestList"
+        @onReset="resetFilter"
+    >
+        <template #content>
+
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <InputText
+                        v-model="filter.title"
+                        name="title"
+                        label="Titre"
+                    />
+                </div>
+            </section>
+
+        </template>
+    </FilterPanel>
 
 </template>

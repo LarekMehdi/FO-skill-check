@@ -19,7 +19,7 @@ export interface QuerySearchInterface {
 }
 
 export interface TestListFilterInterface extends GenericFilter {
-    
+    title: string | null;
 }
 
 export interface QuestionListFilterInterface extends GenericFilter {
