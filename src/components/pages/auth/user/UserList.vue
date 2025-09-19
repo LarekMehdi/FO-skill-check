@@ -44,7 +44,7 @@ import Title from '../../../shared/Title.vue';
                 this.goToUserDetails(event.data.id);
             },
             goToUserDetails(id: number) {
-                this.$router.push(`/user/${id}`)
+                this.$router.push({ path: `/user/${id}`, hash: '#userList' });
             },
             onPage(event: DataTablePageEvent) {
                 this.filter = UtilEntity.updateFilterOnPage(event, this.filter);

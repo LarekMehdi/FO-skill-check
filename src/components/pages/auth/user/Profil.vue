@@ -17,6 +17,10 @@ import Title from '../../../shared/Title.vue';
 
     export default {
         mounted() {
+            if (this.$route.hash === '#userList') {
+                this.$router.replace({ hash: '' });
+                this.canGoBack = true;
+            }
             this.initUserDetails();
         },
         setup() {
@@ -24,7 +28,7 @@ import Title from '../../../shared/Title.vue';
             const toast = useToast();
             return { isAdmin, userId, toast, v$: useVuelidate() }
         },
-        data(): { idParam: number, item: UserDetailsInterface, isUpdateOn: boolean} {
+        data(): { idParam: number, item: UserDetailsInterface, isUpdateOn: boolean, canGoBack: boolean} {
             return {
                 idParam: Number(this.$route.params.id),
                 item: {
@@ -35,6 +39,7 @@ import Title from '../../../shared/Title.vue';
                     sessionList: [],
                 },
                 isUpdateOn: false,
+                canGoBack: false,
             }
         },
         validations() {
@@ -122,7 +127,7 @@ import Title from '../../../shared/Title.vue';
 
 <template>
 
-    <Title :canGoBack="true" :content="displayTitle"></Title>
+    <Title :canGoBack="canGoBack" :content="displayTitle"></Title>
 
     <article>
         <section class="row mb-3">
