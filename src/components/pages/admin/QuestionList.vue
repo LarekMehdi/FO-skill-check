@@ -228,7 +228,8 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
         </aside>
     </section>
 
-    <section>
+    <section class="datatable-container">
+
         <DataTable 
             :value="questionList" 
             v-model:selection="selectedQuestions"
@@ -238,6 +239,7 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
             :paginator="true"
             :rows="10"
             :totalRecords="item.totalElement"
+            style="width: 100%;"
             @page="onPage"
             @sort="onSort"
         >
@@ -372,6 +374,18 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
     .compact-table .p-datatable-table {
         table-layout: fixed;
         width: 100%;
+    }
+    .datatable-container {
+        width: 100%;
+        min-width: 1000px;
+        overflow-x: auto;
+    }
+    .compact-table {
+        width: 100% !important;
+    }
+    .compact-table .p-datatable-table {
+        width: 100% !important;
+        table-layout: fixed;
     }
 </style>
 
