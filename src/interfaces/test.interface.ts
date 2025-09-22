@@ -1,4 +1,5 @@
 import type { QuestionInterface, SubmitQuestionInterface, TakeQuestionInterface } from "./question.interface";
+import type { TagInterface } from "./tag.interface";
 
 
 export interface SmallTestInterface {
@@ -23,7 +24,8 @@ export interface TestDetailsInterface {
     description: string;
     successRate: number;
     timeLimit: number;
-    questionList: QuestionInterface[]
+    questionList: QuestionInterface[];
+    tagList: TagInterface[];
 }
 
 export interface TestWithQuestionIds {

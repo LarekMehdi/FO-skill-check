@@ -18,6 +18,7 @@ import InputCheck from '../../ui/InputCheck.vue';
 import CodeBlock from '../../ui/CodeBlock.vue';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import Title from '../../shared/Title.vue';
+import TagBadge from '../../ui/TagBadge.vue';
 
     export default {
         setup() {
@@ -37,10 +38,12 @@ import Title from '../../shared/Title.vue';
             testId: number,
             item: TestDetailsInterface,
             displayAddQuestionModal: boolean,
+            displayAddTagModal: boolean,
             questionIds: number[],
             questionList: QuestionInterface[],
             questionFilter: GenericFilter,
             questionTotalElement: number,
+            isUpdating: boolean,
         }
         {
             return {
@@ -52,12 +55,15 @@ import Title from '../../shared/Title.vue';
                     title: '',
                     description: '',
                     questionList: [],
+                    tagList: [],
                 },
                 displayAddQuestionModal: false,
+                displayAddTagModal: false,
                 questionIds: [],
                 questionList: [],
                 questionFilter: {limit: 10, offset: 0},
                 questionTotalElement: 0,
+                isUpdating: false,
             }
         },
         methods: {
@@ -79,6 +85,9 @@ import Title from '../../shared/Title.vue';
                     this.toast.error("Une erreur est survenue");
                 }
             },
+            async updateTest() {
+
+            },
             initQuestionIds() {
                 this.questionIds = this.item.questionList ? this.item.questionList.map((q) => q.id) : [];
             },
@@ -89,6 +98,15 @@ import Title from '../../shared/Title.vue';
             closeAddQuestionModal() {
                 this.displayAddQuestionModal = false;
                 this.initQuestionIds();
+            },
+            openAddTagModal() {
+
+            },
+            closeAddTagModal() {
+
+            },
+            openDeleteModal() {
+
             },
             async addQuestions() {
                 try {
@@ -126,6 +144,19 @@ import Title from '../../shared/Title.vue';
                 this.questionFilter = UtilEntity.updateFilterOnPage(event, this.questionFilter);
                 this.getAllQuestions();
             },
+            removeTag(tagId: number|undefined) {
+                if (!tagId) {
+                    this.toast.error("Aucun tag à supprimer");
+                }
+
+
+            },
+            startUpdating() {
+                this.isUpdating = true;
+            },
+            stopUpdating() {
+                this.isUpdating = false;
+            },
         },
         computed: {
             getQuestionCount(): number {
@@ -161,6 +192,7 @@ import Title from '../../shared/Title.vue';
             InputCheck,
             CodeBlock,
             Title,
+            TagBadge,
         },
     }
 </script>
@@ -169,19 +201,54 @@ import Title from '../../shared/Title.vue';
 
     <Title :canGoBack="true" :content="item.title"></Title>
 
+    <div class="col-md-6 d-flex justify-content-end"> </div>
+
     <section class="row mb-3">
-        <aside class="col text-end">
-            <ButtonCustom 
-                v-if="isAdmin"
-                content="Ajouter des questions"
-                @click="openAddQuestionModal"
-            />
-            <ButtonCustom 
-                v-if="isLoggedIn && canDoTest"
-                buttonClass="ms-3 btn-success"
-                content="Passer le test"
-                @click="goToTakeTest"
-            />
+        <aside class="col d-flex justify-content-between align-items-center">
+            <div>
+                <ButtonCustom 
+                    v-if="isAdmin"
+                    content="Ajouter des questions"
+                    @click="openAddQuestionModal"
+                />
+            </div>
+
+            <div class="d-flex align-items-center">
+                <ButtonCustom 
+                    v-if="isLoggedIn && canDoTest"
+                    buttonClass="ms-3 btn-success"
+                    content="Passer le test"
+                    @click="goToTakeTest"
+                />
+                <i 
+                    v-if="!isUpdating"
+                    class="pi pi-pen-to-square pointer  text-primary" 
+                    style="font-size: 1.5rem"
+                    @click="startUpdating"
+                ></i>
+                <i 
+                    v-if="!isUpdating"
+                    class="pi pi-trash pointer  ms-3" 
+                    style="color: red; font-size: 1.5rem;" 
+                    
+                    @click="openDeleteModal()"
+                    title="Supprimer cette question"
+                ></i>
+                <ButtonCustom 
+                        v-if="isUpdating"
+                        content="Annuler" 
+                        buttonClass="btn-danger "
+                        @click="stopUpdating"
+                />
+                <ButtonCustom 
+                    v-if="isUpdating"
+                    content="Sauvegarder" 
+                    buttonClass="btn-primary  ms-3"
+                    @click="updateTest"
+                />
+            </div>
+            
+            
         </aside>
     </section>
 
@@ -237,8 +304,30 @@ import Title from '../../shared/Title.vue';
                 />
             </div>
         </section>
-        
     </article>
+
+    <hr/>
+    
+    <aside>
+        <div class="d-flex flex-wrap gap-2">
+            <TagBadge
+                v-if="item.tagList && item.tagList.length > 0"
+                v-for="tag in item.tagList"
+                :key="tag.id"
+                :content="tag.label"
+                :canDelete="true"
+                @delete="removeTag(tag.id)"
+            />
+            <small v-else>Ce test n'a pas encore de tag</small>
+            <i 
+                v-if="isUpdating"
+                class="pi pi-plus-circle mt-1 text-success pointer"
+                style="font-size: 1.5rem"
+                title="Ajouter un tag"
+                @click="openAddTagModal"
+            ></i>
+        </div>
+    </aside>
 
     <article v-if="isAdmin">
         <DataTable :value="item.questionList">
