@@ -1,6 +1,6 @@
 import { TestApi } from "../api/TestApi";
 import type { TestListFilterInterface } from "../interfaces/filter.interface";
-import type { CreateTestInterface, SubmitTestInterface, TestSessionInterface, TestWithQuestionIds, UpdateTestInterface } from "../interfaces/test.interface";
+import type { CreateTestInterface, SubmitTestInterface, TestHasTagInterface, TestSessionInterface, TestWithQuestionIds, UpdateTestInterface } from "../interfaces/test.interface";
 
 export abstract class TestService {
 
@@ -60,6 +60,10 @@ export abstract class TestService {
 
     static async importExcel(file: File) {
         return await TestApi.importExcel(file);
+    }
+
+    static async addTagToTest(data: TestHasTagInterface) {
+        return await TestApi.addTagToTest(data);
     }
 
     /** DELETE **/

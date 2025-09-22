@@ -1,5 +1,5 @@
 import type { TestListFilterInterface } from "../interfaces/filter.interface";
-import type { CreateTestInterface, SubmitTestInterface, TestWithQuestionIds, UpdateTestInterface } from "../interfaces/test.interface";
+import type { CreateTestInterface, SubmitTestInterface, TestHasTagInterface, TestWithQuestionIds, UpdateTestInterface } from "../interfaces/test.interface";
 import { useApi } from "./useApi";
 
 export abstract class TestApi {
@@ -98,6 +98,16 @@ export abstract class TestApi {
             formData.append("file", file);
 
             const { data } = await useApi().post("/tests/import", formData, { headers: { "Content-Type": "multipart/form-data" }});
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    static async addTagToTest(tagData: TestHasTagInterface) {
+        try {
+            const { data } = await useApi().put(`/tests/tag`, tagData);
             return data;
         } catch(e: unknown) {
             console.error(e);

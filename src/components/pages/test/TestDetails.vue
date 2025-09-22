@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
 import { TestService } from '../../../services/TestService';
-import type { TestDetailsInterface, TestWithQuestionIds, UpdateTestInterface } from '../../../interfaces/test.interface';
+import type { TestDetailsInterface, TestHasTagInterface, TestWithQuestionIds, UpdateTestInterface } from '../../../interfaces/test.interface';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputText from '../../ui/InputText.vue';
 import InputNumber from '../../ui/InputNumber.vue';
@@ -137,7 +137,22 @@ import useVuelidate from '@vuelidate/core';
               
             },
             async addTag() {
-
+                if (!this.newTagId) {
+                    this.toast.warning("Pas de tag sélectionné");
+                    return;
+                }
+                try {
+                    const testTag: TestHasTagInterface = {
+                        testId: this.testId,
+                        tagId: this.newTagId
+                    }
+                    await TestService.addTagToTest(testTag); 
+                    this.toast.success("Tag ajouté avec succés");
+                    this.closeAddTagModal();
+                    this.initDetails();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de l'ajout du tag");
+                }
             },
             async deleteTest() {
 
@@ -153,6 +168,7 @@ import useVuelidate from '@vuelidate/core';
                 this.questionIds = this.item.questionList ? this.item.questionList.map((q) => q.id) : [];
             },
             openAddQuestionModal() {
+                this.stopUpdating();
                 this.displayAddQuestionModal = true;
                 this.getAllQuestions();
             },
@@ -165,6 +181,7 @@ import useVuelidate from '@vuelidate/core';
             },
             closeAddTagModal() {
                 this.displayAddTagModal = false;
+                this.newTagId = null;
             },
             openDeleteModal() {
                 this.displayDeleteModal = true;
@@ -297,7 +314,7 @@ import useVuelidate from '@vuelidate/core';
                 />
                 <i 
                     v-if="!isUpdating"
-                    class="pi pi-pen-to-square pointer  text-primary" 
+                    class="pi pi-pen-to-square pointer ms-3 text-primary" 
                     style="font-size: 1.5rem"
                     @click="startUpdating"
                 ></i>

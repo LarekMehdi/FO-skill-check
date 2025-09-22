@@ -55,3 +55,8 @@ export interface UpdateTestInterface {
     id: number;
     description: string;
 }
+
+export interface TestHasTagInterface {
+    testId: number;
+    tagId: number;
+}
