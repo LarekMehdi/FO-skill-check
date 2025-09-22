@@ -19,6 +19,10 @@ import CodeBlock from '../../ui/CodeBlock.vue';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import Title from '../../shared/Title.vue';
 import TagBadge from '../../ui/TagBadge.vue';
+import type { OptionSelectInterface } from '../../../interfaces/input.interface';
+import { TagService } from '../../../services/TagService';
+import ModalCancel from '../../shared/ModalCancel.vue';
+import InputSelect from '../../ui/InputSelect.vue';
 
     export default {
         setup() {
@@ -33,17 +37,21 @@ import TagBadge from '../../ui/TagBadge.vue';
         mounted() {
             this.testId = Number(this.$route.params.id);
             this.initDetails();
+            this.initTagList();
         },
         data(): {
             testId: number,
             item: TestDetailsInterface,
             displayAddQuestionModal: boolean,
             displayAddTagModal: boolean,
+            displayDeleteModal: boolean,
             questionIds: number[],
             questionList: QuestionInterface[],
             questionFilter: GenericFilter,
             questionTotalElement: number,
             isUpdating: boolean,
+            tagOptions: OptionSelectInterface[],
+            newTagId: number | null,
         }
         {
             return {
@@ -59,11 +67,14 @@ import TagBadge from '../../ui/TagBadge.vue';
                 },
                 displayAddQuestionModal: false,
                 displayAddTagModal: false,
+                displayDeleteModal: false,
                 questionIds: [],
                 questionList: [],
                 questionFilter: {limit: 10, offset: 0},
                 questionTotalElement: 0,
                 isUpdating: false,
+                tagOptions: [],
+                newTagId: null,
             }
         },
         methods: {
@@ -73,6 +84,15 @@ import TagBadge from '../../ui/TagBadge.vue';
                     this.initQuestionIds();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue");
+                }
+            },
+            async initTagList() {
+                try {
+                    const tagList: TagInterface[] = await TagService.findAll();
+                    this.tagOptions = UtilEntity.formatListForInputSelect<TagInterface>(tagList, 'label', 'id');
+                    this.filterTagList();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de la récupération des tags");
                 }
             },
             async getAllQuestions() {
@@ -88,6 +108,19 @@ import TagBadge from '../../ui/TagBadge.vue';
             async updateTest() {
 
             },
+            async addTag() {
+
+            },
+            async deleteTest() {
+
+            },
+            filterTagList() {
+                const existingIds: (number|undefined)[] = this.item.tagList.map((tag) => tag.id);
+                this.tagOptions = this.tagOptions.filter(opt => {
+                    const optId = Number(opt.value);
+                    return !existingIds.includes(optId);
+                });
+            },
             initQuestionIds() {
                 this.questionIds = this.item.questionList ? this.item.questionList.map((q) => q.id) : [];
             },
@@ -100,13 +133,16 @@ import TagBadge from '../../ui/TagBadge.vue';
                 this.initQuestionIds();
             },
             openAddTagModal() {
-
+                this.displayAddTagModal = true;
             },
             closeAddTagModal() {
-
+                this.displayAddTagModal = false;
             },
             openDeleteModal() {
-
+                this.displayDeleteModal = true;
+            },
+            closeDeleteModal() {
+                this.displayDeleteModal = false;
             },
             async addQuestions() {
                 try {
@@ -179,13 +215,18 @@ import TagBadge from '../../ui/TagBadge.vue';
             },
             canDoTest() {
                 return this.item.questionList.length > 0;
-            }
+            },
+            canAddTag() {
+                return this.tagOptions.length > 0;
+            },
         },
         components: {
             InputTextArea,
             InputText,
             InputNumber,
+            InputSelect,
             Modal,
+            ModalCancel,
             ButtonCustom,
             DataTable,
             Column,
@@ -318,7 +359,7 @@ import TagBadge from '../../ui/TagBadge.vue';
                 :canDelete="true"
                 @delete="removeTag(tag.id)"
             />
-            <small v-else>Ce test n'a pas encore de tag</small>
+            <small class="mt-2" v-else>Ce test n'a pas encore de tag</small>
             <i 
                 v-if="isUpdating"
                 class="pi pi-plus-circle mt-1 text-success pointer"
@@ -412,7 +453,42 @@ import TagBadge from '../../ui/TagBadge.vue';
             </DataTable>
 
         </template>
-        
     </Modal>
+
+    <!-- ************************* ADD TAG ************************* -->
+    <Modal 
+        :visible="displayAddTagModal" 
+        @close="closeAddTagModal"
+        @submit="addTag"
+        title="Ajouter un tag"
+        submitLabel="Ajouter"
+    >
+        <template #content>
+
+            <InputSelect
+                v-if="canAddTag"
+                v-model="newTagId"
+                name="newTag"
+                :options="tagOptions"
+            />
+            <p v-else>Aucun tag à ajouter</p>
+           
+        </template>
+    </Modal>
+
+    <!-- *************** MODAL *************** -->
+     <ModalCancel
+        :visible="displayDeleteModal" 
+        @close="closeDeleteModal"
+        @submit="deleteTest"
+        title="Supprimer ce test"
+        submitLabel="Supprimer"
+    >
+        <template #content>
+            <i class="pi pi-exclamation-triangle text-danger" style="font-size: 2rem"></i>
+            <p>Etes vous sur de vouloir supprimer ce test ?</p>
+            <p>Cela va aussi supprimer toutes les sessions liées.</p>
+        </template>
+    </ModalCancel>
     
 </template>
