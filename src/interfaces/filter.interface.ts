@@ -20,6 +20,7 @@ export interface QuerySearchInterface {
 
 export interface TestListFilterInterface extends GenericFilter {
     title: string | null;
+    tagId: number | null;
 }
 
 export interface QuestionListFilterInterface extends GenericFilter {

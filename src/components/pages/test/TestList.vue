@@ -21,6 +21,7 @@ import ButtonCustom from '../../ui/ButtonCustom.vue';
 import ModalCancel from '../../shared/ModalCancel.vue';
 import Title from '../../shared/Title.vue';
 import FilterPanel from '../../shared/FilterPanel.vue';
+import TagAutocomplete from '../../ui/TagAutocomplete.vue';
 
 
     export default {
@@ -51,6 +52,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
                     limit: 10, 
                     offset: 0,
                     title: '',
+                    tagId: null,
                 },
                 testList: [],
                 displayAddTestModal: false,
@@ -178,6 +180,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
             },
             resetFilter() {
                 this.filter.title = null;
+                this.filter.tagId = null;
             },
         },
         components: {
@@ -190,6 +193,7 @@ import FilterPanel from '../../shared/FilterPanel.vue';
             ModalCancel,
             Title,
             FilterPanel,
+            TagAutocomplete,
         }
     }
 </script>
@@ -341,6 +345,18 @@ import FilterPanel from '../../shared/FilterPanel.vue';
                         v-model="filter.title"
                         name="title"
                         label="Titre"
+                    />
+                </div>
+            </section>
+
+            <section class="row mb-3">
+                <div class="col-md-12">
+                    <TagAutocomplete 
+                        v-model="filter.tagId"
+                        placeholder="Tag"
+                        name="tag"
+                        label="Tag"
+                        :displayLabel="true"
                     />
                 </div>
             </section>
