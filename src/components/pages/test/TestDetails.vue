@@ -129,6 +129,8 @@ import useVuelidate from '@vuelidate/core';
                 try {
                     await TestService.updateTest(this.updatedItem);
                     this.toast.success("Test mis à jour avec succés");
+                    this.stopUpdating();
+                    this.initDetails();
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de la mise à jour du test");
                 }
