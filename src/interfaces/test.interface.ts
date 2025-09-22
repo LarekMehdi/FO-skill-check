@@ -50,3 +50,8 @@ export interface TestSessionInterface {
     userId: number;
     createdAt: Date;
 }
+
+export interface UpdateTestInterface {
+    id: number;
+    description: string;
+}

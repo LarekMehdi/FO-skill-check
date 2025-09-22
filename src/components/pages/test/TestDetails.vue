@@ -1,7 +1,7 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification';
 import { TestService } from '../../../services/TestService';
-import type { TestDetailsInterface, TestWithQuestionIds } from '../../../interfaces/test.interface';
+import type { TestDetailsInterface, TestWithQuestionIds, UpdateTestInterface } from '../../../interfaces/test.interface';
 import InputTextArea from '../../ui/InputTextArea.vue';
 import InputText from '../../ui/InputText.vue';
 import InputNumber from '../../ui/InputNumber.vue';
@@ -23,6 +23,9 @@ import type { OptionSelectInterface } from '../../../interfaces/input.interface'
 import { TagService } from '../../../services/TagService';
 import ModalCancel from '../../shared/ModalCancel.vue';
 import InputSelect from '../../ui/InputSelect.vue';
+import { maxLength, required } from '@vuelidate/validators';
+import { withMessage } from '../../../utils/withMessage';
+import useVuelidate from '@vuelidate/core';
 
     export default {
         setup() {
@@ -32,12 +35,21 @@ import InputSelect from '../../ui/InputSelect.vue';
                 toast,
                 isAdmin,
                 isLoggedIn,
+                v$: useVuelidate(),
             }
         },
         mounted() {
             this.testId = Number(this.$route.params.id);
             this.initDetails();
             this.initTagList();
+        },
+        validations() {
+            return {
+                updatedItem: {
+                    description: { required: withMessage("La description est requise", required)},
+                    maxLength: withMessage("La description doit faire moins de 500 charactères", maxLength(500))
+                }
+            }
         },
         data(): {
             testId: number,
@@ -52,6 +64,7 @@ import InputSelect from '../../ui/InputSelect.vue';
             isUpdating: boolean,
             tagOptions: OptionSelectInterface[],
             newTagId: number | null,
+            updatedItem: UpdateTestInterface,
         }
         {
             return {
@@ -64,6 +77,10 @@ import InputSelect from '../../ui/InputSelect.vue';
                     description: '',
                     questionList: [],
                     tagList: [],
+                },
+                updatedItem: {
+                    id: 0,
+                    description: '',
                 },
                 displayAddQuestionModal: false,
                 displayAddTagModal: false,
@@ -106,7 +123,16 @@ import InputSelect from '../../ui/InputSelect.vue';
                 }
             },
             async updateTest() {
+                const valid = await this.v$.updatedItem.$validate();
+                if (!valid) return;
 
+                try {
+                    await TestService.updateTest(this.updatedItem);
+                    this.toast.success("Test mis à jour avec succés");
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de la mise à jour du test");
+                }
+              
             },
             async addTag() {
 
@@ -188,13 +214,19 @@ import InputSelect from '../../ui/InputSelect.vue';
 
             },
             startUpdating() {
+                this.updatedItem.id = this.item.id;
+                this.updatedItem.description = this.item.description;
                 this.isUpdating = true;
             },
             stopUpdating() {
                 this.isUpdating = false;
+                this.v$.$reset();
             },
         },
         computed: {
+            form() {
+                return this.isUpdating ? this.updatedItem : this.item;
+            },
             getQuestionCount(): number {
                 return this.item?.questionList.length ?? 0;
             },
@@ -297,13 +329,14 @@ import InputSelect from '../../ui/InputSelect.vue';
         <section class="row mb-3">
             <div class="col-md-12">
                 <InputTextArea
-                    v-model="item.description"
+                    v-model="form.description"
                     name="description"
                     placeholder="Description"
                     :displayLabel="false"
                     :cols="70"
                     :rows="2"
-                    :disabled="true"
+                    :disabled="!isUpdating"
+                    :validation="v$.updatedItem.description"
                 />
             </div>
         </section>

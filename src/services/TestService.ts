@@ -1,6 +1,6 @@
 import { TestApi } from "../api/TestApi";
 import type { TestListFilterInterface } from "../interfaces/filter.interface";
-import type { CreateTestInterface, SubmitTestInterface, TestSessionInterface, TestWithQuestionIds } from "../interfaces/test.interface";
+import type { CreateTestInterface, SubmitTestInterface, TestSessionInterface, TestWithQuestionIds, UpdateTestInterface } from "../interfaces/test.interface";
 
 export abstract class TestService {
 
@@ -42,6 +42,10 @@ export abstract class TestService {
 
     static async updateQuestions(testData: TestWithQuestionIds) {
         return await TestApi.updateQuestions(testData);
+    }
+
+    static async updateTest(testData: UpdateTestInterface) {
+        return await TestApi.updateTest(testData);
     }
 
     /** CREATE **/

@@ -1,5 +1,5 @@
 import type { TestListFilterInterface } from "../interfaces/filter.interface";
-import type { CreateTestInterface, SubmitTestInterface, TestWithQuestionIds } from "../interfaces/test.interface";
+import type { CreateTestInterface, SubmitTestInterface, TestWithQuestionIds, UpdateTestInterface } from "../interfaces/test.interface";
 import { useApi } from "./useApi";
 
 export abstract class TestApi {
@@ -53,6 +53,16 @@ export abstract class TestApi {
     static async updateQuestions(testData: TestWithQuestionIds) {
         try {
             const { data } = await useApi().put(`/tests/questions`, testData);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    static async updateTest(testData: UpdateTestInterface) {
+        try {
+            const { data } = await useApi().patch(`/tests/${testData.id}`, testData);
             return data;
         } catch(e: unknown) {
             console.error(e);
