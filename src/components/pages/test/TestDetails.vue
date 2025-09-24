@@ -26,6 +26,7 @@ import InputSelect from '../../ui/InputSelect.vue';
 import { maxLength, required } from '@vuelidate/validators';
 import { withMessage } from '../../../utils/withMessage';
 import useVuelidate from '@vuelidate/core';
+import { AxiosError } from 'axios';
 
     export default {
         setup() {
@@ -154,9 +155,17 @@ import useVuelidate from '@vuelidate/core';
                     await TestService.addTagToTest(testTag); 
                     this.toast.success("Tag ajouté avec succés");
                     this.closeAddTagModal();
+                    this.stopUpdating();
                     this.initDetails();
                 } catch(e: unknown) {
-                    this.toast.error("Une erreur est survenue lors de l'ajout du tag");
+                    if (e instanceof AxiosError && e.response) {
+                        if (e.response.status === 412) {
+                            this.toast.error("Ce tag est déjà présent pour ce test");
+                        }
+                    } else {
+                        this.toast.error("Une erreur est survenue lors de l'ajout du tag");
+                    }
+                    
                 }
             },
             async deleteTest() {
@@ -327,7 +336,7 @@ import useVuelidate from '@vuelidate/core';
                 ></i>
                 <i 
                     v-if="!isUpdating"
-                    class="pi pi-trash pointer  ms-3" 
+                    class="pi pi-trash pointer ms-3" 
                     style="color: red; font-size: 1.5rem;" 
                     
                     @click="openDeleteModal()"
@@ -336,7 +345,7 @@ import useVuelidate from '@vuelidate/core';
                 <ButtonCustom 
                         v-if="isUpdating"
                         content="Annuler" 
-                        buttonClass="btn-danger "
+                        buttonClass="btn-danger ms-3"
                         @click="stopUpdating"
                 />
                 <ButtonCustom 
