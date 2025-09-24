@@ -290,14 +290,14 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
             <Column v-if="isAdmin" header="Action" style="width: 5%;">
                 <template #body="slotProps">
                     <i 
-                        class="pi pi-trash" 
+                        class="pi pi-trash pointer" 
                         style="color: red" 
                         @click="openDeleteModal(slotProps.data.id)"
                         title="Supprimer cette question"
                     >
                     </i>
                     <i 
-                        class="pi pi-eye text-primary ms-2"
+                        class="pi pi-eye text-primary ms-2 pointer"
                         @click="goToQuestionDetails(slotProps.data.id)"
                         title="Détails de la question"
                     >

@@ -338,27 +338,26 @@ import { AxiosError } from 'axios';
                     @click="goToTakeTest"
                 />
                 <i 
-                    v-if="!isUpdating"
+                    v-if="!isUpdating && isAdmin"
                     class="pi pi-pen-to-square pointer ms-3 text-primary" 
                     style="font-size: 1.5rem"
                     @click="startUpdating"
                 ></i>
                 <i 
-                    v-if="!isUpdating"
+                    v-if="!isUpdating && isAdmin"
                     class="pi pi-trash pointer ms-3" 
                     style="color: red; font-size: 1.5rem;" 
-                    
                     @click="openDeleteModal()"
                     title="Supprimer cette question"
                 ></i>
                 <ButtonCustom 
-                        v-if="isUpdating"
+                        v-if="isUpdating && isAdmin"
                         content="Annuler" 
                         buttonClass="btn-danger ms-3"
                         @click="stopUpdating"
                 />
                 <ButtonCustom 
-                    v-if="isUpdating"
+                    v-if="isUpdating && isAdmin"
                     content="Sauvegarder" 
                     buttonClass="btn-primary  ms-3"
                     @click="updateTest"
@@ -433,7 +432,7 @@ import { AxiosError } from 'axios';
                 v-for="tag in item.tagList"
                 :key="tag.id"
                 :content="tag.label"
-                :canDelete="true"
+                :canDelete="isUpdating"
                 @delete="removeTag(tag.id)"
             />
             <small class="mt-2" v-else>Ce test n'a pas encore de tag</small>
