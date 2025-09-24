@@ -24,6 +24,6 @@ export interface TestListFilterInterface extends GenericFilter {
 }
 
 export interface QuestionListFilterInterface extends GenericFilter {
-    difficulty?: Difficulty | null;
-    tagId?: number | null;
+    difficulty: Difficulty | null;
+    tagId: number | null;
 }

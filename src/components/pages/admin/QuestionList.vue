@@ -1,9 +1,9 @@
 <script lang="ts">
-import { Column, DataTable, type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue';
+import { Column, DataTable, type DataTablePageEvent, type DataTableRowClickEvent, type DataTableSortEvent } from 'primevue';
 import { useToast } from 'vue-toastification';
 import { useAuth } from '../../../composables/useAuth';
 import type { QuestionListInterface } from '../../../interfaces/question.interface';
-import type { PageInterface, QuestionListFilterInterface } from '../../../interfaces/filter.interface';
+import type { GenericFilter, PageInterface, QuestionListFilterInterface } from '../../../interfaces/filter.interface';
 import { QuestionService } from '../../../services/QuestionService';
 import { UtilEntity } from '../../../utils/UtilEntity';
 import CodeBlock from '../../ui/CodeBlock.vue';
@@ -141,11 +141,15 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
             },
             onPage(event: DataTablePageEvent) {
                 this.saveCurrentPageSelections();
-                this.filter = UtilEntity.updateFilterOnPage(event, this.filter);
+                const tempFilter: GenericFilter = UtilEntity.updateFilterOnPage(event, this.filter);
+                this.filter.offset = tempFilter.offset;
+                this.filter.limit = tempFilter.limit; 
                 this.initQuestionList();
             },
-            onSort(event: DataTablePageEvent) {
-                this.filter = UtilEntity.updateFilterOnSort(event, this.filter);
+            onSort(event: DataTableSortEvent) {
+                const tempFilter: GenericFilter = UtilEntity.updateFilterOnSort(event, this.filter);
+                this.filter.sortBy = tempFilter.sortBy;
+                this.filter.sortOrder = tempFilter.sortOrder; 
                 this.initQuestionList();
             },
             openDeleteAllModal() {

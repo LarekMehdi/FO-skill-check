@@ -9,7 +9,7 @@ import { useAuth } from '../../../composables/useAuth';
 import Modal from '../../shared/Modal.vue';
 import ButtonCustom from '../../ui/ButtonCustom.vue';
 import type { QuestionInterface } from '../../../interfaces/question.interface';
-import type { GenericFilter } from '../../../interfaces/filter.interface';
+import type { GenericFilter, QuestionListFilterInterface } from '../../../interfaces/filter.interface';
 import { QuestionService } from '../../../services/QuestionService';
 import { Column, DataTable, type DataTablePageEvent } from 'primevue';
 import { Difficulty, getDifficultyLabel } from '../../../constants/difficulty.constant';
@@ -59,7 +59,7 @@ import useVuelidate from '@vuelidate/core';
             displayDeleteModal: boolean,
             questionIds: number[],
             questionList: QuestionInterface[],
-            questionFilter: GenericFilter,
+            questionFilter: QuestionListFilterInterface,
             questionTotalElement: number,
             isUpdating: boolean,
             tagOptions: OptionSelectInterface[],
@@ -87,7 +87,12 @@ import useVuelidate from '@vuelidate/core';
                 displayDeleteModal: false,
                 questionIds: [],
                 questionList: [],
-                questionFilter: {limit: 10, offset: 0},
+                questionFilter: {
+                    limit: 10, 
+                    offset: 0,
+                    tagId: null,
+                    difficulty: null,
+                },
                 questionTotalElement: 0,
                 isUpdating: false,
                 tagOptions: [],
@@ -222,7 +227,9 @@ import useVuelidate from '@vuelidate/core';
                 this.$router.push(`/test/${this.testId}/takeTest`);
             },
             onPage(event: DataTablePageEvent) {
-                this.questionFilter = UtilEntity.updateFilterOnPage(event, this.questionFilter);
+                const tempFilter: GenericFilter = UtilEntity.updateFilterOnPage(event, this.questionFilter);
+                this.questionFilter.offset = tempFilter.offset;
+                this.questionFilter.limit = tempFilter.limit;
                 this.getAllQuestions();
             },
             removeTag(tagId: number|undefined) {
