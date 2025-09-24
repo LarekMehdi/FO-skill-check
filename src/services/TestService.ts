@@ -48,6 +48,10 @@ export abstract class TestService {
         return await TestApi.updateTest(testData);
     }
 
+    static async removeTagFromTest(data: TestHasTagInterface) {
+        return await TestApi.removeTagFromTest(data);
+    }
+
     /** CREATE **/
 
     static async create(test: CreateTestInterface) {

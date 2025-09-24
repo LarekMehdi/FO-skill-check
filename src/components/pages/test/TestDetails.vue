@@ -241,12 +241,21 @@ import { AxiosError } from 'axios';
                 this.questionFilter.limit = tempFilter.limit;
                 this.getAllQuestions();
             },
-            removeTag(tagId: number|undefined) {
+            async removeTag(tagId: number|undefined) {
                 if (!tagId) {
                     this.toast.error("Aucun tag à supprimer");
                 }
-
-
+                try {
+                     const testTag: TestHasTagInterface = {
+                        testId: this.testId,
+                        tagId: tagId!
+                    }
+                    await TestService.removeTagFromTest(testTag);
+                    this.toast.success("Tag retiré avec succés");
+                    this.initDetails();
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue");
+                }
             },
             startUpdating() {
                 this.updatedItem.id = this.item.id;
@@ -418,7 +427,7 @@ import { AxiosError } from 'axios';
     <hr/>
     
     <aside>
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2 pb-3">
             <TagBadge
                 v-if="item.tagList && item.tagList.length > 0"
                 v-for="tag in item.tagList"

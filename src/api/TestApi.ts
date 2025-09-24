@@ -70,6 +70,16 @@ export abstract class TestApi {
         }
     }
 
+      static async removeTagFromTest(tagData: TestHasTagInterface) {
+        try {
+            const { data } = await useApi().patch(`/tests/${tagData.testId}/tag/remove`);
+            return data;
+        } catch(e: unknown) {
+            console.error(e);
+            throw e;
+        }
+    }
+
     /** CREATE **/
 
     static async create(test: CreateTestInterface) {
