@@ -22,6 +22,7 @@ import ModalCancel from '../../shared/ModalCancel.vue';
 import Title from '../../shared/Title.vue';
 import FilterPanel from '../../shared/FilterPanel.vue';
 import TagAutocomplete from '../../ui/TagAutocomplete.vue';
+import TagBadge from '../../ui/TagBadge.vue';
 
 
     export default {
@@ -194,6 +195,7 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
             Title,
             FilterPanel,
             TagAutocomplete,
+            TagBadge,
         }
     }
 </script>
@@ -248,6 +250,16 @@ import TagAutocomplete from '../../ui/TagAutocomplete.vue';
             <Column header="Description" field="description" sortable style="width: 70%;">
                 <template #body="slotProps">
                     {{  slotProps.data.description }}
+                </template>
+            </Column>
+            <Column header="Tag" field="tags" style="width: 10%;">
+                <template #body="slotProps">
+                    <TagBadge
+                        v-for="tag in slotProps.data.tags"
+                        :key="tag.id"
+                        :content="tag.label"
+                        :canDelete="false"
+                    />
                 </template>
             </Column>
             <Column header="Action" style="width: 10%;">
