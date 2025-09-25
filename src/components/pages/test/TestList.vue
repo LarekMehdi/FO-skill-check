@@ -11,8 +11,8 @@ import { TestService } from '../../../services/TestService';
 
 
 
-import type { TestListFilterInterface } from '../../../interfaces/filter.interface';
-import { Column, DataTable } from 'primevue';
+import type { GenericFilter, TestListFilterInterface } from '../../../interfaces/filter.interface';
+import { Column, DataTable, type DataTablePageEvent, type DataTableSortEvent } from 'primevue';
 import { useAuth } from '../../../composables/useAuth';
 import Modal from '../../shared/Modal.vue';
 import InputText from '../../ui/InputText.vue';
@@ -23,6 +23,7 @@ import Title from '../../shared/Title.vue';
 import FilterPanel from '../../shared/FilterPanel.vue';
 import TagAutocomplete from '../../ui/TagAutocomplete.vue';
 import TagBadge from '../../ui/TagBadge.vue';
+import { UtilEntity } from '../../../utils/UtilEntity';
 
 
     export default {
@@ -39,6 +40,7 @@ import TagBadge from '../../ui/TagBadge.vue';
             this.initTestList();
         },
         data(): {
+            totalRecord: number;
             filter: TestListFilterInterface;
             testList: TestInterface[];
             displayAddTestModal: boolean;
@@ -55,6 +57,7 @@ import TagBadge from '../../ui/TagBadge.vue';
                     title: '',
                     tagId: null,
                 },
+                totalRecord: 0,
                 testList: [],
                 displayAddTestModal: false,
                 displayConfirmDeletetModal: false,
@@ -84,6 +87,7 @@ import TagBadge from '../../ui/TagBadge.vue';
                     if ( this.displayFilterPanel) this.closeFilterPanel();
 
                     const result = await TestService.findAll(this.filter);
+                    this.totalRecord = result.totalElements;
                     this.testList = result.content;
                     this.file = null;
 
@@ -110,6 +114,18 @@ import TagBadge from '../../ui/TagBadge.vue';
                 } catch(e: unknown) {
                     this.toast.error("Une erreur est survenue lors de l'import");
                 }
+            },
+            onPage(event: DataTablePageEvent) {
+                const tempFilter: GenericFilter = UtilEntity.updateFilterOnPage(event, this.filter);
+                this.filter.offset = tempFilter.offset;
+                this.filter.limit = tempFilter.limit; 
+                this.initTestList();
+            },
+            onSort(event: DataTableSortEvent) {
+                const tempFilter: GenericFilter = UtilEntity.updateFilterOnSort(event, this.filter);
+                this.filter.sortBy = tempFilter.sortBy;
+                this.filter.sortOrder = tempFilter.sortOrder; 
+                this.initTestList();
             },
             openAddTestModal() {
                 this.displayAddTestModal = true;
@@ -240,7 +256,18 @@ import TagBadge from '../../ui/TagBadge.vue';
     </section>
 
     <section>
-        <DataTable :value="testList" tableStyle="min-width: 50rem">
+
+        <DataTable 
+            :value="testList" 
+            class="p-datatable-sm compact-table"
+            :lazy="true"
+            :paginator="true"
+            :rows="10"
+            :totalRecords="totalRecord"
+            style="width: 100%;"
+            @page="onPage"
+            @sort="onSort"
+        >
             <template #empty>Il n'y aucun test pour le moment</template>
             <Column header="Titre" field="title" sortable style="width: 20%;">
                 <template #body="slotProps">
