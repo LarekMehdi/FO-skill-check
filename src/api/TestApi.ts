@@ -72,7 +72,7 @@ export abstract class TestApi {
 
       static async removeTagFromTest(tagData: TestHasTagInterface) {
         try {
-            const { data } = await useApi().patch(`/tests/${tagData.testId}/tag/remove`);
+            const { data } = await useApi().patch(`/tests/${tagData.testId}/tag/remove`, tagData);
             return data;
         } catch(e: unknown) {
             console.error(e);

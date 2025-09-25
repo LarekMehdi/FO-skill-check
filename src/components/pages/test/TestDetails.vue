@@ -160,7 +160,7 @@ import { AxiosError } from 'axios';
                 } catch(e: unknown) {
                     if (e instanceof AxiosError && e.response) {
                         if (e.response.status === 412) {
-                            this.toast.error("Ce tag est déjà présent pour ce test");
+                            this.toast.warning("Ce tag est déjà présent pour ce test");
                         }
                     } else {
                         this.toast.error("Une erreur est survenue lors de l'ajout du tag");
