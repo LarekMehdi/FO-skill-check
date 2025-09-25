@@ -169,7 +169,15 @@ import { AxiosError } from 'axios';
                 }
             },
             async deleteTest() {
-
+                try {
+                    await TestService.deleteTest(this.testId);
+                    this.closeDeleteModal();
+                    this.$router.push('/test');
+                    this.toast.success("Test supprimé avec succés");
+                } catch(e: unknown) {
+                    this.toast.error("Une erreur est survenue lors de la suppression");
+                }
+                
             },
             filterTagList() {
                 const existingIds: (number|undefined)[] = this.item.tagList.map((tag) => tag.id);
